@@ -6,7 +6,8 @@ e gastos, acompanhe seu saldo e veja relatórios do dia, da semana, do mês e do
 ## Instalar no celular
 
 O aplicativo precisa estar publicado em um site com HTTPS para ser instalado. Depois
-de abrir o endereço no celular:
+de abrir o endereço no celular, use a aba **Instalar** do app para ver as instruções
+do seu aparelho. Quando o navegador permitir, também aparecerá o botão **Instalar app**.
 
 - **Android:** no Chrome, abra o menu e toque em **Instalar app** ou **Adicionar à
   tela inicial**.

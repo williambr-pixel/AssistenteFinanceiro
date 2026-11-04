@@ -133,6 +133,47 @@
         </section>
         <p class="local-note">Seus dados ficam neste aparelho.</p>
       </section>
+
+      <section id="instalar" class="view" aria-labelledby="install-heading" hidden>
+        <div class="page-heading report-heading">
+          <div>
+            <h1 id="install-heading">Instalar app</h1>
+            <p class="heading-copy">Tenha o Meu Financeiro na tela do celular.</p>
+          </div>
+        </div>
+        <section class="install-card" aria-label="Instalar no Android">
+          <div class="install-platform">
+            <span class="install-platform-icon android-icon" aria-hidden="true">A</span>
+            <div>
+              <h2>Android</h2>
+              <p>Instale pelo Google Chrome</p>
+            </div>
+          </div>
+          <ol class="install-steps">
+            <li>Abra este site no Chrome.</li>
+            <li>Toque no menu <strong>⋮</strong>, no canto superior.</li>
+            <li>Escolha <strong>Instalar app</strong> ou <strong>Adicionar à tela inicial</strong>.</li>
+          </ol>
+          <button class="primary-button install-action" id="install-button" type="button" hidden>Instalar app</button>
+        </section>
+
+        <section class="install-card" aria-label="Instalar no iPhone">
+          <div class="install-platform">
+            <span class="install-platform-icon apple-icon" aria-hidden="true">i</span>
+            <div>
+              <h2>iPhone</h2>
+              <p>Adicione pelo Safari</p>
+            </div>
+          </div>
+          <ol class="install-steps">
+            <li>Abra este site no Safari.</li>
+            <li>Toque em <strong>Compartilhar</strong> <span class="share-symbol" aria-label="ícone Compartilhar">↑</span>, na barra do navegador.</li>
+            <li>Role o menu e toque em <strong>Adicionar à Tela de Início</strong>.</li>
+            <li>Confirme em <strong>Adicionar</strong>.</li>
+          </ol>
+        </section>
+        <p class="local-note">Depois de instalar, abra pelo ícone na tela inicial.</p>
+      </section>
     </main>
 
     <nav class="bottom-nav" aria-label="Navegação principal">
@@ -144,6 +185,9 @@
       </button>
       <button class="nav-button" type="button" data-view="relatorios">
         <span class="nav-icon" aria-hidden="true">▤</span><span>Relatórios</span>
+      </button>
+      <button class="nav-button" type="button" data-view="instalar">
+        <span class="nav-icon install-nav-icon" aria-hidden="true">↓</span><span>Instalar</span>
       </button>
     </nav>
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
