@@ -212,6 +212,21 @@ h2 { margin-bottom: 0; font-family: inherit; font-size: 18px; font-weight: 700; 
 .local-note { margin: 14px 4px 0; color: var(--muted); font-size: 10px; text-align: center; }
 .local-note span { margin-right: 4px; }
 
+.install-card { margin-top: 13px; padding: 18px 17px 16px; border: 1px solid #edf0ec; border-radius: 17px; background: var(--surface); box-shadow: 0 6px 20px rgb(44 62 47 / 4%); }
+.install-platform { display: flex; align-items: center; gap: 11px; }
+.install-platform-icon { width: 39px; height: 39px; display: grid; flex: 0 0 39px; place-items: center; border-radius: 12px; font-size: 17px; font-weight: 700; }
+.android-icon { background: #e8f2e7; color: #43814f; }
+.apple-icon { background: #eff1ef; color: #424a44; font-family: Georgia, serif; font-size: 21px; }
+.install-platform h2 { font-size: 15px; }
+.install-platform p { margin: 3px 0 0; color: var(--muted); font-size: 11px; }
+.install-steps { display: grid; gap: 12px; margin: 17px 0 0; padding: 15px 0 0 24px; border-top: 1px solid var(--line); color: #626e65; font-size: 12px; line-height: 1.5; }
+.install-steps li { padding-left: 2px; }
+.install-steps li::marker { color: var(--green); font-weight: 700; }
+.install-steps strong { color: #35443a; font-weight: 700; }
+.share-symbol { display: inline-grid; width: 18px; height: 18px; place-items: center; border: 1px solid #b9c9bc; border-radius: 5px; color: var(--green); font-size: 14px; line-height: 1; }
+.install-action { margin-top: 15px; }
+.install-nav-icon { font-size: 19px; }
+
 .bottom-nav {
   position: fixed;
   z-index: 5;

@@ -40,12 +40,14 @@
     reportCount: document.querySelector("#report-count"),
     reportList: document.querySelector("#report-list"),
     exportButton: document.querySelector("#export-button"),
+    installButton: document.querySelector("#install-button"),
     toast: document.querySelector("#toast"),
   };
 
   let entries = loadEntries();
   let selectedPeriod = "diario";
   let toastTimer;
+  let deferredInstallPrompt = null;
 
   function localDateString(date) {
     const year = date.getFullYear();
@@ -310,6 +312,27 @@
     if (viewName === "relatorios") renderReport();
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
+
+  window.addEventListener("beforeinstallprompt", (event) => {
+    event.preventDefault();
+    deferredInstallPrompt = event;
+    elements.installButton.hidden = false;
+  });
+
+  elements.installButton.addEventListener("click", async () => {
+    if (!deferredInstallPrompt) return;
+    deferredInstallPrompt.prompt();
+    const choice = await deferredInstallPrompt.userChoice;
+    deferredInstallPrompt = null;
+    elements.installButton.hidden = true;
+    if (choice.outcome === "accepted") showToast("Instalação iniciada.");
+  });
+
+  window.addEventListener("appinstalled", () => {
+    deferredInstallPrompt = null;
+    elements.installButton.hidden = true;
+    showToast("App instalado com sucesso!");
+  });
 
   function updateTypePicker() {
     for (const option of document.querySelectorAll(".type-option")) {
