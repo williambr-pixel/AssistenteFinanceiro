@@ -1,0 +1,5 @@
+# Seus dados pessoais não vão pro GitHub
+dados.json
+relatorios/
+__pycache__/
+*.pyc
