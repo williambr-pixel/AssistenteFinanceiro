@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#f5f7f2">
+    <meta name="description" content="Anote entradas e gastos e acompanhe seu dinheiro por dia, semana, mês e ano.">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Meu Financeiro">
+    <link rel="icon" href="./icone.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="./icone-512.png">
+    <link rel="manifest" href="./manifest.webmanifest">
+    <link rel="stylesheet" href="./estilos.css">
+    <title>Meu Financeiro</title>
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="#inicio" aria-label="Meu Financeiro, início">
+        <span class="brand-mark" aria-hidden="true">$</span>
+        <span>Meu Financeiro</span>
+      </a>
+      <span class="privacy"><span class="privacy-dot"></span> Salvo no aparelho</span>
+    </header>
+
+    <main>
+      <section id="inicio" class="view active" aria-labelledby="greeting">
+        <div class="page-heading">
+          <div>
+            <p class="eyebrow" id="today-label"></p>
+            <h1 id="greeting">Seu resumo</h1>
+          </div>
+        </div>
+
+        <section class="balance-card" aria-label="Resumo do seu saldo">
+          <div class="balance-top">
+            <span>Saldo atual</span>
+            <span class="balance-icon" aria-hidden="true">↗</span>
+          </div>
+          <p class="balance-value" id="balance-value">R$ 0,00</p>
+          <div class="balance-details">
+            <div class="balance-detail">
+              <span class="detail-icon income-icon" aria-hidden="true">↓</span>
+              <span><small>Entradas</small><strong id="income-total">R$ 0,00</strong></span>
+            </div>
+            <span class="balance-divider" aria-hidden="true"></span>
+            <div class="balance-detail">
+              <span class="detail-icon expense-icon" aria-hidden="true">↑</span>
+              <span><small>Saídas</small><strong id="expense-total">R$ 0,00</strong></span>
+            </div>
+          </div>
+        </section>
+
+        <section class="recent-section" aria-labelledby="recent-heading">
+          <div class="section-heading">
+            <div>
+              <h2 id="recent-heading">Últimos lançamentos</h2>
+            </div>
+            <button class="text-button" type="button" data-view="relatorios">Ver todas <span aria-hidden="true">→</span></button>
+          </div>
+          <ul class="transaction-list" id="recent-list"></ul>
+        </section>
+      </section>
+
+      <section id="adicionar" class="view" aria-labelledby="entry-heading" hidden>
+        <div class="page-heading report-heading">
+          <div>
+            <p class="eyebrow">NOVO</p>
+            <h1 id="entry-heading">Anotar</h1>
+          </div>
+        </div>
+        <section class="entry-section" aria-label="Dados do lançamento">
+          <form id="entry-form" class="entry-form">
+            <fieldset class="type-picker">
+              <legend class="visually-hidden">Tipo de lançamento</legend>
+              <label class="type-option selected" id="expense-option">
+                <input type="radio" name="type" value="saida" checked>
+                <span aria-hidden="true">−</span> Gasto
+              </label>
+              <label class="type-option" id="income-option">
+                <input type="radio" name="type" value="entrada">
+                <span aria-hidden="true">+</span> Entrada
+              </label>
+            </fieldset>
+            <label class="field-label" for="description">Descrição</label>
+            <input id="description" name="description" type="text" maxlength="100" placeholder="Ex.: almoço, mercado..." autocomplete="off" required>
+            <div class="form-row">
+              <div class="form-field">
+                <label class="field-label" for="amount">Valor</label>
+                <div class="amount-input">
+                  <span aria-hidden="true">R$</span>
+                  <input id="amount" name="amount" type="text" inputmode="decimal" placeholder="0,00" autocomplete="off" required>
+                </div>
+              </div>
+              <div class="form-field date-field">
+                <label class="field-label" for="entry-date">Data</label>
+                <input id="entry-date" name="date" type="date" required>
+              </div>
+            </div>
+            <button class="primary-button" type="submit">Salvar lançamento</button>
+            <p class="form-message" id="form-message" role="status" aria-live="polite"></p>
+          </form>
+        </section>
+      </section>
+
+      <section id="relatorios" class="view" aria-labelledby="report-heading" hidden>
+        <div class="page-heading report-heading">
+          <div>
+            <h1 id="report-heading">Relatórios</h1>
+            <p class="heading-copy">Seus gastos por período.</p>
+          </div>
+        </div>
+
+        <div class="period-picker" role="group" aria-label="Período do relatório">
+          <button type="button" class="period-button active" data-period="diario" aria-pressed="true">Dia</button>
+          <button type="button" class="period-button" data-period="semanal" aria-pressed="false">Semana</button>
+          <button type="button" class="period-button" data-period="mensal" aria-pressed="false">Mês</button>
+          <button type="button" class="period-button" data-period="anual" aria-pressed="false">Ano</button>
+        </div>
+
+        <section class="report-card" aria-live="polite">
+          <div class="report-total">
+            <div>
+              <p class="eyebrow" id="period-label">GASTOS DE HOJE</p>
+              <h2 id="period-total">R$ 0,00</h2>
+            </div>
+            <span class="report-icon" aria-hidden="true">↗</span>
+          </div>
+          <p class="period-range" id="period-range"></p>
+          <div class="report-list-heading"><span>Lançamentos</span><span id="report-count">0 gastos</span></div>
+          <ul class="transaction-list report-list" id="report-list"></ul>
+          <button class="secondary-button" id="export-button" type="button">Baixar relatório CSV <span aria-hidden="true">↓</span></button>
+        </section>
+        <p class="local-note">Seus dados ficam neste aparelho.</p>
+      </section>
+    </main>
+
+    <nav class="bottom-nav" aria-label="Navegação principal">
+      <button class="nav-button active" type="button" data-view="inicio" aria-current="page">
+        <span class="nav-icon" aria-hidden="true">⌂</span><span>Início</span>
+      </button>
+      <button class="nav-button add-nav-button" type="button" data-view="adicionar">
+        <span class="nav-icon" aria-hidden="true">+</span><span>Anotar</span>
+      </button>
+      <button class="nav-button" type="button" data-view="relatorios">
+        <span class="nav-icon" aria-hidden="true">▤</span><span>Relatórios</span>
+      </button>
+    </nav>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="./aplicativo.js" defer></script>
+  </body>
+</html>

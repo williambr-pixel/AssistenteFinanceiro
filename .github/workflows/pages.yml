@@ -1,0 +1,34 @@
+name: Publicar app para celulares
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: paginas
+  cancel-in-progress: false
+
+jobs:
+  publicar:
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Baixar os arquivos do projeto
+        uses: actions/checkout@v4
+      - name: Preparar GitHub Pages
+        uses: actions/configure-pages@v5
+      - name: Enviar arquivos do aplicativo
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+      - name: Publicar aplicativo
+        id: deploy
+        uses: actions/deploy-pages@v4
