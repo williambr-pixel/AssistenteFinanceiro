@@ -1674,3 +1674,216 @@ body.sidebar-open { overflow: hidden; }
     scroll-behavior: auto !important;
   }
 }
+
+/* ------------------------------------------------------ ajustes mobile adicionais
+   Evita que navegação, modais e controles disputem espaço em telas estreitas. */
+@media (max-width: 720px) {
+  body {
+    padding-bottom: calc(82px + env(safe-area-inset-bottom));
+    overflow-x: hidden;
+  }
+
+  .main,
+  .content,
+  .view,
+  .grid,
+  .card,
+  .page-head,
+  .card-head {
+    min-width: 0;
+  }
+
+  .page-head {
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .page-head > div,
+  .card-head > div {
+    min-width: 0;
+  }
+
+  .head-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    max-width: 100%;
+  }
+
+  .head-actions .btn {
+    max-width: 100%;
+  }
+
+  .topbar {
+    gap: 8px;
+  }
+
+  .topbar-actions {
+    flex: 0 0 auto;
+    gap: 5px;
+  }
+
+  .topbar-actions .icon-btn {
+    width: 36px;
+    height: 36px;
+  }
+
+  .mobile-nav {
+    min-height: 64px;
+    padding-bottom: calc(7px + env(safe-area-inset-bottom));
+    padding-left: max(8px, env(safe-area-inset-left));
+    padding-right: max(8px, env(safe-area-inset-right));
+  }
+
+  .mobile-link {
+    min-width: 0;
+    min-height: 44px;
+    justify-content: center;
+    touch-action: manipulation;
+  }
+
+  .mobile-link span {
+    display: block;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .mobile-add {
+    min-width: 44px;
+    min-height: 44px;
+    touch-action: manipulation;
+  }
+
+  .modal-card {
+    max-height: calc(100dvh - 20px);
+  }
+
+  .modal-body {
+    min-height: 0;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .modal-foot {
+    flex: 0 0 auto;
+    padding-bottom: max(12px, env(safe-area-inset-bottom));
+  }
+
+  .search-panel {
+    max-height: calc(100dvh - 24px);
+  }
+
+  .search-results {
+    min-height: 0;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .toasts {
+    bottom: calc(86px + env(safe-area-inset-bottom));
+  }
+
+  input,
+  select,
+  textarea {
+    max-width: 100%;
+  }
+
+  button,
+  .btn,
+  .icon-btn {
+    touch-action: manipulation;
+  }
+}
+
+@media (max-width: 360px) {
+  .topbar {
+    padding-left: 11px;
+    padding-right: 11px;
+  }
+
+  .content {
+    padding-left: 11px;
+    padding-right: 11px;
+  }
+
+  .card {
+    padding: 14px;
+  }
+
+  .toolbar {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .toolbar .search-field,
+  .toolbar #tx-clear {
+    grid-column: auto;
+  }
+
+  .toolbar #tx-clear {
+    justify-self: stretch;
+  }
+
+  .mobile-nav {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    padding-left: 4px;
+    padding-right: 4px;
+  }
+
+  .mobile-link {
+    font-size: 8px;
+  }
+
+  .mobile-link .icon {
+    width: 19px;
+    height: 19px;
+  }
+
+  .mobile-add {
+    width: 42px;
+    height: 42px;
+  }
+
+  .modal-head,
+  .modal-body {
+    padding-left: 13px;
+    padding-right: 13px;
+  }
+
+  .modal-foot {
+    gap: 6px;
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .modal-foot .btn {
+    min-width: 0;
+    padding-left: 9px;
+    padding-right: 9px;
+    white-space: normal;
+  }
+}
+
+@media (max-width: 720px) and (max-height: 620px) {
+  .modal-card {
+    max-height: calc(100dvh - 10px);
+  }
+
+  .modal-head {
+    padding-top: 11px;
+    padding-bottom: 9px;
+  }
+
+  .modal-body {
+    padding-top: 11px;
+    padding-bottom: 11px;
+  }
+
+  .modal-foot {
+    padding-top: 9px;
+    padding-bottom: max(9px, env(safe-area-inset-bottom));
+  }
+}
+
