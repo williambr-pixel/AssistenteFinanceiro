@@ -75,7 +75,7 @@ no aparelho — sem conta, sem servidor e sem sincronização.
     ├── estilos.css
     ├── manifest.webmanifest
     ├── service-worker.js
-    ├── icons/
+    ├── icons/                     Ícones SVG e PNG do aplicativo
     └── js/
         ├── nucleo.js             Dados, persistência e regras financeiras
         ├── graficos.js           Gráficos em SVG
