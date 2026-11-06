@@ -385,7 +385,8 @@ window.Fin = window.Fin || {};
         return {
           state: defaultState(),
           error:
-            "Os dados salvos estão corrompidos e não puderam ser lidos. Faça uma cópia de segurança do armazenamento antes de continuar.",
+            "Os dados salvos estão corrompidos e foram preservados sem alterações. O app está em modo somente leitura. Exporte ou recupere seus dados a partir de um backup antes de continuar.",
+          readOnly: true,
         };
       }
     }
@@ -403,13 +404,17 @@ window.Fin = window.Fin || {};
   const loaded = loadState();
   let current = loaded.state;
   const listeners = new Set();
+  const readOnly = Boolean(loaded.readOnly);
 
-  // Recorrências são geradas na abertura do app; falhas não impedem o uso.
-  try {
-    const generated = runRecurrences(current);
-    if (generated > 0) persist(current);
-  } catch (error) {
-    console.error("Não foi possível gerar as recorrências:", error);
+  // Nunca execute rotinas que gravam dados quando o armazenamento não pôde
+  // ser lido com segurança.
+  if (!readOnly) {
+    try {
+      const generated = runRecurrences(current);
+      if (generated > 0) persist(current);
+    } catch (error) {
+      console.error("Não foi possível gerar as recorrências:", error);
+    }
   }
 
   function notify() {
@@ -423,6 +428,7 @@ window.Fin = window.Fin || {};
   }
 
   function save() {
+    if (readOnly) return false;
     try {
       persist(current);
       return true;
@@ -432,11 +438,26 @@ window.Fin = window.Fin || {};
     }
   }
 
+  function cloneState(state) {
+    return JSON.parse(JSON.stringify(state));
+  }
+
   function update(mutator) {
-    mutator(current);
-    const saved = save();
+    if (readOnly) return false;
+    const previous = cloneState(current);
+    try {
+      mutator(current);
+    } catch (error) {
+      current = previous;
+      throw error;
+    }
+    if (!save()) {
+      current = previous;
+      notify();
+      return false;
+    }
     notify();
-    return saved;
+    return true;
   }
 
   function subscribe(listener) {
@@ -445,15 +466,31 @@ window.Fin = window.Fin || {};
   }
 
   function replace(nextState) {
+    if (readOnly) {
+      throw new Error(loaded.error || "O armazenamento está em modo somente leitura. Seus dados não foram alterados.");
+    }
+    const previous = current;
     current = normalizeState(nextState);
-    save();
+    if (!save()) {
+      current = previous;
+      throw new Error("Não foi possível salvar os dados importados. Os dados anteriores foram mantidos.");
+    }
     notify();
+    return true;
   }
 
   function reset() {
+    if (readOnly) {
+      throw new Error(loaded.error || "O armazenamento está em modo somente leitura. Seus dados não foram alterados.");
+    }
+    const previous = current;
     current = defaultState();
-    persist(current);
+    if (!save()) {
+      current = previous;
+      throw new Error("Não foi possível apagar os dados porque o armazenamento falhou. Nada foi alterado.");
+    }
     notify();
+    return true;
   }
 
   // -------------------------------------------------------------- consultas
@@ -1206,6 +1243,9 @@ window.Fin = window.Fin || {};
     },
     get loadError() {
       return loaded.error;
+    },
+    get readOnly() {
+      return readOnly;
     },
     subscribe,
     update,
