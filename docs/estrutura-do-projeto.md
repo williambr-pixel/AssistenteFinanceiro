@@ -13,6 +13,7 @@ da pasta `web/`.
 | `web/js/nucleo.js` | Regras financeiras, dados e persistência local |
 | `web/js/graficos.js` | Geração dos gráficos |
 | `web/js/assistente.js` | Análises e respostas locais do assistente |
+| `web/js/voz.js` | Interface e controle do reconhecimento de voz |
 | `web/js/app.js` | Inicialização, eventos e integração das telas |
 | `web/service-worker.js` | Cache dos arquivos e funcionamento offline |
 | `web/manifest.webmanifest` | Nome, ícones e configurações de instalação |
