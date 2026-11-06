@@ -84,7 +84,8 @@ no aparelho — sem conta, sem servidor e sem sincronização.
         ├── nucleo.js             Dados, persistência e regras financeiras
         ├── graficos.js           Gráficos em SVG
         ├── assistente.js         Respostas e insights do assistente
-        └── app.js                Interface, voz, relatórios e ferramentas
+        ├── voz.js                Interface e controle do reconhecimento de voz
+        └── app.js                Interface, relatórios e ferramentas
 ```
 
 Não há bibliotecas externas nem etapa de build. Os scripts são carregados na
