@@ -1515,14 +1515,29 @@
 
       recognition.lang = "pt-BR";
       recognition.interimResults = true;
-      recognition.continuous = false;
-      recognition.maxAlternatives = 1;
+      // Mantém a sessão aberta para captar frases completas, inclusive após pequenas pausas.
+      recognition.continuous = true;
+      // Algumas implementações oferecem alternativas; usamos a que tiver maior confiança.
+      recognition.maxAlternatives = 3;
+
+      recognition.onstart = () => {
+        statusBox.textContent = "Ouvindo... fale com naturalidade. Toque no microfone para encerrar.";
+      };
 
       recognition.onresult = (event) => {
         interimText = "";
         for (let index = event.resultIndex; index < event.results.length; index += 1) {
           const result = event.results[index];
-          const piece = String(result[0] && result[0].transcript ? result[0].transcript : "").trim();
+          let bestAlternative = null;
+
+          for (let alternativeIndex = 0; alternativeIndex < result.length; alternativeIndex += 1) {
+            const alternative = result[alternativeIndex];
+            if (!bestAlternative || Number(alternative.confidence || 0) > Number(bestAlternative.confidence || 0)) {
+              bestAlternative = alternative;
+            }
+          }
+
+          const piece = String(bestAlternative && bestAlternative.transcript ? bestAlternative.transcript : "").trim();
           if (!piece) continue;
           if (result.isFinal) finalText = `${finalText} ${piece}`.trim();
           else interimText = `${interimText} ${piece}`.trim();
