@@ -64,3 +64,7 @@ Os lançamentos ficam no armazenamento local do navegador deste aparelho; não s
 enviados a um servidor nem sincronizados entre dispositivos. Se os dados do
 navegador forem apagados, os lançamentos também podem ser perdidos, por isso
 baixe os relatórios CSV com regularidade.
+
+## Licença
+
+Distribuído sob a licença MIT. Veja [LICENSE](LICENSE).
