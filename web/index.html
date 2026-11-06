@@ -565,6 +565,26 @@
       </div>
     </dialog>
 
+    <dialog class="welcome" id="welcome-dialog" aria-labelledby="welcome-title" aria-describedby="welcome-sub">
+      <form class="welcome-card" id="welcome-form" method="dialog" novalidate>
+        <span class="welcome-orbit" aria-hidden="true"></span>
+        <span class="brand-mark welcome-mark" aria-hidden="true">$</span>
+        <p class="eyebrow">Primeiro acesso</p>
+        <h2 id="welcome-title">Como podemos te chamar?</h2>
+        <p class="welcome-sub" id="welcome-sub">Seu nome aparece na saudação do painel e fica salvo somente neste aparelho.</p>
+        <label class="field welcome-field">
+          <span>Seu nome</span>
+          <input id="welcome-name" name="name" type="text" maxlength="40" autocomplete="given-name" placeholder="Digite seu nome" required>
+        </label>
+        <p class="form-error" id="welcome-error" role="alert" hidden></p>
+        <div class="welcome-actions">
+          <button class="btn ghost" id="welcome-skip" type="button">Preencher depois</button>
+          <button class="btn primary" type="submit">Começar</button>
+        </div>
+        <p class="hint welcome-hint">Sem cadastro, sem senha e sem enviar dados para servidores.</p>
+      </form>
+    </dialog>
+
     <div class="search-overlay" id="search-overlay" hidden>
       <div class="search-panel" role="dialog" aria-modal="true" aria-label="Busca global">
         <div class="search-box">

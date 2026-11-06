@@ -234,6 +234,7 @@ window.Fin = window.Fin || {};
       bills: [],
       settings: {
         name: "",
+        onboardingDone: false,
         theme: "system",
         accent: "emerald",
         pinHash: null,

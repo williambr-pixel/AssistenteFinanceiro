@@ -49,6 +49,9 @@ no aparelho — sem conta, sem servidor e sem sincronização.
 - Assistente que responde apenas com base nos dados reais do app.
 
 ### Organização e segurança
+- Mini registro no primeiro acesso para informar como você quer ser chamado. O
+  nome personaliza a saudação e pode ser alterado ou preenchido depois em
+  **Configurações**.
 - Calendário financeiro com os lançamentos de cada dia.
 - Simulador de economia, calculadora de juros e comparador de meses.
 - Notificações de contas, orçamento, metas e resumo.

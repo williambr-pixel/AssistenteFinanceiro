@@ -316,6 +316,11 @@
     modalSubtitle: $("#modal-subtitle"),
     modalBody: $("#modal-body"),
     modalSubmit: $("#modal-submit"),
+    welcomeDialog: $("#welcome-dialog"),
+    welcomeForm: $("#welcome-form"),
+    welcomeName: $("#welcome-name"),
+    welcomeError: $("#welcome-error"),
+    welcomeSkip: $("#welcome-skip"),
     confirmDialog: $("#confirm-dialog"),
     confirmTitle: $("#confirm-title"),
     confirmText: $("#confirm-text"),
@@ -386,6 +391,7 @@
       setTimeout(() => toast(`${plural(generated, "lançamento recorrente gerado", "lançamentos recorrentes gerados")}.`, "info", 5000), 900);
     }
     setTimeout(() => deliverNotifications(), 2500);
+    window.setTimeout(maybeShowWelcome, 1100);
     state.notificationTimer = window.setInterval(deliverNotifications, 30 * 60 * 1000);
   }
 
@@ -395,6 +401,46 @@
       el.boot.classList.add("done");
       setTimeout(() => { el.boot.hidden = true; }, 600);
     }, 420);
+  }
+
+  function maybeShowWelcome() {
+    if (!state.started || !el.welcomeDialog || el.welcomeDialog.open) return;
+    if (el.modal.open || el.confirmDialog.open) {
+      window.setTimeout(maybeShowWelcome, 1200);
+      return;
+    }
+    const settings = store.state.settings;
+    if (settings.onboardingDone) return;
+    if (String(settings.name || "").trim()) return;
+    el.welcomeName.value = "";
+    el.welcomeError.textContent = "";
+    el.welcomeError.hidden = true;
+    el.welcomeForm.classList.remove("shake");
+    el.welcomeDialog.showModal();
+    window.setTimeout(() => el.welcomeName.focus(), 90);
+  }
+
+  function submitWelcome(event) {
+    event.preventDefault();
+    const name = String(el.welcomeName.value || "").trim().replace(/\s+/g, " ").slice(0, 40);
+    if (!name) {
+      el.welcomeError.textContent = "Digite seu nome para começar ou toque em “Preencher depois”.";
+      el.welcomeError.hidden = false;
+      el.welcomeName.focus();
+      el.welcomeForm.classList.add("shake");
+      window.setTimeout(() => el.welcomeForm.classList.remove("shake"), 450);
+      return;
+    }
+    el.welcomeError.hidden = true;
+    store.updateSettings({ name, onboardingDone: true });
+    el.welcomeDialog.close();
+    toast(`Tudo pronto, ${name.split(" ")[0]}!`, "success");
+  }
+
+  function skipWelcome() {
+    store.updateSettings({ onboardingDone: true });
+    el.welcomeDialog.close();
+    toast("Você pode informar seu nome depois em Configurações.", "info", 4500);
   }
 
   function onStoreChange() {
@@ -626,6 +672,12 @@
   function bindStaticEvents() {
     window.addEventListener("hashchange", route);
     el.lockForm.addEventListener("submit", unlock);
+    el.welcomeForm.addEventListener("submit", submitWelcome);
+    el.welcomeSkip.addEventListener("click", skipWelcome);
+    el.welcomeDialog.addEventListener("close", () => {
+      el.welcomeError.hidden = true;
+      el.welcomeError.textContent = "";
+    });
     el.modalForm.addEventListener("submit", submitModal);
     el.modal.addEventListener("close", () => {
       stopVoiceRecognition();
@@ -3246,8 +3298,8 @@
 
   function saveProfile(event) {
     event.preventDefault();
-    const name = String(el.settingsName.value || "").trim().slice(0, 40);
-    store.updateSettings({ name });
+    const name = String(el.settingsName.value || "").trim().replace(/\s+/g, " ").slice(0, 40);
+    store.updateSettings({ name, onboardingDone: true });
     toast(name ? `Perfil salvo. Olá, ${name}!` : "Nome removido do perfil.", "success");
   }
 
@@ -3659,6 +3711,7 @@
         state.insights = [];
         state.txFilters = { query: "", type: "", categoryId: "", month: "", payment: "" };
         navigate("dashboard");
+        window.setTimeout(maybeShowWelcome, 700);
         return "Todos os dados foram apagados.";
       },
     });

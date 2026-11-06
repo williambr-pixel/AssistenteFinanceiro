@@ -1185,6 +1185,69 @@ strong { font-weight: 650; }
 .voice-fallback { width: 100%; text-align: left; }
 .voice-fallback textarea { min-height: 58px; resize: vertical; }
 
+/* --------------------------------------------------------------- boas-vindas */
+
+.welcome { padding: 0; border: 0; background: transparent; color: var(--ink); }
+.welcome::backdrop { background: rgb(3 10 20 / 62%); backdrop-filter: blur(6px); }
+.welcome-card {
+  position: relative;
+  width: min(430px, calc(100vw - 32px));
+  max-height: min(88vh, 660px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden auto;
+  padding: 34px 28px 24px;
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  background: var(--surface);
+  box-shadow: var(--shadow-lg);
+  text-align: center;
+  animation: welcomeIn 0.32s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.welcome-orbit {
+  position: absolute;
+  inset: -95px -60px auto;
+  height: 250px;
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--accent) 28%, transparent), transparent);
+  pointer-events: none;
+}
+.welcome-mark {
+  position: relative;
+  width: 62px;
+  height: 62px;
+  margin-bottom: 14px;
+  border-radius: 19px;
+  font-size: 31px;
+}
+.welcome .eyebrow { position: relative; margin-bottom: 5px; }
+.welcome h2 {
+  position: relative;
+  max-width: 330px;
+  font-size: clamp(22px, 5.4vw, 27px);
+  font-weight: 760;
+  letter-spacing: -0.04em;
+  line-height: 1.15;
+}
+.welcome-sub {
+  position: relative;
+  max-width: 330px;
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 12.5px;
+  line-height: 1.6;
+}
+.welcome-field { position: relative; width: 100%; margin-top: 20px; text-align: left; }
+.welcome-field input { min-height: 46px; font-size: 14px; }
+.welcome-card .form-error { width: 100%; margin-top: 10px; text-align: left; }
+.welcome-actions { width: 100%; display: flex; gap: 8px; margin-top: 16px; }
+.welcome-actions .btn { flex: 1 1 0; justify-content: center; }
+.welcome-hint { position: relative; margin-top: 13px; color: var(--muted-2); font-size: 10.5px; line-height: 1.5; }
+@keyframes welcomeIn {
+  from { opacity: 0; transform: translateY(14px) scale(0.97); }
+  to { opacity: 1; transform: none; }
+}
+
 /* --------------------------------------------------------------------- modais */
 
 .modal { padding: 0; border: 0; background: transparent; color: var(--ink); }
