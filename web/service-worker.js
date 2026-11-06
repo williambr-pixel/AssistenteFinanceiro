@@ -1,14 +1,14 @@
 "use strict";
 
-const CACHE_NAME = "meu-financeiro-v4";
+const CACHE_NAME = "meu-financeiro-v5";
 const APP_FILES = [
   "./",
   "./index.html",
   "./estilos.css",
   "./aplicativo.js",
   "./manifest.webmanifest",
-  "./icone.svg",
-  "./icone-512.png",
+  "./icons/icone.svg",
+  "./icons/icone-512.png",
 ];
 
 self.addEventListener("install", (event) => {

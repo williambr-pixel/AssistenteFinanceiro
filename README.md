@@ -1,48 +1,66 @@
 # Meu Financeiro
 
-Um controle financeiro pessoal simples, feito para usar no celular: anote entradas
-e gastos, acompanhe seu saldo e veja relatórios do dia, da semana, do mês e do ano.
+Controle financeiro pessoal para usar no celular: anote entradas e gastos,
+acompanhe seu saldo e veja relatórios do dia, da semana, do mês e do ano. É um
+aplicativo instalável (PWA) em HTML, CSS e JavaScript puro, e os lançamentos
+ficam salvos apenas no aparelho.
+
+## Estrutura
+
+```text
+.
+├── .github/workflows/pages.yml   Publica o app no GitHub Pages
+└── web/                          Aplicativo
+    ├── index.html
+    ├── aplicativo.js
+    ├── estilos.css
+    ├── manifest.webmanifest
+    ├── service-worker.js
+    └── icons/
+```
+
+## Rodar no computador
+
+O app é estático, mas o service worker (modo offline) só funciona em `localhost`
+ou HTTPS. Sirva a pasta `web/` com qualquer servidor local:
+
+```bash
+python -m http.server 8000 --directory web
+```
+
+Depois abra <http://localhost:8000>. Se preferir, use a extensão **Live Server**
+do VS Code apontando para `web/index.html`.
 
 ## Instalar no celular
 
-O aplicativo precisa estar publicado em um site com HTTPS para ser instalado. Depois
-de abrir o endereço no celular, use a aba **Instalar** do app para ver as instruções
-do seu aparelho. Quando o navegador permitir, também aparecerá o botão **Instalar app**.
+O aplicativo precisa estar publicado em um site com HTTPS para ser instalado.
+Depois de abrir o endereço no celular, use a aba **Instalar** do app para ver as
+instruções do seu aparelho. Quando o navegador permitir, também aparecerá o botão
+**Instalar app**.
 
 - **Android:** no Chrome, abra o menu e toque em **Instalar app** ou **Adicionar à
   tela inicial**.
 - **iPhone:** no Safari, toque em **Compartilhar** e depois **Adicionar à Tela de
   Início**.
 
-Para publicar pelo GitHub Pages, envie os arquivos do projeto ao GitHub e, no
-repositório, abra **Settings → Pages**. Em **Build and deployment**, selecione
-**GitHub Actions**. O fluxo de publicação incluído publica o aplicativo depois que
-as mudanças chegam à branch `main`; o endereço aparecerá nessa tela e no fluxo de
-execução. Abra esse endereço no celular e siga as instruções acima. O site funciona
-offline depois da primeira abertura.
+## Publicar no GitHub Pages
+
+O fluxo em `.github/workflows/pages.yml` publica o conteúdo de `web/` sempre que a
+branch `main` recebe mudanças. No repositório, abra **Settings → Pages**, defina
+**Build and deployment** como **GitHub Actions** e aguarde a execução do fluxo. O
+endereço aparecerá nessa tela e no próprio fluxo. O site funciona offline depois
+da primeira abertura.
 
 ## Usar
 
 1. Abra a aba **Anotar** e escolha **Gasto** ou **Entrada**.
-2. Informe a descrição, o valor e a data e toque em **Adicionar lançamento**.
-3. Na aba **Início**, acompanhe seu saldo e movimentações recentes. Em **Relatórios**,
-   veja os gastos de cada período e baixe o relatório em CSV.
+2. Informe a descrição, o valor e a data e toque em **Salvar lançamento**.
+3. Na aba **Início**, acompanhe seu saldo e as movimentações recentes.
+4. Em **Relatórios**, veja os gastos de cada período e baixe o relatório em CSV.
 
 ## Privacidade e dados
 
-Os lançamentos ficam armazenados localmente no navegador deste aparelho; não são
-enviados a um servidor e não são sincronizados entre dispositivos. Se limpar os
-dados do navegador, os lançamentos poderão ser apagados. Baixe regularmente os
-relatórios CSV para guardar uma cópia dos gastos.
-
-O projeto também mantém o controle financeiro original para terminal:
-
-```bash
-python main.py
-```
-
-Para executar os testes do controle de terminal:
-
-```bash
-python -m unittest discover
-```
+Os lançamentos ficam no armazenamento local do navegador deste aparelho; não são
+enviados a um servidor nem sincronizados entre dispositivos. Se os dados do
+navegador forem apagados, os lançamentos também podem ser perdidos, por isso
+baixe os relatórios CSV com regularidade.

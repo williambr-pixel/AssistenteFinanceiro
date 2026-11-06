@@ -30,7 +30,7 @@ jobs:
       - name: Enviar arquivos do aplicativo
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: web
       - name: Publicar aplicativo
         id: deploy
         uses: actions/deploy-pages@v4

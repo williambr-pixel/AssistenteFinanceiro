@@ -1,5 +1,7 @@
-# Seus dados pessoais não vão pro GitHub
-dados.json
-relatorios/
-__pycache__/
-*.pyc
+# Sistema operacional e editores
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
+*.log

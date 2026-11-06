@@ -12,13 +12,13 @@
   "theme_color": "#f5f7f2",
   "icons": [
     {
-      "src": "./icone.svg",
+      "src": "./icons/icone.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"
     },
     {
-      "src": "./icone-512.png",
+      "src": "./icons/icone-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
