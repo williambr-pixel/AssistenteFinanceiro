@@ -27,6 +27,10 @@ jobs:
         uses: actions/configure-pages@v5
         with:
           enablement: true
+      - name: Gerar versão automática do cache
+        run: |
+          sed -i "s/__APP_VERSION__/${GITHUB_SHA}/g" web/service-worker.js
+          grep -q "meu-financeiro-${GITHUB_SHA}" web/service-worker.js
       - name: Enviar arquivos do aplicativo
         uses: actions/upload-pages-artifact@v3
         with:

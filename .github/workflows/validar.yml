@@ -34,6 +34,9 @@ jobs:
       - name: Validar manifesto PWA
         run: node -e "JSON.parse(require('node:fs').readFileSync('web/manifest.webmanifest', 'utf8')); console.log('Manifesto válido.')"
 
+      - name: Verificar modelo de versão automática do cache
+        run: grep -q 'const CACHE_NAME = "meu-financeiro-__APP_VERSION__";' web/service-worker.js
+
       - name: Verificar arquivos essenciais
         run: |
           test -f web/index.html

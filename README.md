@@ -121,10 +121,14 @@ botão **Instalar app**.
 ## Publicar no GitHub Pages
 
 O fluxo em `.github/workflows/pages.yml` publica o conteúdo de `web/` sempre que a
-branch `main` recebe mudanças. No repositório, abra **Settings → Pages**, defina
-**Build and deployment** como **GitHub Actions** e aguarde a execução do fluxo. O
-endereço aparecerá nessa tela e no próprio fluxo. O site funciona offline depois
-da primeira abertura.
+branch `main` recebe mudanças. A cada publicação, o GitHub Actions substitui
+automaticamente o marcador de versão do service worker pelo SHA do commit. Assim,
+cada versão recebe um cache próprio, sem atualizar números manualmente. O registro
+do service worker também ignora o cache HTTP ao verificar atualizações.
+
+No repositório, abra **Settings → Pages**, defina **Build and deployment** como
+**GitHub Actions** e aguarde a execução do fluxo. O endereço aparecerá nessa tela
+e no próprio fluxo. O site funciona offline depois da primeira abertura.
 
 ## Dados e privacidade
 
