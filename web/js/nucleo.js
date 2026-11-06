@@ -404,7 +404,8 @@ window.Fin = window.Fin || {};
   const loaded = loadState();
   let current = loaded.state;
   const listeners = new Set();
-  const readOnly = Boolean(loaded.readOnly);
+  let readOnly = Boolean(loaded.readOnly);
+  let loadError = loaded.error;
 
   // Nunca execute rotinas que gravam dados quando o armazenamento não pôde
   // ser lido com segurança.
@@ -427,8 +428,8 @@ window.Fin = window.Fin || {};
     });
   }
 
-  function save() {
-    if (readOnly) return false;
+  function save({ allowRecovery = false } = {}) {
+    if (readOnly && !allowRecovery) return false;
     try {
       persist(current);
       return true;
@@ -465,15 +466,19 @@ window.Fin = window.Fin || {};
     return () => listeners.delete(listener);
   }
 
-  function replace(nextState) {
-    if (readOnly) {
-      throw new Error(loaded.error || "O armazenamento está em modo somente leitura. Seus dados não foram alterados.");
+  function replace(nextState, { allowRecovery = false } = {}) {
+    if (readOnly && !allowRecovery) {
+      throw new Error(loadError || "O armazenamento está em modo somente leitura. Seus dados não foram alterados.");
     }
     const previous = current;
     current = normalizeState(nextState);
-    if (!save()) {
+    if (!save({ allowRecovery })) {
       current = previous;
       throw new Error("Não foi possível salvar os dados importados. Os dados anteriores foram mantidos.");
+    }
+    if (allowRecovery) {
+      readOnly = false;
+      loadError = null;
     }
     notify();
     return true;
@@ -1175,7 +1180,7 @@ window.Fin = window.Fin || {};
     if (!data || typeof data !== "object" || !Array.isArray(data.transactions)) {
       throw new Error("Arquivo inválido: não encontrei a lista de lançamentos.");
     }
-    replace(data);
+    replace(data, { allowRecovery: true });
   }
 
   function alertMemory() {
@@ -1242,7 +1247,7 @@ window.Fin = window.Fin || {};
       return current;
     },
     get loadError() {
-      return loaded.error;
+      return loadError;
     },
     get readOnly() {
       return readOnly;
