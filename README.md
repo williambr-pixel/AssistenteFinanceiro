@@ -67,7 +67,11 @@ no aparelho — sem conta, sem servidor e sem sincronização.
 
 ```text
 .
-├── .github/workflows/pages.yml   Publica o app no GitHub Pages
+├── .github/workflows/
+│   ├── pages.yml                 Publica o app no GitHub Pages
+│   └── validar.yml               Verifica sintaxe e arquivos essenciais
+├── docs/
+│   └── estrutura-do-projeto.md   Organização e cuidados ao contribuir
 ├── LICENSE
 ├── README.md
 └── web/                          Aplicativo
