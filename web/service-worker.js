@@ -1,6 +1,6 @@
 "use strict";
 
-const CACHE_NAME = "meu-financeiro-v10";
+const CACHE_NAME = "meu-financeiro-v11";
 const APP_FILES = [
   "./",
   "./index.html",
