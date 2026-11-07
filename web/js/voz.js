@@ -13,12 +13,27 @@
     let voiceRecognition = null;
     let voiceTranscript = "";
 
+    function resetListeningUI() {
+      const stage = $("#voice-stage", el.modalBody);
+      const micButton = $("#voice-mic", el.modalBody);
+      if (stage) stage.classList.remove("listening");
+      if (micButton) {
+        micButton.setAttribute("aria-label", "Começar a ouvir");
+        micButton.classList.remove("listening");
+      }
+    }
+
     function stopVoiceRecognition() {
-      if (!voiceRecognition) return;
       const current = voiceRecognition;
       voiceRecognition = null;
-      try { current.abort(); }
-      catch (error) { console.warn("Não foi possível interromper o reconhecimento de voz:", error); }
+      // Atualiza a interface imediatamente; não dependa do evento assíncrono onend.
+      resetListeningUI();
+      if (!current) return;
+      try { current.stop(); }
+      catch (error) {
+        try { current.abort(); }
+        catch (abortError) { console.warn("Não foi possível interromper o reconhecimento de voz:", abortError); }
+      }
     }
 
     function openVoiceModal() {
@@ -88,6 +103,7 @@
         if (!canListen || voiceRecognition) return;
         voiceTranscript = "";
         syncTranscript("");
+        micButton.classList.remove("done", "listening");
         againButton.hidden = true;
         clearButton.hidden = true;
         stage.classList.add("listening");
@@ -101,7 +117,8 @@
         let failed = false;
         recognition.lang = "pt-BR";
         recognition.interimResults = true;
-        recognition.continuous = true;
+        // Uma frase por tentativa: evita que o reconhecimento fique preso
+        // aberto entre lançamentos consecutivos.
         recognition.maxAlternatives = 3;
 
         recognition.onstart = () => {
@@ -140,8 +157,10 @@
           if (voiceRecognition === recognition) voiceRecognition = null;
           stage.classList.remove("listening");
           micButton.setAttribute("aria-label", "Começar a ouvir");
+          micButton.classList.remove("listening");
           if (!voiceTranscript && interimText) syncTranscript(interimText);
           if (voiceTranscript) {
+            statusBox.textContent = "Áudio captado. Toque em “Revisar lançamento” para conferir os campos.";
             micButton.classList.add("done");
             setTimeout(() => micButton.classList.remove("done"), 600);
           } else if (!failed) {
@@ -159,8 +178,14 @@
       }
 
       micButton.addEventListener("click", () => {
-        if (voiceRecognition) stopVoiceRecognition();
-        else startListening();
+        if (voiceRecognition) {
+          stopVoiceRecognition();
+          statusBox.textContent = voiceTranscript
+            ? "Áudio captado. Toque em “Revisar lançamento” para conferir os campos."
+            : "Gravação encerrada. Toque no microfone para tentar novamente.";
+        } else {
+          startListening();
+        }
       });
       againButton.addEventListener("click", startListening);
       clearButton.addEventListener("click", () => {
