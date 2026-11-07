@@ -572,10 +572,24 @@
     if (first) setTimeout(() => first.focus(), 40);
   }
 
+  function stopVoiceRecognitionSafely() {
+    // A rotina de voz pode não estar carregada nesta versão/tela.
+    // Nunca deixe uma falha de limpeza bloquear o fechamento da janela.
+    if (typeof stopVoiceRecognition !== "function") return;
+    try {
+      stopVoiceRecognition();
+    } catch (error) {
+      console.warn("Não foi possível encerrar a captura de voz:", error);
+    }
+  }
+
   function closeModal() {
-    stopVoiceRecognition();
-    if (el.modal.open) el.modal.close();
-    currentModal = null;
+    try {
+      stopVoiceRecognitionSafely();
+    } finally {
+      if (el.modal.open) el.modal.close();
+      currentModal = null;
+    }
   }
 
   function showModalError(message) {
@@ -682,7 +696,7 @@
     });
     el.modalForm.addEventListener("submit", submitModal);
     el.modal.addEventListener("close", () => {
-      stopVoiceRecognition();
+      stopVoiceRecognitionSafely();
       currentModal = null;
     });
     // Mesmo quando um formulário apresenta erro, o usuário sempre pode sair.
