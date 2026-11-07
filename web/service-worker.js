@@ -11,6 +11,7 @@ const APP_FILES = [
   "./js/assistente.js",
   "./js/voz.js",
   "./js/app.js",
+  "./js/documentos.js",
   "./icons/icone.svg",
   "./icons/icone-512.png",
 ];
