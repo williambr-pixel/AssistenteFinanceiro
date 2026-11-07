@@ -564,7 +564,7 @@
     if (!el.modal || !el.modalForm || !el.modalBody || !el.modalSubmit) {
       throw new Error("A janela de lançamento não está disponível nesta tela.");
     }
-    currentModal = { onSubmit };
+    currentModal = { onSubmit, submitting: false };
     // Cada abertura começa com o comportamento padrão do formulário.
     el.modalSubmit.onclick = null;
     el.modalSubmit.type = "submit";
@@ -594,6 +594,9 @@
     // Fechar o formulário é independente do recurso de voz.
     if (el.modal.open) el.modal.close();
     currentModal = null;
+    // O bloqueio é lógico (por modal), nunca deve ficar preso no botão.
+    el.modalSubmit.disabled = false;
+    el.modalSubmit.removeAttribute("disabled");
   }
 
   function showModalError(message) {
@@ -606,13 +609,13 @@
 
   async function submitModal(event) {
     event.preventDefault();
-    if (!currentModal || el.modalSubmit.disabled) return;
-    // Guarde a etapa atual: o fluxo por voz pode abrir outro formulário
-    // enquanto esta submissão ainda está terminando.
+    if (!currentModal || currentModal.submitting) return;
+    // O bloqueio contra duplo clique pertence à etapa atual, não ao botão.
+    // Assim, uma etapa anterior nunca deixa o botão visualmente desativado.
     const submittingModal = currentModal;
+    submittingModal.submitting = true;
     const error = $("#modal-error", el.modalBody);
     if (error) error.hidden = true;
-    el.modalSubmit.disabled = true;
     const originalLabel = el.modalSubmit.textContent;
     el.modalSubmit.textContent = "Salvando...";
     try {
@@ -632,7 +635,9 @@
     } finally {
       // A primeira etapa não pode reativar nem renomear o botão da segunda.
       if (currentModal === submittingModal) {
+        submittingModal.submitting = false;
         el.modalSubmit.disabled = false;
+        el.modalSubmit.removeAttribute("disabled");
         el.modalSubmit.textContent = originalLabel;
       }
     }
