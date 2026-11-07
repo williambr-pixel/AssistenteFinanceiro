@@ -165,11 +165,14 @@
     const documents = window.FinDocuments?.exportBackup
       ? await window.FinDocuments.exportBackup()
       : [];
+    const financialBackup = JSON.parse(window.Fin.store.exportJSON());
+    // O PIN é específico do aparelho e não deve ser transferido junto com o backup.
+    if (financialBackup.data?.settings) delete financialBackup.data.settings.pinHash;
     const payload = {
       app: "meu-financeiro",
       version: 1,
       createdAt: new Date().toISOString(),
-      financialBackup: JSON.parse(window.Fin.store.exportJSON()),
+      financialBackup,
       documents,
     };
     const plain = new TextEncoder().encode(JSON.stringify(payload));
@@ -226,7 +229,7 @@
     let response;
     if (fileId) {
       response = await driveRequest(
-        "https://www.googleapis.com/upload/drive/v3/files/" + encodeURIComponent(fileId) + "?uploadType=media",
+        "https://www.googleapis.com/upload/drive/v3/files/" + encodeURIComponent(fileId) + "?uploadType=media&fields=id,name,modifiedTime",
         { method: "PATCH", headers: { "Content-Type": "application/octet-stream" }, body: blob },
       );
     } else {
@@ -258,7 +261,11 @@
       if (docs.length && window.FinDocuments?.restoreBackup) {
         await window.FinDocuments.restoreBackup(docs);
       }
-      window.Fin.store.replace(payload.financialBackup.data, { allowRecovery: true });
+      const restoredState = JSON.parse(JSON.stringify(payload.financialBackup.data));
+      restoredState.settings = restoredState.settings || {};
+      // Preserva o PIN já definido neste aparelho; o PIN não viaja entre dispositivos.
+      restoredState.settings.pinHash = window.Fin.store.state.settings.pinHash || "";
+      window.Fin.store.replace(restoredState, { allowRecovery: true });
       return true;
     } finally {
       suspended = false;
@@ -356,7 +363,13 @@
     });
     $("drive-backup")?.addEventListener("click", async () => {
       try {
-        if (pendingConflict && knownFileId && !window.confirm("Isso substituirá o backup que já está no Google Drive pelo conteúdo deste aparelho. Deseja continuar?")) return;
+        if (pendingConflict && knownFileId) {
+          if (!window.confirm("Isso substituirá o backup que já está no Google Drive pelo conteúdo deste aparelho. Deseja continuar?")) return;
+          // A escolha explícita do usuário autoriza substituir a versão remota atual.
+          lastRemoteModified = "";
+          localStorage.removeItem(REMOTE_KEY);
+          pendingConflict = false;
+        }
         await backupNow();
       } catch (error) { status(error.message, "danger"); }
     });
