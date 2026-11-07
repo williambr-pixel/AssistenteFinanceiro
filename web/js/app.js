@@ -575,6 +575,7 @@
     // Toda nova etapa/modal precisa reabilitar o botão, inclusive quando
     // a revisão por voz substitui o formulário durante uma submissão.
     el.modalSubmit.disabled = false;
+    el.modalSubmit.removeAttribute("disabled");
     el.modalSubmit.hidden = false;
     el.modal.classList.toggle("wide", Boolean(wide));
     if (!el.modal.open) {
