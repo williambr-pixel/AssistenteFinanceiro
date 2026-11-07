@@ -1607,39 +1607,7 @@
       },
     });
 
-    // Reafirma o rótulo da ação final depois de montar a tela de revisão por voz.
-    // O formulário de voz e o formulário de lançamento compartilham o mesmo botão.
-    if (!transaction && draft) {
-      // O salvamento iniciado por voz usa clique direto, sem depender do evento
-      // submit do <form method="dialog">. O cadastro manual segue no fluxo padrão.
-      el.modalSubmit.textContent = "Salvar lançamento";
-      el.modalSubmit.type = "button";
-      el.modalSubmit.disabled = false;
-      el.modalSubmit.onclick = async (event) => {
-        event.preventDefault();
-        if (!currentModal || el.modalSubmit.disabled) return;
-        const savingModal = currentModal;
-        el.modalSubmit.disabled = true;
-        el.modalSubmit.textContent = "Salvando...";
-        const error = $("#modal-error", el.modalBody);
-        if (error) error.hidden = true;
-        try {
-          const result = await savingModal.onSubmit(new FormData(el.modalForm));
-          if (currentModal !== savingModal) return;
-          closeModal();
-          if (typeof result === "string" && result) toast(result, "success");
-        } catch (err) {
-          if (currentModal === savingModal) {
-            showModalError(err && err.message ? err.message : "Não foi possível salvar. Confira os campos e tente novamente.");
-          }
-        } finally {
-          if (currentModal === savingModal) {
-            el.modalSubmit.disabled = false;
-            el.modalSubmit.textContent = "Salvar lançamento";
-          }
-        }
-      };
-    }
+
   }
 
   async function deleteTransaction(id) {
