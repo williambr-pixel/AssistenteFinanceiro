@@ -236,7 +236,8 @@
         { method: "PATCH", headers: { "Content-Type": "application/octet-stream" }, body: blob },
       );
     } else {
-      const boundary = "mf_" + crypto.randomUUID().replace(/-/g, "");
+      const boundaryId = crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36) + Math.random().toString(36).slice(2);
+      const boundary = "mf_" + boundaryId.replace(/-/g, "");
       const metadata = { name: FILE_NAME, parents: ["appDataFolder"], mimeType: "application/octet-stream" };
       const body = new Blob([
         "--" + boundary + "\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n",
