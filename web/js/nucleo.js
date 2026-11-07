@@ -360,11 +360,11 @@ window.Fin = window.Fin || {};
       state.meta.migratedFromV1 = migrated.length > 0;
       return { state, error: null };
     } catch (error) {
-      localStorage.removeItem(LEGACY_KEY);
+      // Não apague nem registre o conteúdo antigo: ele pode conter dados financeiros.
+      // Mantemos a cópia original no armazenamento local para uma recuperação manual.
       return {
         state,
-        error: "Não foi possível ler os dados da versão anterior. Uma cópia foi preservada no console.",
-        legacyRaw: stored,
+        error: "Não foi possível ler os dados da versão anterior. A cópia original foi mantida neste navegador; não limpe os dados do site.",
       };
     }
   }
@@ -391,8 +391,7 @@ window.Fin = window.Fin || {};
       }
     }
 
-    const { state, error, legacyRaw } = migrateLegacy();
-    if (legacyRaw) console.warn("Conteúdo antigo preservado:", legacyRaw);
+    const { state, error } = migrateLegacy();
     return { state, error };
   }
 
