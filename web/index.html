@@ -351,29 +351,35 @@
           <!-- ============================================================ ASSISTENTE -->
           <section class="view" id="view-assistant" data-view="assistant" hidden>
             <div class="page-head">
-              <div><h2>Assistente financeiro</h2><p class="page-sub">Análises e respostas calculadas com os seus dados.</p></div>
+              <div><h2>Assistente financeiro</h2><p class="page-sub">Tire dúvidas sobre seu dinheiro usando uma conversa simples.</p></div>
             </div>
 
             <div class="assistant-grid">
-              <aside class="card">
-                <header class="card-head"><div><h3>Análises</h3><p>Pontos de atenção e oportunidades.</p></div></header>
+              <section class="card chat-card" aria-label="Conversa com o assistente">
+                <header class="card-head assistant-chat-head">
+                  <div>
+                    <h3>Como posso ajudar?</h3>
+                    <p>Escreva uma pergunta como se estivesse conversando com uma pessoa.</p>
+                  </div>
+                  <span class="pill"><svg class="icon"><use href="#i-sparkles"></use></svg> Funciona offline</span>
+                </header>
+                <div class="chat-log" id="chat-log" aria-live="polite" aria-relevant="additions"></div>
+                <div class="assistant-suggestions">
+                  <span class="assistant-suggestions-label">Sugestões para começar</span>
+                  <div class="chips" id="chat-chips"></div>
+                </div>
+                <form class="chat-form" id="chat-form">
+                  <label class="visually-hidden" for="chat-input">Digite sua pergunta</label>
+                  <input id="chat-input" type="text" placeholder="Ex.: quanto gastei neste mês?" autocomplete="off" maxlength="200" required>
+                  <button class="btn primary" type="submit"><svg class="icon"><use href="#i-up"></use></svg><span>Enviar</span></button>
+                </form>
+                <p class="hint assistant-privacy-hint"><svg class="icon"><use href="#i-lock"></use></svg> Suas perguntas são respondidas no próprio aparelho, com os dados cadastrados no app.</p>
+              </section>
+
+              <aside class="card assistant-insights-card">
+                <header class="card-head"><div><h3>Suas análises</h3><p>Alertas e oportunidades com base nos seus registros.</p></div></header>
                 <div id="insights-list" class="stack"></div>
               </aside>
-
-              <section class="card chat-card" aria-label="Conversa com o assistente">
-                <header class="card-head">
-                  <div><h3>Pergunte ao assistente</h3><p>Respostas baseadas apenas nos lançamentos salvos.</p></div>
-                  <span class="pill"><svg class="icon"><use href="#i-sparkles"></use></svg> Offline</span>
-                </header>
-                <div class="chat-log" id="chat-log" aria-live="polite"></div>
-                <div class="chips" id="chat-chips"></div>
-                <form class="chat-form" id="chat-form">
-                  <label class="visually-hidden" for="chat-input">Sua pergunta</label>
-                  <input id="chat-input" type="text" placeholder="Ex.: quanto gastei com alimentação este mês?" autocomplete="off" maxlength="200" required>
-                  <button class="btn primary" type="submit" aria-label="Enviar pergunta"><svg class="icon"><use href="#i-up"></use></svg></button>
-                </form>
-                <p class="hint">O assistente não envia dados para a internet e não inventa valores.</p>
-              </section>
             </div>
           </section>
 
