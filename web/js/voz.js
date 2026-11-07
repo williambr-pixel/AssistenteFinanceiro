@@ -9,7 +9,7 @@
   const Fin = window.Fin = window.Fin || {};
 
   function createVoiceController(dependencies) {
-    const { $, $$, el, esc, icon, openModal, parseVoiceTransaction, openTransactionModal } = dependencies;
+    const { $, $, el, esc, icon, openModal, closeModal, parseVoiceTransaction, openTransactionModal } = dependencies;
     let voiceRecognition = null;
     let voiceTranscript = "";
 
@@ -59,6 +59,10 @@
           if (!text) throw new Error("Fale ou digite o lançamento antes de revisar.");
           stopVoiceRecognition();
           const draft = parseVoiceTransaction(text);
+          // Encerra o modal de voz antes de abrir o formulário de revisão.
+          // Reutilizar o mesmo <dialog> durante o submit pode deixar o foco e
+          // o estado interno do formulário inconsistentes em alguns navegadores.
+          closeModal();
           openTransactionModal(null, draft.date, draft, text);
           return false;
         },
