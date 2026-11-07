@@ -9,7 +9,7 @@
   const Fin = window.Fin = window.Fin || {};
 
   function createVoiceController(dependencies) {
-    const { $, $, el, esc, icon, openModal, closeModal, parseVoiceTransaction, openTransactionModal } = dependencies;
+    const { $, el, esc, icon, openModal, closeModal, parseVoiceTransaction, openTransactionModal } = dependencies;
     let voiceRecognition = null;
     let voiceTranscript = "";
 
