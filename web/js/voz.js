@@ -54,20 +54,29 @@
         subtitle: "Fale um lançamento por vez. A categoria e os campos são sugeridos para você revisar.",
         body,
         submit: "Revisar lançamento",
-        onSubmit: () => {
-          const text = (voiceTranscript || $("#voice-text", el.modalBody).value || "").trim();
-          if (!text) throw new Error("Fale ou digite o lançamento antes de revisar.");
-          stopVoiceRecognition();
-          const draft = parseVoiceTransaction(text);
-          // Troca o conteúdo do mesmo modal, sem fechar e reabrir o <dialog>.
-          // Isso evita que o evento "close" da etapa de voz interfira na revisão.
-          openTransactionModal(null, draft.date, draft, text);
-          // Garanta que o botão represente a ação desta segunda etapa.
-          el.modalSubmit.textContent = "Salvar lançamento";
-          el.modalSubmit.disabled = false;
-          return false;
-        },
+        // A etapa de voz usa um clique próprio no botão. Assim, ela não depende
+        // do submit genérico do formulário, que é reservado ao salvamento final.
+        onSubmit: () => false,
       });
+
+      // Intercepte o clique antes que o navegador dispare o submit do formulário.
+      // A revisão abre o formulário normal de lançamento, cujo salvamento já funciona.
+      el.modalSubmit.addEventListener("click", function reviewVoiceLaunch(event) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        const text = (voiceTranscript || $("#voice-text", el.modalBody).value || "").trim();
+        if (!text) {
+          const error = $("#modal-error", el.modalBody);
+          if (error) {
+            error.textContent = "Fale ou digite o lançamento antes de revisar.";
+            error.hidden = false;
+          }
+          return;
+        }
+        stopVoiceRecognition();
+        const draft = parseVoiceTransaction(text);
+        openTransactionModal(null, draft.date, draft, text);
+      }, { once: true });
 
       const stage = $("#voice-stage", el.modalBody);
       const micButton = $("#voice-mic", el.modalBody);
