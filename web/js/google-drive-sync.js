@@ -8,7 +8,7 @@
 (function () {
   // Após criar o OAuth Client no Google Cloud, o proprietário pode definir
   // o ID público abaixo uma única vez para todos os usuários do app.
-  const DEFAULT_CLIENT_ID = "";
+  const DEFAULT_CLIENT_ID = "62348927939-aj41vq8gnte4tp0olannb6u6f18t5qvm.apps.googleusercontent.com";
   const CLIENT_KEY = "meu-financeiro-google-client-id";
   const REMOTE_KEY = "meu-financeiro-drive-remote";
   const FILE_NAME = "meu-financeiro-backup.enc";
