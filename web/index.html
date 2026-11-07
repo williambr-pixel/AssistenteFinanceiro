@@ -531,7 +531,7 @@
                     <li>O PIN não substitui o bloqueio do celular e não impede que alguém com acesso técnico ao aparelho leia o armazenamento local.</li>
                     <li>Para evitar perdas, baixe backups JSON com frequência e mantenha-os em local privado e protegido.</li>
                   </ul>
-                  <p><strong>Sincronização na nuvem:</strong> ainda não está ativada. Ela só será liberada depois da configuração e dos testes de um serviço seguro de contas, autenticação e banco de dados. Nunca informe sua senha bancária ou compartilhe códigos de acesso.</p>
+                  <p><strong>Backup no Google Drive:</strong> opcional e protegido por criptografia. Você precisa configurar o ID OAuth do aplicativo e criar uma senha exclusiva para o backup. O app continua funcionando offline; não compartilhe sua senha de criptografia.</p>
                 </div>
               </article>
             </div>
@@ -542,6 +542,30 @@
             </article>
 
             <div class="grid cols-2">
+              <article class="card drive-sync-card">
+                <header class="card-head"><div><h3>Backup automático no Google Drive</h3><p>Guarde uma cópia criptografada na sua própria conta Google.</p></div></header>
+                <div class="security-explainer">
+                  <strong>Privacidade primeiro</strong>
+                  <ul>
+                    <li>O backup é criptografado neste aparelho antes de ser enviado.</li>
+                    <li>Inclui lançamentos, categorias, metas, configurações e documentos da biblioteca.</li>
+                    <li>O Google não recebe sua senha de criptografia. Use a mesma senha em todos os aparelhos.</li>
+                    <li>O backup automático acontece enquanto o app está aberto e conectado. O modo offline continua funcionando.</li>
+                  </ul>
+                </div>
+                <div class="stack-actions">
+                  <label class="field"><span>ID do cliente OAuth do Google</span><input id="drive-client-id" type="text" inputmode="url" autocomplete="off" placeholder="000000000000-abc.apps.googleusercontent.com"></label>
+                  <label class="field"><span>Senha de criptografia (mínimo 12 caracteres)</span><input id="drive-passphrase" type="password" autocomplete="new-password" minlength="12" placeholder="Crie uma senha exclusiva para seus backups"></label>
+                  <div class="head-actions">
+                    <button class="btn primary" id="drive-connect" type="button">Conectar ao Google Drive</button>
+                    <button class="btn secondary" id="drive-backup" type="button">Enviar backup agora</button>
+                    <button class="btn ghost" id="drive-restore" type="button">Restaurar da nuvem</button>
+                  </div>
+                  <p class="hint" id="drive-sync-status" role="status" aria-live="polite">Desconectado. Seus dados continuam salvos neste aparelho.</p>
+                  <p class="hint">Não use a senha da sua conta Google. Se esquecer esta senha exclusiva, não será possível descriptografar o backup. O ID OAuth é uma configuração pública do aplicativo; nunca cole aqui senha, token ou chave secreta.</p>
+                </div>
+              </article>
+
               <article class="card">
                 <header class="card-head"><div><h3>Seus dados</h3><p>Backup, exportação e importação.</p></div></header>
                 <div class="stack-actions">
@@ -644,5 +668,6 @@
     <script src="./js/voz.js"></script>
     <script src="./js/app.js"></script>
     <script src="./js/documentos.js"></script>
+    <script src="./js/google-drive-sync.js"></script>
   </body>
 </html>
