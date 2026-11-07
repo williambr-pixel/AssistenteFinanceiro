@@ -392,7 +392,8 @@
       setTimeout(() => toast(`${plural(generated, "lançamento recorrente gerado", "lançamentos recorrentes gerados")}.`, "info", 5000), 900);
     }
     setTimeout(() => deliverNotifications(), 2500);
-    window.setTimeout(maybeShowWelcome, 1100);
+    // A apresentação inicial não deve bloquear os controles do aplicativo.
+    // O nome pode ser preenchido depois em Configurações, sem interromper lançamentos.
     state.notificationTimer = window.setInterval(deliverNotifications, 30 * 60 * 1000);
   }
 
@@ -560,6 +561,9 @@
   let currentModal = null;
 
   function openModal({ title, subtitle = "", body, submit = "Salvar", onSubmit, wide = false }) {
+    if (!el.modal || !el.modalForm || !el.modalBody || !el.modalSubmit) {
+      throw new Error("A janela de lançamento não está disponível nesta tela.");
+    }
     currentModal = { onSubmit };
     el.modalTitle.textContent = title;
     el.modalSubtitle.textContent = subtitle;
@@ -567,7 +571,14 @@
     el.modalSubmit.textContent = submit;
     el.modalSubmit.hidden = false;
     el.modal.classList.toggle("wide", Boolean(wide));
-    if (!el.modal.open) el.modal.showModal();
+    if (!el.modal.open) {
+      try {
+        el.modal.showModal();
+      } catch (error) {
+        // Alternativa para navegadores com suporte incompleto ao elemento dialog.
+        el.modal.setAttribute("open", "");
+      }
+    }
     const first = el.modalBody.querySelector("input:not([type=hidden]):not([disabled]):not([data-no-focus]), select:not([data-no-focus]), textarea:not([data-no-focus])");
     if (first) setTimeout(() => first.focus(), 40);
   }
@@ -742,8 +753,6 @@
       }
     });
 
-    el.newTransaction.addEventListener("click", () => openTransactionModal());
-    el.mobileAdd.addEventListener("click", () => openTransactionModal());
     el.txClear.addEventListener("click", clearTransactionFilters);
     el.txMore.addEventListener("click", () => { state.txLimit += 40; renderTransactionsList(); });
 
@@ -848,6 +857,19 @@
 
   function handleDocumentClick(event) {
     const target = event.target;
+
+    // Um único ponto de entrada para os dois botões de novo lançamento.
+    // A delegação mantém o comando disponível mesmo após atualizações da tela.
+    if (target.closest("#new-transaction, #mobile-add")) {
+      event.preventDefault();
+      try {
+        openTransactionModal();
+      } catch (error) {
+        console.error("Não foi possível abrir o formulário de lançamento:", error);
+        toast("Não foi possível abrir o formulário. Tente novamente.", "danger");
+      }
+      return;
+    }
 
     if (target.closest("#menu-toggle") || target.closest("#mobile-menu")) {
       openSidebar();
