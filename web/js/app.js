@@ -600,6 +600,9 @@
   async function submitModal(event) {
     event.preventDefault();
     if (!currentModal || el.modalSubmit.disabled) return;
+    // Guarde a etapa atual: o fluxo por voz pode abrir outro formulário
+    // enquanto esta submissão ainda está terminando.
+    const submittingModal = currentModal;
     const error = $("#modal-error", el.modalBody);
     if (error) error.hidden = true;
     el.modalSubmit.disabled = true;
@@ -607,15 +610,24 @@
     el.modalSubmit.textContent = "Salvando...";
     try {
       const data = new FormData(el.modalForm);
-      const result = await currentModal.onSubmit(data);
-      if (result === false) return;
+      const result = await submittingModal.onSubmit(data);
+      // A etapa de voz retorna false depois de abrir a tela de revisão.
+      // Não feche nem altere a nova tela.
+      if (currentModal !== submittingModal || result === false) return;
       closeModal();
       if (typeof result === "string" && result) toast(result, "success");
     } catch (err) {
-      showModalError(err && err.message ? err.message : "Não foi possível salvar. Confira os campos e tente novamente.");
+      if (currentModal === submittingModal) {
+        showModalError(err && err.message ? err.message : "Não foi possível salvar. Confira os campos e tente novamente.");
+      } else {
+        toast(err && err.message ? err.message : "Não foi possível continuar. Tente novamente.", "danger");
+      }
     } finally {
-      el.modalSubmit.disabled = false;
-      el.modalSubmit.textContent = originalLabel;
+      // A primeira etapa não pode reativar nem renomear o botão da segunda.
+      if (currentModal === submittingModal) {
+        el.modalSubmit.disabled = false;
+        el.modalSubmit.textContent = originalLabel;
+      }
     }
   }
 
@@ -722,7 +734,9 @@
     });
     el.modalForm.addEventListener("submit", submitModal);
     el.modal.addEventListener("close", () => {
-      currentModal = null;
+      // O evento "close" pode chegar depois que o fluxo por voz já reabriu
+      // o mesmo dialog para a tela de revisão. Só limpe se ele continuar fechado.
+      if (!el.modal.open) currentModal = null;
     });
     // Mesmo quando um formulário apresenta erro, o usuário sempre pode sair.
     el.modal.addEventListener("cancel", (event) => {
