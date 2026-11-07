@@ -12,6 +12,7 @@ const APP_FILES = [
   "./js/voz.js",
   "./js/app.js",
   "./js/documentos.js",
+  "./js/google-drive-sync.js",
   "./icons/icone.svg",
   "./icons/icone-512.png",
 ];
