@@ -142,6 +142,7 @@
         saved += 1;
       }
       await refresh();
+      if (saved) window.FinDriveSync?.schedule("documents");
       if (saved) notify(saved + (saved === 1 ? " arquivo adicionado à biblioteca." : " arquivos adicionados à biblioteca."), "success");
       if (failures.length) notify("Não foi possível importar: " + failures.join(", "), "warning");
     } catch (error) {
@@ -187,6 +188,7 @@
       doc.category = select.value;
       await runTransaction("readwrite", (store) => store.put(doc));
       await refresh();
+      window.FinDriveSync?.schedule("documents");
       notify("Categoria atualizada.", "success");
     } catch (error) { notify(error.message || "Não foi possível alterar a categoria.", "danger"); }
   }
@@ -204,9 +206,58 @@
         if (!window.confirm('Excluir "' + doc.name + '" da biblioteca deste aparelho?')) return;
         await runTransaction("readwrite", (store) => store.delete(doc.id));
         await refresh();
+        window.FinDriveSync?.schedule("documents");
         notify("Arquivo excluído da biblioteca.", "success");
       }
     } catch (error) { notify(error.message || "Não foi possível realizar a operação.", "danger"); }
+  }
+
+
+  function bytesToBase64(bytes) {
+    let binary = "";
+    for (let offset = 0; offset < bytes.length; offset += 0x8000) {
+      binary += String.fromCharCode(...bytes.subarray(offset, offset + 0x8000));
+    }
+    return btoa(binary);
+  }
+
+  async function exportBackup() {
+    const records = await getAll();
+    const output = [];
+    for (const record of records) {
+      const bytes = new Uint8Array(await record.blob.arrayBuffer());
+      output.push({
+        id: record.id, name: record.name, type: record.type, size: record.size,
+        category: record.category, description: record.description,
+        createdAt: record.createdAt, content: bytesToBase64(bytes),
+      });
+    }
+    return output;
+  }
+
+  async function restoreBackup(records) {
+    if (!Array.isArray(records)) throw new Error("A lista de documentos do backup é inválida.");
+    const prepared = records.map((record) => {
+      if (!record || typeof record.id !== "string" || typeof record.name !== "string" || typeof record.content !== "string") {
+        throw new Error("Um documento do backup está incompleto.");
+      }
+      const binary = atob(record.content);
+      if (binary.length > MAX_FILE_SIZE) throw new Error("O documento " + record.name + " ultrapassa o limite de 25 MB.");
+      const bytes = new Uint8Array(binary.length);
+      for (let i = 0; i < binary.length; i += 1) bytes[i] = binary.charCodeAt(i);
+      const blob = new Blob([bytes], { type: record.type || "application/octet-stream" });
+      return {
+        id: record.id, name: record.name.slice(0, 240),
+        type: record.type || "application/octet-stream", size: blob.size,
+        category: CATEGORIES.includes(record.category) ? record.category : "Outros",
+        description: String(record.description || "").slice(0, 180),
+        createdAt: record.createdAt || new Date().toISOString(), blob,
+      };
+    });
+    await runTransaction("readwrite", (store) => {
+      prepared.forEach((record) => store.put(record));
+    });
+    await refresh();
   }
 
   function bind() {
@@ -225,6 +276,8 @@
   }
 
   window.FinDocuments = {
+    exportBackup,
+    restoreBackup,
     render() {
       refresh().catch((error) => {
         const list = $("#documents-list");
