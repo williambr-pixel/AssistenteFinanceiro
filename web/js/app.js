@@ -572,6 +572,9 @@
     el.modalSubtitle.textContent = subtitle;
     el.modalBody.innerHTML = `<p class="form-error" id="modal-error" role="alert" hidden></p>${body}`;
     el.modalSubmit.textContent = submit;
+    // Toda nova etapa/modal precisa reabilitar o botão, inclusive quando
+    // a revisão por voz substitui o formulário durante uma submissão.
+    el.modalSubmit.disabled = false;
     el.modalSubmit.hidden = false;
     el.modal.classList.toggle("wide", Boolean(wide));
     if (!el.modal.open) {
