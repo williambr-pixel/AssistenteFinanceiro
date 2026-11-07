@@ -917,6 +917,22 @@
       return;
     }
     if (event.key === "Escape") {
+      // Escape sempre libera a interface, fechando primeiro a camada superior.
+      if (el.modal.open) {
+        event.preventDefault();
+        closeModal();
+        return;
+      }
+      if (el.confirmDialog.open) {
+        event.preventDefault();
+        settleConfirm(false);
+        return;
+      }
+      if (el.welcomeDialog.open) {
+        event.preventDefault();
+        el.welcomeDialog.close();
+        return;
+      }
       if (!el.searchOverlay.hidden) closeSearch();
       if (el.sidebar.classList.contains("open")) closeSidebar();
     }
