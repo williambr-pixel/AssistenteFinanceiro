@@ -664,12 +664,25 @@
     return fallbackHash(text);
   }
 
+  async function pinMatches(pin, savedHash) {
+    const normalizedPin = String(pin || "").trim();
+    if (!savedHash || !/^\d{4,6}$/.test(normalizedPin)) return false;
+
+    // Aceita o formato SHA-256 atual e o hash simplificado de versões
+    // anteriores, evitando rejeitar PINs após mudanças de ambiente/navegador.
+    const currentHash = await hashPin(normalizedPin);
+    if (currentHash === savedHash) return true;
+
+    const compatibleFallback = fallbackHash(`meu-financeiro::${normalizedPin}`);
+    return compatibleFallback === savedHash;
+  }
+
   async function unlock(event) {
     event.preventDefault();
     const typed = String(el.lockPin.value || "").trim();
     if (!typed) return;
-    const hash = await hashPin(typed);
-    if (hash === store.state.settings.pinHash) {
+    const matches = await pinMatches(typed, store.state.settings.pinHash);
+    if (matches) {
       el.lockError.textContent = "";
       el.lockPin.value = "";
       begin();
@@ -3271,8 +3284,8 @@
         if (pin !== confirm) throw new Error("A confirmação não corresponde ao novo PIN.");
         if (hasPin) {
           const current = String(data.get("current") || "").trim();
-          const currentHash = await hashPin(current);
-          if (currentHash !== store.state.settings.pinHash) throw new Error("O PIN atual está incorreto.");
+          const currentMatches = await pinMatches(current, store.state.settings.pinHash);
+          if (!currentMatches) throw new Error("O PIN atual está incorreto.");
         }
         const pinHash = await hashPin(pin);
         store.updateSettings({ pinHash });
