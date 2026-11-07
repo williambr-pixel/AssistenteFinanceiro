@@ -685,6 +685,15 @@
       stopVoiceRecognition();
       currentModal = null;
     });
+    // Mesmo quando um formulário apresenta erro, o usuário sempre pode sair.
+    el.modal.addEventListener("cancel", (event) => {
+      event.preventDefault();
+      closeModal();
+    });
+    el.modal.addEventListener("click", (event) => {
+      // Clique fora do cartão (na área escura) fecha a janela sem salvar.
+      if (event.target === el.modal) closeModal();
+    });
     $("#modal-close").addEventListener("click", closeModal);
     $("#modal-cancel").addEventListener("click", closeModal);
     el.confirmOk.addEventListener("click", () => settleConfirm(true));
@@ -692,6 +701,9 @@
     el.confirmDialog.addEventListener("cancel", (event) => {
       event.preventDefault();
       settleConfirm(false);
+    });
+    el.confirmDialog.addEventListener("click", (event) => {
+      if (event.target === el.confirmDialog) settleConfirm(false);
     });
 
     $("#menu-toggle").addEventListener("click", openSidebar);
