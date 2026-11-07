@@ -234,4 +234,5 @@
   };
 
   bind();
+  if (location.hash.replace(/^#\/?/, "").split("?")[0] === "documents") window.FinDocuments.render();
 })();
