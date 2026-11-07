@@ -36,8 +36,11 @@ segurança.
 4. Crie o cliente e copie o **ID do cliente** terminado em
    `.apps.googleusercontent.com`.
 
-O ID de cliente é público e pode ser usado no navegador. Não copie nem publique
-client secret, senha, token ou chave administrativa.
+O ID de cliente é público e pode ser usado no navegador. Para não exigir que cada
+usuário digite esse ID, o proprietário pode colocá-lo uma única vez na constante
+`DEFAULT_CLIENT_ID` no início de `web/js/google-drive-sync.js` e publicar a
+alteração. O campo nas Configurações também permite testes antes dessa etapa.
+Não copie nem publique client secret, senha, token ou chave administrativa.
 
 ## 4. Configurar no aplicativo
 
