@@ -2039,3 +2039,76 @@ button, .btn { max-width: 100%; }
   .modal-card { max-height: calc(100dvh - 16px); }
   .modal-body { min-height: 0; overflow-y: auto; }
 }
+
+
+/* --------------------------------------------------- experiência de uso
+   Feedback visual consistente, leitura confortável e controles mais claros. */
+:root {
+  --focus-ring: color-mix(in srgb, var(--accent) 32%, transparent);
+  --control-height: 44px;
+}
+button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
+button, .btn, .icon-btn, .nav-link, .mobile-link {
+  transition: background-color .18s ease, color .18s ease, border-color .18s ease,
+    box-shadow .18s ease, transform .18s ease, opacity .18s ease;
+}
+button:active:not(:disabled), .btn:active:not(:disabled), .icon-btn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+button:disabled, .btn:disabled, input:disabled, select:disabled, textarea:disabled {
+  cursor: not-allowed;
+  opacity: .58;
+}
+.btn:focus-visible, .icon-btn:focus-visible, .nav-link:focus-visible,
+.mobile-link:focus-visible, input:focus-visible, select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+input:not([type="checkbox"]):not([type="radio"]),
+select, textarea {
+  min-height: var(--control-height);
+  border-radius: 11px;
+}
+input::placeholder, textarea::placeholder { color: var(--muted-2); opacity: 1; }
+label { line-height: 1.4; }
+.field, .form-field { min-width: 0; }
+.field small, .form-field small, .field-hint { color: var(--muted); line-height: 1.5; }
+.card {
+  transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .card:hover { border-color: color-mix(in srgb, var(--accent) 22%, var(--line)); }
+  .btn-secondary:hover, .icon-btn:hover { border-color: var(--line-strong); }
+  .nav-link:hover { transform: translateX(2px); }
+}
+.page-head { scroll-margin-top: 90px; }
+.page-sub, .hint, .muted { text-wrap: pretty; }
+.kpi-value, .tx-amount, .summary-item strong { font-variant-numeric: tabular-nums; }
+table { max-width: 100%; }
+.table-wrap, .table-responsive, .report-table-wrap {
+  max-width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  -webkit-overflow-scrolling: touch;
+}
+.toast { overflow-wrap: anywhere; }
+.form-error, [aria-invalid="true"] {
+  color: var(--danger);
+}
+[aria-invalid="true"] {
+  border-color: var(--danger) !important;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--danger) 12%, transparent);
+}
+:where(button, a, input, select, textarea, [tabindex]):focus-visible {
+  scroll-margin-block: 90px;
+}
+@media (prefers-reduced-motion: reduce) {
+  button, .btn, .icon-btn, .nav-link, .mobile-link, .card { transition: none !important; }
+}
+@media (max-width: 720px) {
+  :root { --control-height: 46px; }
+  .btn { min-height: 44px; }
+  .icon-btn { min-width: 42px; min-height: 42px; }
+  .page-head { scroll-margin-top: 72px; }
+}
