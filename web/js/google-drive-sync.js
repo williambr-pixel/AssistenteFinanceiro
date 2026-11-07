@@ -6,6 +6,9 @@
  * O app continua local/offline quando o Google Drive não está conectado.
  */
 (function () {
+  // Após criar o OAuth Client no Google Cloud, o proprietário pode definir
+  // o ID público abaixo uma única vez para todos os usuários do app.
+  const DEFAULT_CLIENT_ID = "";
   const CLIENT_KEY = "meu-financeiro-google-client-id";
   const REMOTE_KEY = "meu-financeiro-drive-remote";
   const FILE_NAME = "meu-financeiro-backup.enc";
@@ -31,7 +34,7 @@
   }
 
   function clientId() {
-    return ($("drive-client-id")?.value || localStorage.getItem(CLIENT_KEY) || "").trim();
+    return (DEFAULT_CLIENT_ID || $("drive-client-id")?.value || localStorage.getItem(CLIENT_KEY) || "").trim();
   }
 
   function setBusy(value) {
@@ -338,7 +341,7 @@
 
   function bind() {
     const clientInput = $("drive-client-id");
-    if (clientInput) clientInput.value = localStorage.getItem(CLIENT_KEY) || "";
+    if (clientInput) clientInput.value = DEFAULT_CLIENT_ID || localStorage.getItem(CLIENT_KEY) || "";
     $("drive-connect")?.addEventListener("click", async () => {
       try {
         setBusy(true);
