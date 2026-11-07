@@ -156,25 +156,44 @@
   }
 
   async function openFile(doc, download) {
-    const url = URL.createObjectURL(doc.blob);
+    // URLs blob herdam a origem do app. Abrir HTML/SVG ou outros formatos ativos
+    // em uma nova aba poderia permitir que um arquivo importado acessasse dados
+    // do mesmo site. Somente imagens raster conhecidas podem ser visualizadas.
+    const extension = String(doc.name || "").split(".").pop().toLowerCase();
+    const safeImageTypes = {
+      png: "image/png",
+      jpg: "image/jpeg",
+      jpeg: "image/jpeg",
+      webp: "image/webp",
+      gif: "image/gif",
+    };
+    const safeImageType = safeImageTypes[extension];
+    const canPreview = !download && Boolean(safeImageType);
+    const content = canPreview ? new Blob([doc.blob], { type: safeImageType }) : doc.blob;
+    const url = URL.createObjectURL(content);
     const link = document.createElement("a");
     link.href = url;
-    if (download) {
-      link.download = doc.name;
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-      setTimeout(() => URL.revokeObjectURL(url), 30000);
-    } else {
-      const opened = window.open(url, "_blank", "noopener");
+
+    if (canPreview) {
+      const opened = window.open(url, "_blank", "noopener,noreferrer");
       if (!opened) {
         link.download = doc.name;
         document.body.appendChild(link);
         link.click();
         link.remove();
-        notify("O navegador bloqueou a nova aba. O arquivo foi baixado.", "info");
+        notify("O navegador bloqueou a visualização. A imagem foi baixada.", "info");
       }
       setTimeout(() => URL.revokeObjectURL(url), 60000);
+      return;
+    }
+
+    link.download = doc.name;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 30000);
+    if (!download) {
+      notify("Por segurança, este tipo de arquivo é baixado em vez de aberto diretamente no aplicativo.", "info");
     }
   }
 
