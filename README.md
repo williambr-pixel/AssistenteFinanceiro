@@ -93,8 +93,8 @@ aparelho. Não há conta, servidor de dados nem sincronização na nuvem.
         └── google-drive-sync.js  Backup criptografado no Google Drive
 ```
 
-Não há bibliotecas externas nem etapa de build. Os scripts são carregados na
-ordem correta pelo `index.html`.
+Não há etapa de build nem bibliotecas de terceiros empacotadas. O Google Identity
+Services é carregado sob demanda somente quando o usuário conecta o Drive.
 
 ## Rodar no computador
 
