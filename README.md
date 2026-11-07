@@ -147,19 +147,32 @@ e no próprio fluxo. O site funciona offline depois da primeira abertura.
 - O recurso de voz depende do navegador e pode enviar áudio ao serviço de
   reconhecimento; a transcrição e os lançamentos permanecem locais.
 
-### Preparação do backend de sincronização (ainda não conectado)
+### Backup criptografado no Google Drive
 
-Foi adicionado o esquema inicial em `supabase/schema.sql`, com backup financeiro por usuário, metadados de documentos, bucket privado e políticas RLS. O roteiro de configuração está em `docs/preparacao-supabase.md`. Isso prepara o banco, mas **não ativa login, upload ou sincronização no aplicativo**. O proprietário ainda precisa criar o projeto Supabase e, em uma etapa posterior, integrar e testar o cliente. Não informe aos usuários que a nuvem está ativa até concluir os testes de isolamento e recuperação.
+O app oferece backup opcional na pasta privada `appDataFolder` da conta Google
+de cada usuário. Não há banco de dados central nem conta própria do Meu
+Financeiro. O app continua offline-first: os dados são gravados localmente e
+uma cópia criptografada é enviada ao Drive quando o app está aberto, conectado
+e autorizado.
 
-### Sincronização em nuvem (não ativada)
+- A criptografia acontece antes do envio: AES-256-GCM com chave derivada por
+  PBKDF2-SHA-256 (310.000 iterações).
+- O pacote inclui dados financeiros e documentos da biblioteca local.
+- A senha de criptografia não é enviada nem armazenada pelo app. O usuário deve
+  usar a mesma senha em todos os aparelhos; se perdê-la, o backup não poderá
+  ser recuperado.
+- O PIN de bloqueio é específico do aparelho e não é transferido no backup.
+- O token OAuth fica somente na memória e pode expirar; será necessário
+  reconectar ao Google.
+- O backup automático funciona enquanto o aplicativo está aberto. Não é uma
+  sincronização em segundo plano garantida pelo sistema operacional.
+- Se o backup remoto mudar em outro aparelho, o envio automático pausa para
+  evitar sobrescrita silenciosa. O usuário escolhe restaurar ou substituir.
+- A configuração do Google Cloud e o ID OAuth são necessários antes de ativar
+  o recurso. Consulte [docs/google-drive-backup.md](docs/google-drive-backup.md).
 
-A interface informa que a sincronização ainda não está disponível. Para
-implementá-la com segurança, é necessário configurar um projeto de backend com
-autenticação e banco de dados, políticas de acesso por usuário (RLS), regras
-para os arquivos, recuperação de conta e testes de sincronização/conflitos.
-Nenhuma chave administrativa ou segredo de servidor pode ser colocado no
-JavaScript público do aplicativo. Consulte
-`docs/seguranca-e-sincronizacao.md` antes de configurar o serviço.
+O antigo protótipo de esquema Supabase não faz parte desta arquitetura e não é
+necessário para usar o backup no Google Drive.
 
 ## Limitações conhecidas
 
