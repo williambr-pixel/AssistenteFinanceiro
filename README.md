@@ -72,7 +72,9 @@ aparelho. Não há conta, servidor de dados nem sincronização na nuvem.
 │   ├── pages.yml                 Publica o app no GitHub Pages
 │   └── validar.yml               Verifica sintaxe e arquivos essenciais
 ├── docs/
-│   └── estrutura-do-projeto.md   Organização e cuidados ao contribuir
+│   ├── estrutura-do-projeto.md   Organização e cuidados ao contribuir
+│   ├── seguranca-e-sincronizacao.md
+│   └── google-drive-backup.md   Configuração OAuth e backup criptografado
 ├── LICENSE
 ├── README.md
 └── web/                          Aplicativo
@@ -86,7 +88,9 @@ aparelho. Não há conta, servidor de dados nem sincronização na nuvem.
         ├── graficos.js           Gráficos em SVG
         ├── assistente.js         Respostas e insights do assistente
         ├── voz.js                Interface e controle do reconhecimento de voz
-        └── app.js                Interface, relatórios e ferramentas
+        ├── app.js                Interface, relatórios e ferramentas
+        ├── documentos.js         Biblioteca local de documentos
+        └── google-drive-sync.js  Backup criptografado no Google Drive
 ```
 
 Não há bibliotecas externas nem etapa de build. Os scripts são carregados na
