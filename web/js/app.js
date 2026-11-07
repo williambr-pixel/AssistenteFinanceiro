@@ -588,9 +588,12 @@
 
   async function submitModal(event) {
     event.preventDefault();
-    if (!currentModal) return;
+    if (!currentModal || el.modalSubmit.disabled) return;
     const error = $("#modal-error", el.modalBody);
     if (error) error.hidden = true;
+    el.modalSubmit.disabled = true;
+    const originalLabel = el.modalSubmit.textContent;
+    el.modalSubmit.textContent = "Salvando...";
     try {
       const data = new FormData(el.modalForm);
       const result = await currentModal.onSubmit(data);
@@ -598,7 +601,10 @@
       closeModal();
       if (typeof result === "string" && result) toast(result, "success");
     } catch (err) {
-      showModalError(err && err.message ? err.message : "Não foi possível salvar. Tente novamente.");
+      showModalError(err && err.message ? err.message : "Não foi possível salvar. Confira os campos e tente novamente.");
+    } finally {
+      el.modalSubmit.disabled = false;
+      el.modalSubmit.textContent = originalLabel;
     }
   }
 
@@ -1512,6 +1518,10 @@
       ? base.categoryId
       : (store.categoriesByType(type)[0] || {}).id || "";
     const body = `<div class="form-grid">
+      <div class="hint span-2">
+        <strong>${hasPin ? "Como trocar seu PIN" : "Como criar seu PIN"}</strong>
+        <p>${hasPin ? "1. Informe o PIN que usa atualmente.\n2. Digite um novo PIN numérico de 4 a 6 dígitos.\n3. Repita o novo PIN e toque em Salvar PIN." : "Escolha um PIN numérico de 4 a 6 dígitos, repita-o para confirmar e toque em Ativar PIN."}</p>
+      </div>
       <div class="field span-2"><span class="field-label">Tipo</span>${typeTabs("type", type)}</div>
       <label class="field span-2"><span>Descrição</span><input name="description" type="text" maxlength="100" required autocomplete="off" placeholder="Ex.: Supermercado, salário, aluguel" value="${esc(base ? base.description : "")}"></label>
       <label class="field"><span>Valor</span><input name="amount" type="text" inputmode="decimal" required placeholder="0,00" value="${base && Number(base.amount) > 0 ? moneyInput(base.amount) : ""}"></label>
@@ -3250,11 +3260,16 @@
   function openPinModal() {
     const hasPin = Boolean(store.state.settings.pinHash);
     const body = `<div class="form-grid">
-      ${hasPin ? `<label class="field span-2"><span>PIN atual</span><input name="current" type="password" inputmode="numeric" autocomplete="off" maxlength="6" required></label>` : ""}
-      <label class="field"><span>Novo PIN (4 a 6 dígitos)</span><input name="pin" type="password" inputmode="numeric" autocomplete="off" maxlength="6" required></label>
-      <label class="field"><span>Confirmar novo PIN</span><input name="confirm" type="password" inputmode="numeric" autocomplete="off" maxlength="6" required></label>
+      ${hasPin ? `<label class="field span-2"><span>PIN atual</span><input name="current" type="password" inputmode="numeric" autocomplete="current-password" pattern="[0-9]{4,6}" minlength="4" maxlength="6" required></label>` : ""}
+      <label class="field"><span>Novo PIN (4 a 6 dígitos)</span><input name="pin" type="password" inputmode="numeric" autocomplete="new-password" pattern="[0-9]{4,6}" minlength="4" maxlength="6" required></label>
+      <label class="field"><span>Confirmar novo PIN</span><input name="confirm" type="password" inputmode="numeric" autocomplete="new-password" pattern="[0-9]{4,6}" minlength="4" maxlength="6" required></label>
     </div>
-    <p class="hint">O PIN protege a interface, mas não criptografa os dados salvos no navegador.</p>
+    <div class="hint">
+      <strong>Importante sobre seus dados</strong>
+      <p>Trocar o PIN não apaga suas receitas, despesas, metas ou demais registros. O novo código será usado nos próximos desbloqueios neste aparelho.</p>
+      <p>O PIN bloqueia a interface, mas não criptografa os dados armazenados no navegador e não é sincronizado com outros aparelhos.</p>
+      <p>Se esqueceu o PIN atual, não limpe os dados do navegador: isso pode apagar seus registros locais.</p>
+    </div>
     ${hasPin ? `<button class="btn ghost small" type="button" data-action="remove-pin">Remover PIN</button>` : ""}`;
 
     openModal({
@@ -3265,16 +3280,16 @@
       onSubmit: async (data) => {
         const pin = String(data.get("pin") || "").trim();
         const confirm = String(data.get("confirm") || "").trim();
-        if (!/^\d{4,6}$/.test(pin)) throw new Error("O PIN deve ter de 4 a 6 dígitos numéricos.");
-        if (pin !== confirm) throw new Error("A confirmação não corresponde ao novo PIN.");
+        if (!/^\d{4,6}$/.test(pin)) throw new Error("O novo PIN deve ter de 4 a 6 números, sem letras ou espaços.");
+        if (pin !== confirm) throw new Error("Os dois campos do novo PIN estão diferentes. Confira e digite novamente.");
         if (hasPin) {
           const current = String(data.get("current") || "").trim();
           const currentMatches = await pinMatches(current, store.state.settings.pinHash);
-          if (!currentMatches) throw new Error("O PIN atual está incorreto.");
+          if (!currentMatches) throw new Error("O PIN atual não confere. O PIN não foi alterado; confira o código e tente novamente.");
         }
         const pinHash = await hashPin(pin);
         store.updateSettings({ pinHash });
-        return hasPin ? "PIN atualizado." : "PIN ativado.";
+        return hasPin ? "PIN alterado com sucesso. Use o novo código no próximo desbloqueio." : "PIN ativado com sucesso.";
       },
     });
   }
