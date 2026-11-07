@@ -698,12 +698,21 @@ window.Fin = window.Fin || {};
 
   function addTransaction(input) {
     let created = null;
-    update((state) => {
+    const saved = update((state) => {
       const transaction = normalizeTransaction(input, state.categories);
       if (!transaction) return;
       state.transactions.push(transaction);
       created = transaction;
     });
+    // Não informe sucesso quando o armazenamento recusou a gravação.
+    // Isso evita que lançamentos pareçam salvos quando o app está somente leitura
+    // ou quando o navegador não consegue persistir os dados.
+    if (!saved) {
+      if (readOnly && loadError) {
+        throw new Error(loadError);
+      }
+      throw new Error("O navegador não conseguiu salvar este lançamento. Seus dados anteriores foram preservados. Verifique o espaço disponível e as permissões de armazenamento do site e tente novamente.");
+    }
     return created;
   }
 
