@@ -52,3 +52,11 @@ A sincronização só pode ser anunciada como disponível após:
 
 Até cumprir esses critérios, a mensagem exibida ao usuário deve dizer que não há
 backup automático na nuvem e recomendar backup local periódico.
+
+
+## Artefatos preparados no repositório
+
+- `supabase/schema.sql`: tabelas de backup e metadados, políticas RLS e bucket privado de documentos.
+- `docs/preparacao-supabase.md`: roteiro de criação e configuração do projeto Supabase.
+
+Esses arquivos são apenas a preparação do backend. O app ainda não tem autenticação nem cliente de sincronização conectado. Não ativar a função nem prometer recuperação em outro aparelho até concluir a implementação do cliente e os testes descritos acima.
