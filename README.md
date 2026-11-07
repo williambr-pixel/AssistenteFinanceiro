@@ -1,8 +1,9 @@
 # Meu Financeiro
 
 Aplicativo financeiro pessoal instalável (PWA) feito com HTML, CSS e JavaScript
-puro. Funciona offline depois da primeira visita e guarda os lançamentos apenas
-no aparelho — sem conta, sem servidor e sem sincronização.
+puro. Funciona offline depois da primeira visita. Atualmente, os lançamentos
+ficam no armazenamento local do navegador e os documentos no IndexedDB do
+aparelho. Não há conta, servidor de dados nem sincronização na nuvem.
 
 ## Recursos
 
@@ -130,17 +131,31 @@ No repositório, abra **Settings → Pages**, defina **Build and deployment** co
 **GitHub Actions** e aguarde a execução do fluxo. O endereço aparecerá nessa tela
 e no próprio fluxo. O site funciona offline depois da primeira abertura.
 
-## Dados e privacidade
+## Dados, privacidade e segurança
 
-Os dados ficam no `localStorage` do navegador, na chave
-`meu-financeiro-dados-v2`. A versão anterior do app usava outra chave e é
-migrada automaticamente na primeira abertura.
-
-- Nada é enviado a um servidor.
-- Limpar os dados do navegador pode apagar os lançamentos.
-- Use **Configurações → Baixar backup (JSON)** regularmente.
-- O recurso de voz depende do navegador e pode enviar o áudio ao serviço de
+- Lançamentos, categorias, orçamentos, metas e configurações ficam no
+  `localStorage` do navegador, na chave `meu-financeiro-dados-v2`.
+- Documentos importados ficam no IndexedDB local do navegador.
+- Não há conta de usuário, servidor de dados ou sincronização entre aparelhos.
+- O PIN atual é uma barreira de interface, não criptografia do banco local.
+- Limpar os dados do navegador, perder o aparelho ou desinstalar o app pode
+  causar perda dos dados locais.
+- Use **Configurações → Seus dados → Baixar backup (JSON)** regularmente.
+  O backup JSON contém informações financeiras e deve ser guardado em local
+  privado e protegido.
+- O backup JSON atual não inclui os arquivos da biblioteca de documentos.
+- O recurso de voz depende do navegador e pode enviar áudio ao serviço de
   reconhecimento; a transcrição e os lançamentos permanecem locais.
+
+### Sincronização em nuvem (não ativada)
+
+A interface informa que a sincronização ainda não está disponível. Para
+implementá-la com segurança, é necessário configurar um projeto de backend com
+autenticação e banco de dados, políticas de acesso por usuário (RLS), regras
+para os arquivos, recuperação de conta e testes de sincronização/conflitos.
+Nenhuma chave administrativa ou segredo de servidor pode ser colocado no
+JavaScript público do aplicativo. Consulte
+`docs/seguranca-e-sincronizacao.md` antes de configurar o serviço.
 
 ## Limitações conhecidas
 
