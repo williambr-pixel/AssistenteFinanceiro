@@ -702,6 +702,16 @@
   // ------------------------------------------------------------- eventos fixos
 
   function bindStaticEvents() {
+    // Registre os botões principais primeiro para preservar o acesso ao lançamento manual.
+    el.newTransaction.addEventListener("click", (event) => {
+      event.preventDefault();
+      openTransactionModal();
+    });
+    el.mobileAdd.addEventListener("click", (event) => {
+      event.preventDefault();
+      openTransactionModal();
+    });
+
     window.addEventListener("hashchange", route);
     el.lockForm.addEventListener("submit", unlock);
     el.welcomeForm.addEventListener("submit", submitWelcome);
@@ -857,19 +867,6 @@
 
   function handleDocumentClick(event) {
     const target = event.target;
-
-    // Um único ponto de entrada para os dois botões de novo lançamento.
-    // A delegação mantém o comando disponível mesmo após atualizações da tela.
-    if (target.closest("#new-transaction, #mobile-add")) {
-      event.preventDefault();
-      try {
-        openTransactionModal();
-      } catch (error) {
-        console.error("Não foi possível abrir o formulário de lançamento:", error);
-        toast("Não foi possível abrir o formulário. Tente novamente.", "danger");
-      }
-      return;
-    }
 
     if (target.closest("#menu-toggle") || target.closest("#mobile-menu")) {
       openSidebar();
