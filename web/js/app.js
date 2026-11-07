@@ -3396,9 +3396,9 @@
 
   function openCsvHelp() {
     openModal({
-      title: "Importar extrato CSV",
-      subtitle: "Adicione movimentações de outro app ou banco.",
-      body: `<p>O arquivo deve conter, no mínimo, <strong>data</strong>, <strong>descrição</strong> e <strong>valor</strong>. As colunas podem usar vírgula ou ponto e vírgula como separador.</p>
+      title: "Importar planilha ou extrato",
+      subtitle: "Leia despesas e receitas de arquivos Excel (.xlsx) ou CSV.",
+      body: `<p>Selecione um arquivo <strong>.xlsx</strong> ou <strong>.csv</strong> com, no mínimo, <strong>data</strong>, <strong>descrição</strong> e <strong>valor</strong>. Se houver coluna de tipo, categoria ou pagamento, ela também será interpretada.</p>
         <div class="code-block">data;descricao;valor;tipo;categoria<br>05/11/2026;Supermercado;152,90;despesa;Alimentação<br>01/11/2026;Salário;3500,00;receita;Salário</div>
         <ul class="hint-list">
           <li>Datas em <strong>AAAA-MM-DD</strong> ou <strong>DD/MM/AAAA</strong>.</li>
@@ -3598,12 +3598,138 @@
     return { rows, skipped, total: Math.max(0, table.length - headerIndex - 1) };
   }
 
+  // Leitor local de arquivos .xlsx (Office Open XML). Não envia a planilha
+  // para servidores; extrai a primeira aba diretamente no navegador.
+  async function readXlsxFile(file) {
+    if (typeof DecompressionStream !== "function") {
+      throw new Error("Este navegador não oferece suporte à leitura direta de Excel. Salve a planilha como CSV e tente novamente.");
+    }
+    const buffer = await file.arrayBuffer();
+    const view = new DataView(buffer);
+    const bytes = new Uint8Array(buffer);
+    const readText = (data) => new TextDecoder("utf-8").decode(data);
+    const endMin = Math.max(0, bytes.length - 65557);
+    let eocd = -1;
+    for (let i = bytes.length - 22; i >= endMin; i -= 1) {
+      if (view.getUint32(i, true) === 0x06054b50) { eocd = i; break; }
+    }
+    if (eocd < 0) throw new Error("Não reconheci este arquivo como uma planilha Excel .xlsx válida.");
+    const entries = new Map();
+    const count = view.getUint16(eocd + 10, true);
+    let cursor = view.getUint32(eocd + 16, true);
+    for (let i = 0; i < count; i += 1) {
+      if (view.getUint32(cursor, true) !== 0x02014b50) throw new Error("A estrutura interna da planilha está inválida.");
+      const method = view.getUint16(cursor + 10, true);
+      const compressedSize = view.getUint32(cursor + 20, true);
+      const nameLength = view.getUint16(cursor + 28, true);
+      const extraLength = view.getUint16(cursor + 30, true);
+      const commentLength = view.getUint16(cursor + 32, true);
+      const localOffset = view.getUint32(cursor + 42, true);
+      const name = readText(bytes.subarray(cursor + 46, cursor + 46 + nameLength)).replace(/^\//, "");
+      entries.set(name, { method, compressedSize, localOffset });
+      cursor += 46 + nameLength + extraLength + commentLength;
+    }
+    async function entryText(path) {
+      const item = entries.get(path);
+      if (!item) return "";
+      const offset = item.localOffset;
+      if (view.getUint32(offset, true) !== 0x04034b50) throw new Error("Não foi possível ler um componente da planilha.");
+      const nameLength = view.getUint16(offset + 26, true);
+      const extraLength = view.getUint16(offset + 28, true);
+      const start = offset + 30 + nameLength + extraLength;
+      const compressed = bytes.slice(start, start + item.compressedSize);
+      let result;
+      if (item.method === 0) result = compressed;
+      else if (item.method === 8) {
+        const stream = new Blob([compressed]).stream().pipeThrough(new DecompressionStream("deflate-raw"));
+        result = new Uint8Array(await new Response(stream).arrayBuffer());
+      } else throw new Error("A planilha usa um tipo de compactação não compatível.");
+      return readText(result);
+    }
+    function xml(text, label) {
+      const doc = new DOMParser().parseFromString(text, "application/xml");
+      if (doc.getElementsByTagName("parsererror").length) throw new Error("Não consegui interpretar " + label + " da planilha.");
+      return doc;
+    }
+    const workbookText = await entryText("xl/workbook.xml");
+    if (!workbookText) throw new Error("A planilha não contém uma pasta de trabalho válida.");
+    const workbook = xml(workbookText, "estrutura");
+    const firstSheet = workbook.getElementsByTagName("sheet")[0];
+    if (!firstSheet) throw new Error("Não encontrei nenhuma aba com dados na planilha.");
+    const relationId = firstSheet.getAttribute("r:id");
+    const relsText = await entryText("xl/_rels/workbook.xml.rels");
+    const rels = relsText ? xml(relsText, "referências") : null;
+    let sheetPath = "xl/worksheets/sheet1.xml";
+    if (rels) {
+      const relation = Array.from(rels.getElementsByTagName("Relationship")).find((item) => item.getAttribute("Id") === relationId);
+      if (relation) {
+        const target = relation.getAttribute("Target") || "worksheets/sheet1.xml";
+        sheetPath = target.startsWith("/") ? target.slice(1) : target.startsWith("xl/") ? target : "xl/" + target.replace(/^\.\//, "");
+      }
+    }
+    const sheetText = await entryText(sheetPath);
+    if (!sheetText) throw new Error("Não consegui abrir a primeira aba da planilha.");
+    const sheet = xml(sheetText, "dados");
+    const sharedText = await entryText("xl/sharedStrings.xml");
+    const shared = sharedText ? xml(sharedText, "textos") : null;
+    const sharedStrings = shared ? Array.from(shared.getElementsByTagName("si")).map((item) =>
+      Array.from(item.getElementsByTagName("t")).map((part) => part.textContent || "").join("")
+    ) : [];
+    const stylesText = await entryText("xl/styles.xml");
+    const styles = stylesText ? xml(stylesText, "formatos") : null;
+    const customFormats = new Map();
+    if (styles) Array.from(styles.getElementsByTagName("numFmt")).forEach((item) => customFormats.set(Number(item.getAttribute("numFmtId")), item.getAttribute("formatCode") || ""));
+    const xfs = styles ? Array.from(styles.getElementsByTagName("cellXfs")[0]?.children || []) : [];
+    const dateStyle = (styleIndex) => {
+      const xf = xfs[styleIndex];
+      if (!xf) return false;
+      const id = Number(xf.getAttribute("numFmtId"));
+      const format = (customFormats.get(id) || "").toLowerCase().replace(/"[^"]*"/g, "").replace(/\\./g, "");
+      return [14,15,16,17,18,19,20,21,22,27,28,29,30,31,32,33,34,35,36,45,46,47].includes(id)
+        || (/[dy]/.test(format) && !/[0#]/.test(format.replace(/[dyhms]/g, "")));
+    };
+    const columnIndex = (reference) => {
+      const letters = String(reference || "").match(/[A-Z]+/i);
+      if (!letters) return 0;
+      return letters[0].toUpperCase().split("").reduce((value, char) => value * 26 + char.charCodeAt(0) - 64, 0) - 1;
+    };
+    const rows = [];
+    const sheetRows = Array.from(sheet.getElementsByTagName("sheetData")[0]?.getElementsByTagName("row") || []);
+    for (const rowNode of sheetRows) {
+      const row = [];
+      for (const cell of Array.from(rowNode.children).filter((item) => item.localName === "c")) {
+        const index = columnIndex(cell.getAttribute("r"));
+        const type = cell.getAttribute("t");
+        const valueNode = cell.getElementsByTagName("v")[0];
+        let value = valueNode ? valueNode.textContent || "" : "";
+        if (type === "s") value = sharedStrings[Number(value)] || "";
+        else if (type === "inlineStr") value = Array.from(cell.getElementsByTagName("t")).map((part) => part.textContent || "").join("");
+        else if (type === "b") value = value === "1" ? "Sim" : "Não";
+        else if (value !== "" && dateStyle(Number(cell.getAttribute("s") || 0)) && Number.isFinite(Number(value))) {
+          const date = new Date(Date.UTC(1899, 11, 30) + Number(value) * 86400000);
+          value = date.toISOString().slice(0, 10);
+        }
+        row[index] = value;
+      }
+      rows.push(row);
+    }
+    if (!rows.length) throw new Error("A primeira aba da planilha está vazia.");
+    const quote = (value) => {
+      const text = String(value == null ? "" : value);
+      return /[;"\r\n]/.test(text) ? '"' + text.replace(/"/g, '""') + '"' : text;
+    };
+    return rows.map((row) => row.map(quote).join(";")).join("\n");
+  }
+
   async function importCsvFile(event) {
     const file = event.target.files && event.target.files[0];
     event.target.value = "";
     if (!file) return;
     try {
-      const text = await readFile(file);
+      const isExcel = /\.xlsx$/i.test(file.name);
+      const isCsv = /\.csv$/i.test(file.name) || file.type === "text/csv";
+      if (!isExcel && !isCsv) throw new Error("Selecione uma planilha .xlsx ou um arquivo .csv.");
+      const text = isExcel ? await readXlsxFile(file) : await readFile(file);
       const parsed = parseCsvText(text);
       if (!parsed.rows.length) {
         throw new Error("Nenhuma linha válida foi encontrada. Verifique data, descrição e valor.");
