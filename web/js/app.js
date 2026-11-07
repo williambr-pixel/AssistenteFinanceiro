@@ -1429,6 +1429,7 @@
     esc,
     icon,
     openModal,
+    closeModal,
     parseVoiceTransaction,
     openTransactionModal,
   });
