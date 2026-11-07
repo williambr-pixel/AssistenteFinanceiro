@@ -1603,6 +1603,14 @@
         return "Lançamento adicionado.";
       },
     });
+
+    // Reafirma o rótulo da ação final depois de montar a tela de revisão por voz.
+    // O formulário de voz e o formulário de lançamento compartilham o mesmo botão.
+    if (!transaction && draft) {
+      el.modalSubmit.textContent = "Salvar lançamento";
+      el.modalSubmit.type = "submit";
+      el.modalSubmit.disabled = false;
+    }
   }
 
   async function deleteTransaction(id) {
