@@ -59,11 +59,12 @@
           if (!text) throw new Error("Fale ou digite o lançamento antes de revisar.");
           stopVoiceRecognition();
           const draft = parseVoiceTransaction(text);
-          // Encerra o modal de voz antes de abrir o formulário de revisão.
-          // Reutilizar o mesmo <dialog> durante o submit pode deixar o foco e
-          // o estado interno do formulário inconsistentes em alguns navegadores.
-          closeModal();
+          // Troca o conteúdo do mesmo modal, sem fechar e reabrir o <dialog>.
+          // Isso evita que o evento "close" da etapa de voz interfira na revisão.
           openTransactionModal(null, draft.date, draft, text);
+          // Garanta que o botão represente a ação desta segunda etapa.
+          el.modalSubmit.textContent = "Salvar lançamento";
+          el.modalSubmit.disabled = false;
           return false;
         },
       });
