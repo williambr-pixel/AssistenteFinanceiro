@@ -22,6 +22,7 @@
     calendar: { title: "Calendário", sub: "Sua vida financeira dia a dia" },
     tools: { title: "Ferramentas", sub: "Simuladores e calculadoras" },
     settings: { title: "Configurações", sub: "Preferências, segurança e dados" },
+    documents: { title: "Documentos", sub: "Arquivos pessoais organizados no aparelho" },
   };
   const VIEWS = Object.keys(VIEW_META);
   const CATEGORY_ICONS = [
@@ -518,6 +519,7 @@
       case "assistant": renderAssistant(); break;
       case "calendar": renderCalendar(); break;
       case "tools": break;
+      case "documents": if (window.FinDocuments) window.FinDocuments.render(); break;
       case "settings": renderSettings(); break;
       default: renderDashboard();
     }
