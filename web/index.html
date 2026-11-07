@@ -165,6 +165,16 @@
 
             <div class="alert-strip" id="dash-alerts" hidden></div>
 
+            <article class="card data-safety-notice" role="status" aria-label="Aviso importante sobre seus dados">
+              <div class="data-safety-icon" aria-hidden="true">!</div>
+              <div class="data-safety-content">
+                <strong>Proteja seus dados financeiros</strong>
+                <p>Seus lançamentos ficam somente neste aparelho. Ainda não existe conta nem backup automático na nuvem. Desinstalar o app, trocar de aparelho ou limpar os dados do navegador pode causar perda das informações.</p>
+                <p><strong>Faça backups regularmente:</strong> abra Configurações → Seus dados → Baixar backup (JSON) e guarde o arquivo em um local seguro.</p>
+                <a class="btn secondary small" href="#/settings">Ver opções de segurança e backup</a>
+              </div>
+            </article>
+
             <div class="kpi-grid">
               <article class="card kpi">
                 <div class="kpi-top"><span class="kpi-label">Saldo disponível</span><span class="kpi-icon balance"><svg class="icon"><use href="#i-wallet"></use></svg></span></div>
@@ -513,6 +523,16 @@
                   <button class="btn secondary" id="btn-pin" type="button"><svg class="icon"><use href="#i-lock"></use></svg><span>Definir PIN</span></button>
                 </div>
                 <p class="hint">O PIN protege o acesso à interface. Ele não criptografa os dados salvos no navegador.</p>
+                <div class="security-explainer">
+                  <strong>Importante sobre privacidade e recuperação</strong>
+                  <ul>
+                    <li>Os dados financeiros e documentos permanecem neste navegador/aparelho.</li>
+                    <li>O app não envia seus lançamentos para um servidor e não possui sincronização entre dispositivos.</li>
+                    <li>O PIN não substitui o bloqueio do celular e não impede que alguém com acesso técnico ao aparelho leia o armazenamento local.</li>
+                    <li>Para evitar perdas, baixe backups JSON com frequência e mantenha-os em local privado e protegido.</li>
+                  </ul>
+                  <p><strong>Sincronização na nuvem:</strong> ainda não está ativada. Ela só será liberada depois da configuração e dos testes de um serviço seguro de contas, autenticação e banco de dados. Nunca informe sua senha bancária ou compartilhe códigos de acesso.</p>
+                </div>
               </article>
             </div>
 
