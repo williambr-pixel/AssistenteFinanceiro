@@ -147,6 +147,10 @@ e no próprio fluxo. O site funciona offline depois da primeira abertura.
 - O recurso de voz depende do navegador e pode enviar áudio ao serviço de
   reconhecimento; a transcrição e os lançamentos permanecem locais.
 
+### Preparação do backend de sincronização (ainda não conectado)
+
+Foi adicionado o esquema inicial em `supabase/schema.sql`, com backup financeiro por usuário, metadados de documentos, bucket privado e políticas RLS. O roteiro de configuração está em `docs/preparacao-supabase.md`. Isso prepara o banco, mas **não ativa login, upload ou sincronização no aplicativo**. O proprietário ainda precisa criar o projeto Supabase e, em uma etapa posterior, integrar e testar o cliente. Não informe aos usuários que a nuvem está ativa até concluir os testes de isolamento e recuperação.
+
 ### Sincronização em nuvem (não ativada)
 
 A interface informa que a sincronização ainda não está disponível. Para
