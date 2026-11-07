@@ -1522,10 +1522,6 @@
         <strong>${hasPin ? "Como trocar seu PIN" : "Como criar seu PIN"}</strong>
         <p>${hasPin ? "1. Informe o PIN que usa atualmente.\n2. Digite um novo PIN numérico de 4 a 6 dígitos.\n3. Repita o novo PIN e toque em Salvar PIN." : "Escolha um PIN numérico de 4 a 6 dígitos, repita-o para confirmar e toque em Ativar PIN."}</p>
       </div>
-      <div class="hint span-2">
-        <strong>${hasPin ? "Como trocar seu PIN" : "Como criar seu PIN"}</strong>
-        <p>${hasPin ? "1. Informe o PIN que usa atualmente.\n2. Digite um novo PIN numérico de 4 a 6 dígitos.\n3. Repita o novo PIN e toque em Salvar PIN." : "Escolha um PIN numérico de 4 a 6 dígitos, repita-o para confirmar e toque em Ativar PIN."}</p>
-      </div>
       <div class="field span-2"><span class="field-label">Tipo</span>${typeTabs("type", type)}</div>
       <label class="field span-2"><span>Descrição</span><input name="description" type="text" maxlength="100" required autocomplete="off" placeholder="Ex.: Supermercado, salário, aluguel" value="${esc(base ? base.description : "")}"></label>
       <label class="field"><span>Valor</span><input name="amount" type="text" inputmode="decimal" required placeholder="0,00" value="${base && Number(base.amount) > 0 ? moneyInput(base.amount) : ""}"></label>
