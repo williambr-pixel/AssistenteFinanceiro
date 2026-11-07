@@ -54,29 +54,16 @@
         subtitle: "Fale um lançamento por vez. A categoria e os campos são sugeridos para você revisar.",
         body,
         submit: "Revisar lançamento",
-        // A etapa de voz usa um clique próprio no botão. Assim, ela não depende
-        // do submit genérico do formulário, que é reservado ao salvamento final.
-        onSubmit: () => false,
-      });
-
-      // Intercepte o clique antes que o navegador dispare o submit do formulário.
-      // A revisão abre o formulário normal de lançamento, cujo salvamento já funciona.
-      el.modalSubmit.addEventListener("click", function reviewVoiceLaunch(event) {
-        event.preventDefault();
-        event.stopImmediatePropagation();
-        const text = (voiceTranscript || $("#voice-text", el.modalBody).value || "").trim();
-        if (!text) {
-          const error = $("#modal-error", el.modalBody);
-          if (error) {
-            error.textContent = "Fale ou digite o lançamento antes de revisar.";
-            error.hidden = false;
-          }
-          return;
-        }
-        stopVoiceRecognition();
-        const draft = parseVoiceTransaction(text);
-        el.modalSubmit.removeEventListener("click", reviewVoiceLaunch);
-        openTransactionModal(null, draft.date, draft, text);
+        // A primeira etapa usa o mesmo envio de formulário do restante do app.
+        // Ao revisar, troca o conteúdo do modal e deixa o submit seguinte salvar.
+        onSubmit: () => {
+          const text = (voiceTranscript || $("#voice-text", el.modalBody).value || "").trim();
+          if (!text) throw new Error("Fale ou digite o lançamento antes de revisar.");
+          stopVoiceRecognition();
+          const draft = parseVoiceTransaction(text);
+          openTransactionModal(null, draft.date, draft, text);
+          return false;
+        },
       });
 
       const stage = $("#voice-stage", el.modalBody);
