@@ -75,8 +75,9 @@
         }
         stopVoiceRecognition();
         const draft = parseVoiceTransaction(text);
+        el.modalSubmit.removeEventListener("click", reviewVoiceLaunch);
         openTransactionModal(null, draft.date, draft, text);
-      }, { once: true });
+      });
 
       const stage = $("#voice-stage", el.modalBody);
       const micButton = $("#voice-mic", el.modalBody);
