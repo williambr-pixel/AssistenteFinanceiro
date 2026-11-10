@@ -1,0 +1,46 @@
+name: Validar projeto
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validar:
+    name: Verificar arquivos do aplicativo
+    runs-on: ubuntu-latest
+    steps:
+      - name: Baixar o repositório
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Verificar sintaxe JavaScript
+        run: |
+          set -e
+          while IFS= read -r -d '' arquivo; do
+            echo "Verificando $arquivo"
+            node --check "$arquivo"
+          done < <(find web/js -type f -name '*.js' -print0)
+
+      - name: Validar manifesto PWA
+        run: node -e "JSON.parse(require('node:fs').readFileSync('web/manifest.webmanifest', 'utf8')); console.log('Manifesto válido.')"
+
+      - name: Verificar modelo de versão automática do cache
+        run: grep -q 'const CACHE_NAME = "meu-financeiro-__APP_VERSION__";' web/service-worker.js
+
+      - name: Verificar arquivos essenciais
+        run: |
+          test -f web/index.html
+          test -f web/service-worker.js
+          test -f web/estilos.css
+          test -f web/manifest.webmanifest
+          echo "Arquivos essenciais encontrados."

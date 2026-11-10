@@ -1,0 +1,31 @@
+{
+  "id": "./",
+  "name": "Meu Financeiro",
+  "short_name": "Meu Financeiro",
+  "description": "Painel financeiro pessoal com lançamentos, orçamento, metas, relatórios, assistente offline e previsões.",
+  "lang": "pt-BR",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#f3f6fb",
+  "theme_color": "#0b1f33",
+  "categories": [
+    "finance",
+    "productivity"
+  ],
+  "icons": [
+    {
+      "src": "./icons/icone-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./icons/icone.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

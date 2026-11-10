@@ -1,0 +1,669 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#0b1f33">
+    <meta name="description" content="Meu Financeiro: controle de receitas, despesas, orçamento, metas e relatórios. Funciona offline e guarda os dados no seu aparelho.">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Meu Financeiro">
+    <link rel="icon" href="./icons/icone.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="./icons/icone-512.png">
+    <link rel="manifest" href="./manifest.webmanifest">
+    <link rel="stylesheet" href="./estilos.css">
+    <title>Meu Financeiro — painel financeiro pessoal</title>
+  </head>
+  <body>
+    <!-- Ícones (sprite) -->
+    <svg class="sprite" aria-hidden="true" focusable="false">
+      <symbol id="i-dashboard" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></symbol>
+      <symbol id="i-list" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></symbol>
+      <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1"/></symbol>
+      <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></symbol>
+      <symbol id="i-sparkles" viewBox="0 0 24 24"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9L12 3z"/><path d="M19 15l.9 2.1L22 18l-2.1.9L19 21l-.9-2.1L16 18l2.1-.9L19 15z"/></symbol>
+      <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 11h18"/></symbol>
+      <symbol id="i-tools" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/><circle cx="9" cy="6" r="2"/><circle cx="15" cy="12" r="2"/><circle cx="7" cy="18" r="2"/></symbol>
+      <symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 000-3l1.1-1.6-1.9-3.3-1.9.7a1.7 1.7 0 00-1.5-.9L14.8 3h-3.6l-.4 2.9a1.7 1.7 0 00-1.5.9l-1.9-.7-1.9 3.3L6.6 12a1.7 1.7 0 000 3l-1.1 1.6 1.9 3.3 1.9-.7a1.7 1.7 0 001.5.9l.4 2.9h3.6l.4-2.9a1.7 1.7 0 001.5-.9l1.9.7 1.9-3.3z"/></symbol>
+      <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></symbol>
+      <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+      <symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0014 0M12 17v4M8 21h8"/></symbol>
+      <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+      <symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 12.8A8.5 8.5 0 1111.2 3a6.5 6.5 0 009.8 9.8z"/></symbol>
+      <symbol id="i-menu" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></symbol>
+      <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+      <symbol id="i-edit" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></symbol>
+      <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14M10 11v6M14 11v6"/></symbol>
+      <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></symbol>
+      <symbol id="i-alert" viewBox="0 0 24 24"><path d="M10.3 3.9L1.8 18a2 2 0 001.7 3h17a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/><path d="M12 9v4M12 17h.01"/></symbol>
+      <symbol id="i-up" viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></symbol>
+      <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 5v14M19 12l-7 7-7-7"/></symbol>
+      <symbol id="i-left" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></symbol>
+      <symbol id="i-right" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></symbol>
+      <symbol id="i-wallet" viewBox="0 0 24 24"><path d="M3 7a2 2 0 012-2h12a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M3 9h18"/><path d="M16 14h2"/></symbol>
+      <symbol id="i-receipt" viewBox="0 0 24 24"><path d="M6 2h12l1 3v17l-3-2-3 2-3-2-3 2V5z"/><path d="M9 8h6M9 12h6M9 16h4"/></symbol>
+      <symbol id="i-repeat" viewBox="0 0 24 24"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a4 4 0 014-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a4 4 0 01-4 4H3"/></symbol>
+      <symbol id="i-flag" viewBox="0 0 24 24"><path d="M4 22V4c4-2 8 2 12 0v10c-4 2-8-2-12 0"/></symbol>
+      <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 10v11h14V10"/></symbol>
+      <symbol id="i-food" viewBox="0 0 24 24"><path d="M4 8h12v6a6 6 0 01-12 0z"/><path d="M16 9h3a3 3 0 010 6h-3"/><path d="M5 21h10"/></symbol>
+      <symbol id="i-car" viewBox="0 0 24 24"><path d="M5 17h14M6 17l-1-5 2-5h10l2 5-1 5"/><circle cx="7.5" cy="17.5" r="1.5"/><circle cx="16.5" cy="17.5" r="1.5"/></symbol>
+      <symbol id="i-heart" viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 00-7.8 7.8l1.1 1L12 21l7.7-7.6 1.1-1a5.5 5.5 0 000-7.8z"/></symbol>
+      <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 4h11a3 3 0 013 3v13H7a3 3 0 01-3-3z"/><path d="M4 4v14"/></symbol>
+      <symbol id="i-bag" viewBox="0 0 24 24"><path d="M6 7h12l1 14H5z"/><path d="M9 7V5a3 3 0 016 0v2"/></symbol>
+      <symbol id="i-dots" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></symbol>
+      <symbol id="i-briefcase" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2M3 12h18"/></symbol>
+      <symbol id="i-laptop" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="11" rx="2"/><path d="M2 20h20"/></symbol>
+      <symbol id="i-trend" viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></symbol>
+      <symbol id="i-gift" viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="4"/><path d="M5 12v9h14v-9M12 8v13"/><path d="M12 8S9 8 7.5 6.5 6 3 8 3s4 5 4 5zM12 8s3 0 4.5-1.5S18 3 16 3s-4 5-4 5z"/></symbol>
+      <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M4 21h16"/></symbol>
+      <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 21V9M7 14l5-5 5 5M4 3h16"/></symbol>
+      <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></symbol>
+      <symbol id="i-bell" viewBox="0 0 24 24"><path d="M18 8a6 6 0 00-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M10 21a2 2 0 004 0"/></symbol>
+      <symbol id="i-filter" viewBox="0 0 24 24"><path d="M3 4h18l-7 8v7l-4 2v-9z"/></symbol>
+      <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 012-2h10"/></symbol>
+      <symbol id="i-gauge" viewBox="0 0 24 24"><path d="M12 21a9 9 0 100-18 9 9 0 000 18z"/><path d="M12 12l4-4"/></symbol>
+      <symbol id="i-compass" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M16 8l-2.5 5.5L8 16l2.5-5.5z"/></symbol>
+      <symbol id="i-coins" viewBox="0 0 24 24"><ellipse cx="9" cy="6" rx="5" ry="2"/><path d="M4 6v4c0 1.1 2.2 2 5 2s5-.9 5-2V6"/><path d="M4 10v4c0 1.1 2.2 2 5 2s5-.9 5-2v-4"/><ellipse cx="16" cy="14" rx="5" ry="2"/><path d="M11 14v4c0 1.1 2.2 2 5 2s5-.9 5-2v-4"/></symbol>
+      <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></symbol>
+    </svg>
+
+    <div class="boot" id="boot" aria-hidden="true">
+      <span class="boot-mark">$</span>
+      <span class="boot-name">Meu Financeiro</span>
+      <span class="boot-bar"><span></span></span>
+    </div>
+
+    <div class="lock-screen" id="lock-screen" hidden>
+      <form class="lock-card" id="lock-form" autocomplete="off">
+        <span class="brand-mark large" aria-hidden="true">$</span>
+        <h1>Meu Financeiro</h1>
+        <p>Digite seu PIN para desbloquear o aplicativo.</p>
+        <label class="visually-hidden" for="lock-pin">PIN</label>
+        <input id="lock-pin" class="pin-input" type="password" inputmode="numeric" autocomplete="off" maxlength="6" required>
+        <p class="form-error" id="lock-error" role="alert"></p>
+        <button class="btn primary block" type="submit">Desbloquear</button>
+        <p class="hint">Os dados continuam salvos apenas neste aparelho.</p>
+      </form>
+    </div>
+
+    <div class="app" id="app">
+      <aside class="sidebar" id="sidebar" aria-label="Menu principal">
+        <div class="sidebar-top">
+          <a class="brand" href="#/dashboard" aria-label="Meu Financeiro, início">
+            <span class="brand-mark" aria-hidden="true">$</span>
+            <span class="brand-text">Meu<strong>Financeiro</strong></span>
+          </a>
+          <button class="icon-btn sidebar-close" id="sidebar-close" type="button" aria-label="Fechar menu">
+            <svg class="icon"><use href="#i-close"></use></svg>
+          </button>
+        </div>
+
+        <nav class="sidebar-nav">
+          <p class="nav-group">Principal</p>
+          <button class="nav-link" data-view="dashboard" type="button"><svg class="icon"><use href="#i-dashboard"></use></svg><span>Visão geral</span></button>
+          <button class="nav-link" data-view="transactions" type="button"><svg class="icon"><use href="#i-list"></use></svg><span>Lançamentos</span></button>
+          <button class="nav-link" data-view="planning" type="button"><svg class="icon"><use href="#i-target"></use></svg><span>Planejamento</span></button>
+          <button class="nav-link" data-view="reports" type="button"><svg class="icon"><use href="#i-chart"></use></svg><span>Relatórios</span></button>
+          <p class="nav-group">Inteligência</p>
+          <button class="nav-link" data-view="documents" type="button"><svg class="icon"><use href="#i-book"></use></svg><span>Documentos</span></button>
+          <button class="nav-link" data-view="assistant" type="button"><svg class="icon"><use href="#i-sparkles"></use></svg><span>Assistente</span></button>
+          <button class="nav-link" data-view="calendar" type="button"><svg class="icon"><use href="#i-calendar"></use></svg><span>Calendário</span></button>
+          <button class="nav-link" data-view="tools" type="button"><svg class="icon"><use href="#i-tools"></use></svg><span>Ferramentas</span></button>
+        </nav>
+
+        <div class="sidebar-bottom">
+          <button class="nav-link" data-view="settings" type="button"><svg class="icon"><use href="#i-settings"></use></svg><span>Configurações</span></button>
+          <div class="sidebar-note">
+            <svg class="icon" aria-hidden="true"><use href="#i-lock"></use></svg>
+            <span>Dados salvos somente neste aparelho.</span>
+          </div>
+        </div>
+      </aside>
+      <div class="sidebar-backdrop" id="sidebar-backdrop" hidden></div>
+
+      <div class="main">
+        <header class="topbar">
+          <button class="icon-btn menu-toggle" id="menu-toggle" type="button" aria-label="Abrir menu">
+            <svg class="icon"><use href="#i-menu"></use></svg>
+          </button>
+          <div class="topbar-title">
+            <h1 id="page-title">Visão geral</h1>
+            <p id="page-subtitle">Seu painel financeiro</p>
+          </div>
+          <div class="topbar-actions">
+            <button class="icon-btn" id="voice-trigger" type="button" data-action="voice" aria-label="Registrar por voz" title="Registrar por voz">
+              <svg class="icon"><use href="#i-mic"></use></svg>
+            </button>
+            <button class="icon-btn" id="search-trigger" type="button" aria-label="Buscar (Ctrl+K)" title="Buscar (Ctrl+K)">
+              <svg class="icon"><use href="#i-search"></use></svg>
+            </button>
+            <button class="icon-btn" id="theme-toggle" type="button" aria-label="Alternar tema" title="Alternar tema">
+              <svg class="icon"><use href="#i-moon"></use></svg>
+            </button>
+            <button class="btn primary" id="new-transaction" type="button">
+              <svg class="icon"><use href="#i-plus"></use></svg><span>Novo lançamento</span>
+            </button>
+          </div>
+        </header>
+
+        <main class="content" id="main-content">
+          <!-- ============================================================ DASHBOARD -->
+          <section class="view" id="view-dashboard" data-view="dashboard" hidden>
+            <div class="page-head">
+              <div>
+                <p class="eyebrow" id="dash-date"></p>
+                <h2 class="page-greeting" id="dash-greeting">Seu resumo</h2>
+                <p class="page-sub" id="dash-sub">Acompanhe o que entrou, o que saiu e o que sobrou.</p>
+              </div>
+              <div class="segmented" id="dash-period" role="group" aria-label="Período do resumo">
+                <button type="button" data-period="day">Dia</button>
+                <button type="button" data-period="week">Semana</button>
+                <button type="button" data-period="month" class="active" aria-pressed="true">Mês</button>
+                <button type="button" data-period="year">Ano</button>
+              </div>
+            </div>
+
+            <div class="alert-strip" id="dash-alerts" hidden></div>
+
+            <div class="kpi-grid">
+              <article class="card kpi">
+                <div class="kpi-top"><span class="kpi-label">Saldo disponível</span><span class="kpi-icon balance"><svg class="icon"><use href="#i-wallet"></use></svg></span></div>
+                <strong class="kpi-value" id="kpi-balance">R$ 0,00</strong>
+                <p class="kpi-meta" id="kpi-balance-meta">Saldo acumulado até hoje</p>
+              </article>
+              <article class="card kpi">
+                <div class="kpi-top"><span class="kpi-label">Receitas</span><span class="kpi-icon income"><svg class="icon"><use href="#i-up"></use></svg></span></div>
+                <strong class="kpi-value" id="kpi-income">R$ 0,00</strong>
+                <p class="kpi-meta" id="kpi-income-meta">No período selecionado</p>
+              </article>
+              <article class="card kpi">
+                <div class="kpi-top"><span class="kpi-label">Despesas</span><span class="kpi-icon expense"><svg class="icon"><use href="#i-down"></use></svg></span></div>
+                <strong class="kpi-value" id="kpi-expense">R$ 0,00</strong>
+                <p class="kpi-meta" id="kpi-expense-meta">No período selecionado</p>
+              </article>
+              <article class="card kpi">
+                <div class="kpi-top"><span class="kpi-label">Resultado</span><span class="kpi-icon result"><svg class="icon"><use href="#i-trend"></use></svg></span></div>
+                <strong class="kpi-value" id="kpi-result">R$ 0,00</strong>
+                <p class="kpi-meta" id="kpi-result-meta">Receitas menos despesas</p>
+              </article>
+            </div>
+
+            <div class="grid cols-2">
+              <article class="card chart-card">
+                <header class="card-head">
+                  <div><h3>Evolução do saldo</h3><p>Saldo acumulado nos últimos meses</p></div>
+                  <span class="pill" id="chart-balance-pill">—</span>
+                </header>
+                <div class="chart" id="chart-balance"></div>
+              </article>
+              <article class="card chart-card">
+                <header class="card-head">
+                  <div><h3>Receitas x despesas</h3><p>Comparativo dos últimos 6 meses</p></div>
+                  <ul class="legend-inline" id="monthly-legend"></ul>
+                </header>
+                <div class="chart" id="chart-monthly"></div>
+              </article>
+            </div>
+
+            <div class="grid cols-3">
+              <article class="card" id="dash-budget"></article>
+              <article class="card" id="dash-bills"></article>
+              <article class="card" id="dash-goals"></article>
+            </div>
+
+            <article class="card">
+              <header class="card-head">
+                <div><h3>Últimas movimentações</h3><p>Os lançamentos mais recentes</p></div>
+                <button class="link-btn" type="button" data-view="transactions">Ver todas</button>
+              </header>
+              <ul class="tx-list" id="dash-recent"></ul>
+            </article>
+          </section>
+
+          <!-- ========================================================= TRANSAÇÕES -->
+          <section class="view" id="view-transactions" data-view="transactions" hidden>
+            <div class="page-head">
+              <div><h2>Lançamentos</h2><p class="page-sub">Cadastre, edite e acompanhe cada movimentação.</p></div>
+              <div class="head-actions">
+                <button class="btn secondary" type="button" data-action="voice"><svg class="icon"><use href="#i-mic"></use></svg><span>Por voz</span></button>
+                <button class="btn primary" type="button" data-action="new-transaction"><svg class="icon"><use href="#i-plus"></use></svg><span>Novo lançamento</span></button>
+              </div>
+            </div>
+
+            <div class="card toolbar">
+              <label class="field search-field">
+                <span class="visually-hidden">Buscar lançamentos</span>
+                <svg class="icon"><use href="#i-search"></use></svg>
+                <input id="tx-search" type="search" placeholder="Buscar por descrição ou observação">
+              </label>
+              <label class="field"><span class="visually-hidden">Tipo</span><select id="tx-type"><option value="">Todos os tipos</option><option value="income">Receitas</option><option value="expense">Despesas</option></select></label>
+              <label class="field"><span class="visually-hidden">Categoria</span><select id="tx-category"><option value="">Todas as categorias</option></select></label>
+              <label class="field"><span class="visually-hidden">Mês</span><select id="tx-month"><option value="">Todos os meses</option></select></label>
+              <label class="field"><span class="visually-hidden">Forma de pagamento</span><select id="tx-payment"><option value="">Todas as formas</option></select></label>
+              <button class="btn ghost" id="tx-clear" type="button">Limpar</button>
+            </div>
+
+            <div class="list-summary" id="tx-summary"></div>
+
+            <div class="card list-card">
+              <ul class="tx-list" id="tx-list"></ul>
+              <button class="btn ghost block" id="tx-more" type="button" hidden>Carregar mais</button>
+            </div>
+          </section>
+
+          <!-- ======================================================== PLANEJAMENTO -->
+          <section class="view" id="view-planning" data-view="planning" hidden>
+            <div class="page-head">
+              <div><h2>Planejamento</h2><p class="page-sub">Orçamento, metas, contas e compromissos do mês.</p></div>
+            </div>
+
+            <article class="card">
+              <header class="card-head">
+                <div><h3>Orçamento do mês</h3><p id="budget-caption">Defina um limite e acompanhe o uso.</p></div>
+                <div class="head-actions">
+                  <button class="btn ghost small" id="btn-copy-budget" type="button">Copiar mês anterior</button>
+                  <button class="btn secondary small" id="btn-edit-budget" type="button"><svg class="icon"><use href="#i-edit"></use></svg><span>Editar</span></button>
+                </div>
+              </header>
+              <div id="planning-budget"></div>
+            </article>
+
+            <div class="grid cols-2">
+              <article class="card">
+                <header class="card-head"><div><h3>Metas</h3><p>Objetivos com valor e prazo.</p></div><button class="btn secondary small" id="btn-new-goal" type="button"><svg class="icon"><use href="#i-plus"></use></svg><span>Nova</span></button></header>
+                <div id="goals-list" class="stack"></div>
+              </article>
+
+              <article class="card">
+                <header class="card-head"><div><h3>Contas a pagar</h3><p>Vencimentos e confirmações.</p></div><button class="btn secondary small" id="btn-new-bill" type="button"><svg class="icon"><use href="#i-plus"></use></svg><span>Nova</span></button></header>
+                <div id="bills-list" class="stack"></div>
+              </article>
+
+              <article class="card">
+                <header class="card-head"><div><h3>Dívidas e parcelas</h3><p>Acompanhe o que falta pagar.</p></div><button class="btn secondary small" id="btn-new-debt" type="button"><svg class="icon"><use href="#i-plus"></use></svg><span>Nova</span></button></header>
+                <div id="debts-list" class="stack"></div>
+              </article>
+
+              <article class="card">
+                <header class="card-head"><div><h3>Assinaturas</h3><p>Serviços com cobrança recorrente.</p></div><button class="btn secondary small" id="btn-new-sub" type="button"><svg class="icon"><use href="#i-plus"></use></svg><span>Nova</span></button></header>
+                <div id="subs-list" class="stack"></div>
+              </article>
+            </div>
+
+            <article class="card">
+              <header class="card-head"><div><h3>Lançamentos recorrentes</h3><p>Receitas e despesas que se repetem automaticamente.</p></div><button class="btn secondary small" id="btn-new-rec" type="button"><svg class="icon"><use href="#i-plus"></use></svg><span>Nova</span></button></header>
+              <div id="recs-list" class="stack"></div>
+            </article>
+          </section>
+
+          <!-- =========================================================== RELATÓRIOS -->
+          <section class="view" id="view-reports" data-view="reports" hidden>
+            <div class="page-head">
+              <div><h2>Relatórios</h2><p class="page-sub">Analise seus números e exporte quando quiser.</p></div>
+              <div class="head-actions">
+                <button class="btn ghost small" id="btn-export-csv" type="button"><svg class="icon"><use href="#i-download"></use></svg><span>CSV</span></button>
+                <button class="btn secondary small" id="btn-export-pdf" type="button"><svg class="icon"><use href="#i-download"></use></svg><span>PDF</span></button>
+              </div>
+            </div>
+
+            <div class="card toolbar report-toolbar">
+              <label class="field"><span class="visually-hidden">Modo do relatório</span>
+                <select id="report-mode">
+                  <option value="month">Mensal</option>
+                  <option value="year">Anual</option>
+                  <option value="custom">Personalizado</option>
+                </select>
+              </label>
+              <label class="field" id="report-month-field"><span class="visually-hidden">Mês</span><input id="report-month" type="month"></label>
+              <label class="field" id="report-year-field" hidden><span class="visually-hidden">Ano</span><select id="report-year"></select></label>
+              <label class="field" id="report-from-field" hidden><span class="visually-hidden">De</span><input id="report-from" type="date"></label>
+              <label class="field" id="report-to-field" hidden><span class="visually-hidden">Até</span><input id="report-to" type="date"></label>
+            </div>
+
+            <div class="summary-strip" id="report-summary"></div>
+
+            <div class="grid cols-2">
+              <article class="card">
+                <header class="card-head"><div><h3>Despesas por categoria</h3><p>Onde seu dinheiro foi usado.</p></div></header>
+                <div class="donut-wrap">
+                  <div class="chart donut-chart" id="report-donut"></div>
+                  <ul class="legend-list" id="report-legend"></ul>
+                </div>
+              </article>
+              <article class="card">
+                <header class="card-head"><div><h3>Maiores gastos</h3><p>Categorias com maior peso no período.</p></div></header>
+                <div id="report-top" class="stack"></div>
+              </article>
+            </div>
+
+            <div class="grid cols-2">
+              <article class="card chart-card">
+                <header class="card-head"><div><h3>Receitas x despesas</h3><p>Histórico mensal do período.</p></div></header>
+                <div class="chart" id="report-bars"></div>
+              </article>
+              <article class="card chart-card">
+                <header class="card-head"><div><h3>Evolução do saldo</h3><p>Saldo acumulado ao fim de cada mês.</p></div></header>
+                <div class="chart" id="report-balance"></div>
+              </article>
+            </div>
+          </section>
+
+          <!-- ============================================================ ASSISTENTE -->
+          <section class="view" id="view-assistant" data-view="assistant" hidden>
+            <div class="page-head">
+              <div><h2>Assistente financeiro</h2><p class="page-sub">Tire dúvidas sobre seu dinheiro usando uma conversa simples.</p></div>
+            </div>
+
+            <div class="assistant-grid">
+              <section class="card chat-card" aria-label="Conversa com o assistente">
+                <header class="card-head assistant-chat-head">
+                  <div>
+                    <h3>Como posso ajudar?</h3>
+                    <p>Escreva uma pergunta como se estivesse conversando com uma pessoa.</p>
+                  </div>
+                  <span class="pill"><svg class="icon"><use href="#i-sparkles"></use></svg> Funciona offline</span>
+                </header>
+                <div class="chat-log" id="chat-log" aria-live="polite" aria-relevant="additions"></div>
+                <div class="assistant-suggestions">
+                  <span class="assistant-suggestions-label">Sugestões para começar</span>
+                  <div class="chips" id="chat-chips"></div>
+                </div>
+                <form class="chat-form" id="chat-form">
+                  <label class="visually-hidden" for="chat-input">Digite sua pergunta</label>
+                  <input id="chat-input" type="text" placeholder="Ex.: quanto gastei neste mês?" autocomplete="off" maxlength="200" required>
+                  <button class="btn primary" type="submit"><svg class="icon"><use href="#i-up"></use></svg><span>Enviar</span></button>
+                </form>
+                <p class="hint assistant-privacy-hint"><svg class="icon"><use href="#i-lock"></use></svg> Suas perguntas são respondidas no próprio aparelho, com os dados cadastrados no app.</p>
+              </section>
+
+              <aside class="card assistant-insights-card">
+                <header class="card-head"><div><h3>Suas análises</h3><p>Alertas e oportunidades com base nos seus registros.</p></div></header>
+                <div id="insights-list" class="stack"></div>
+              </aside>
+            </div>
+          </section>
+
+          <!-- ============================================================ CALENDÁRIO -->
+          <section class="view" id="view-calendar" data-view="calendar" hidden>
+            <div class="page-head">
+              <div><h2>Calendário financeiro</h2><p class="page-sub">Receitas, despesas e contas dia a dia.</p></div>
+              <div class="calendar-nav">
+                <button class="icon-btn" id="cal-prev" type="button" aria-label="Mês anterior"><svg class="icon"><use href="#i-left"></use></svg></button>
+                <strong id="cal-title">—</strong>
+                <button class="icon-btn" id="cal-next" type="button" aria-label="Próximo mês"><svg class="icon"><use href="#i-right"></use></svg></button>
+              </div>
+            </div>
+
+            <div class="card calendar-card">
+              <div class="calendar-weekdays" aria-hidden="true"><span>Seg</span><span>Ter</span><span>Qua</span><span>Qui</span><span>Sex</span><span>Sáb</span><span>Dom</span></div>
+              <div class="calendar-grid" id="cal-grid"></div>
+              <div class="calendar-legend"><span><i class="dot income"></i>Receitas</span><span><i class="dot expense"></i>Despesas</span><span><i class="dot bill"></i>Contas</span></div>
+            </div>
+
+            <article class="card">
+              <header class="card-head"><div><h3 id="cal-day-title">Selecione um dia</h3><p id="cal-day-sub">Os lançamentos do dia aparecem aqui.</p></div></header>
+              <ul class="tx-list" id="cal-day"></ul>
+            </article>
+          </section>
+
+          <!-- ============================================================= FERRAMENTAS -->
+          <section class="view" id="view-tools" data-view="tools" hidden>
+            <div class="page-head">
+              <div><h2>Ferramentas</h2><p class="page-sub">Simulações para decisões financeiras.</p></div>
+            </div>
+
+            <div class="grid cols-3">
+              <article class="card">
+                <header class="card-head"><div><h3>Juros compostos</h3><p>Quanto um aporte rende ao longo do tempo.</p></div></header>
+                <form class="stack" id="form-interest">
+                  <label class="field"><span>Valor inicial</span><input name="initial" type="text" inputmode="decimal" placeholder="0,00" value="0" required></label>
+                  <label class="field"><span>Aporte mensal</span><input name="monthly" type="text" inputmode="decimal" placeholder="0,00" value="0" required></label>
+                  <label class="field"><span>Taxa ao mês (%)</span><input name="rate" type="text" inputmode="decimal" placeholder="0,8" value="0,8" required></label>
+                  <label class="field"><span>Meses</span><input name="months" type="number" min="1" max="600" value="120" required></label>
+                  <button class="btn primary block" type="submit">Calcular</button>
+                </form>
+                <div class="tool-result" id="interest-result" hidden></div>
+              </article>
+
+              <article class="card">
+                <header class="card-head"><div><h3>Meta de economia</h3><p>Quanto tempo para atingir um objetivo.</p></div></header>
+                <form class="stack" id="form-goal-sim">
+                  <label class="field"><span>Valor da meta</span><input name="target" type="text" inputmode="decimal" placeholder="0,00" required></label>
+                  <label class="field"><span>Já guardado</span><input name="saved" type="text" inputmode="decimal" placeholder="0,00" value="0"></label>
+                  <label class="field"><span>Poupança por mês</span><input name="monthly" type="text" inputmode="decimal" placeholder="0,00" required></label>
+                  <label class="field"><span>Rendimento ao mês (%)</span><input name="rate" type="text" inputmode="decimal" placeholder="0,5" value="0,5"></label>
+                  <button class="btn primary block" type="submit">Calcular</button>
+                </form>
+                <div class="tool-result" id="goalsim-result" hidden></div>
+              </article>
+
+              <article class="card">
+                <header class="card-head"><div><h3>Parcelamento</h3><p>Compare o custo de comprar parcelado.</p></div></header>
+                <form class="stack" id="form-installment">
+                  <label class="field"><span>Valor da compra</span><input name="total" type="text" inputmode="decimal" placeholder="0,00" required></label>
+                  <label class="field"><span>Número de parcelas</span><input name="count" type="number" min="2" max="120" value="12" required></label>
+                  <label class="field"><span>Juros ao mês (%)</span><input name="rate" type="text" inputmode="decimal" placeholder="1,99" value="1,99" required></label>
+                  <button class="btn primary block" type="submit">Calcular</button>
+                </form>
+                <div class="tool-result" id="installment-result" hidden></div>
+              </article>
+            </div>
+          </section>
+
+          <!-- =========================================================== CONFIGURAÇÕES -->
+          <section class="view" id="view-documents" data-view="documents" hidden>
+            <div class="page-head">
+              <div><p class="eyebrow">ARQUIVOS PESSOAIS</p><h2 class="page-greeting">Meus documentos</h2><p class="page-sub">Guarde planilhas, comprovantes e outros arquivos organizados por categoria.</p></div>
+              <div class="head-actions"><button class="btn primary" id="documents-add" type="button"><svg class="icon"><use href="#i-upload"></use></svg><span>Adicionar arquivos</span></button></div>
+            </div>
+            <article class="card documents-intro">
+              <div class="documents-intro-icon"><svg class="icon"><use href="#i-book"></use></svg></div>
+              <div><strong>Seus arquivos ficam neste aparelho</strong><p>Importe PDFs, planilhas, documentos e imagens. Você poderá pesquisar, abrir, baixar, reclassificar ou excluir cada arquivo. Nada é enviado para a internet.</p></div>
+            </article>
+            <div class="card documents-upload-options"><label class="field"><span>Categoria padrão dos arquivos novos</span><select id="documents-new-category"><option>Comprovantes</option><option>Receitas</option><option>Despesas</option><option>Relatórios</option><option selected>Outros</option></select></label><label class="field"><span>Descrição (opcional)</span><input id="documents-description" type="text" maxlength="180" placeholder="Ex.: Conta de energia de novembro"></label></div>
+            <input id="documents-file-input" type="file" accept=".pdf,.csv,.xls,.xlsx,.doc,.docx,.odt,.ods,.jpg,.jpeg,.png,.webp,.txt" multiple hidden>
+            <div class="card documents-toolbar">
+              <label class="search-field documents-search"><svg class="icon"><use href="#i-search"></use></svg><input id="documents-search" type="search" placeholder="Buscar pelo nome ou descrição..." autocomplete="off"></label>
+              <label class="field"><span>Categoria</span><select id="documents-filter"><option value="">Todas as categorias</option><option>Comprovantes</option><option>Receitas</option><option>Despesas</option><option>Relatórios</option><option>Outros</option></select></label>
+            </div>
+            <div class="documents-summary" id="documents-summary"></div>
+            <div class="documents-list" id="documents-list"><div class="card empty-state">Carregando seus documentos...</div></div>
+          </section>
+
+          <section class="view" id="view-settings" data-view="settings" hidden>
+            <div class="page-head">
+              <div><h2>Configurações</h2><p class="page-sub">Preferências, segurança e seus dados.</p></div>
+            </div>
+
+            <div class="grid cols-2">
+              <article class="card">
+                <header class="card-head"><div><h3>Perfil</h3><p>Como o app chama você.</p></div></header>
+                <form class="inline-form" id="form-profile">
+                  <label class="field"><span>Seu nome</span><input id="settings-name" type="text" maxlength="40" placeholder="Como quer ser chamado?"></label>
+                  <button class="btn primary" type="submit">Salvar</button>
+                </form>
+              </article>
+
+              <article class="card">
+                <header class="card-head"><div><h3>Aparência</h3><p>Tema e cor de destaque.</p></div></header>
+                <div class="setting-line"><span>Tema</span>
+                  <div class="segmented small" id="theme-choices">
+                    <button type="button" data-theme-choice="light">Claro</button>
+                    <button type="button" data-theme-choice="dark">Escuro</button>
+                    <button type="button" data-theme-choice="system">Sistema</button>
+                  </div>
+                </div>
+                <div class="setting-line"><span>Cor</span>
+                  <div class="accent-choices" id="accent-choices">
+                    <button type="button" data-accent-choice="emerald" aria-label="Verde esmeralda"><i style="--dot:#0f9d74"></i></button>
+                    <button type="button" data-accent-choice="blue" aria-label="Azul"><i style="--dot:#2563eb"></i></button>
+                    <button type="button" data-accent-choice="amber" aria-label="Âmbar"><i style="--dot:#b45309"></i></button>
+                  </div>
+                </div>
+              </article>
+
+              <article class="card">
+                <header class="card-head"><div><h3>Notificações</h3><p>Avisos de contas e orçamento.</p></div></header>
+                <p class="muted" id="notif-status">—</p>
+                <div class="head-actions">
+                  <button class="btn secondary" id="btn-notif" type="button"><svg class="icon"><use href="#i-bell"></use></svg><span>Ativar notificações</span></button>
+                  <button class="btn ghost" id="btn-notif-test" type="button">Enviar teste</button>
+                </div>
+                <p class="hint">Os avisos são gerados no próprio aparelho quando você abre o app. Não há envio para servidores.</p>
+              </article>
+
+              <article class="card">
+                <header class="card-head"><div><h3>Segurança</h3><p>Bloqueio por PIN ao abrir o app.</p></div></header>
+                <p class="muted" id="pin-status">—</p>
+                <div class="head-actions">
+                  <button class="btn secondary" id="btn-pin" type="button"><svg class="icon"><use href="#i-lock"></use></svg><span>Definir PIN</span></button>
+                </div>
+                <p class="hint">O PIN protege o acesso à interface. Ele não criptografa os dados salvos no navegador.</p>
+                <div class="security-explainer">
+                  <strong>Importante sobre privacidade e recuperação</strong>
+                  <ul>
+                    <li>Os dados financeiros e documentos permanecem neste navegador/aparelho.</li>
+                    <li>O app não envia seus lançamentos para um servidor e não possui sincronização entre dispositivos.</li>
+                    <li>O PIN não substitui o bloqueio do celular e não impede que alguém com acesso técnico ao aparelho leia o armazenamento local.</li>
+                    <li>Para evitar perdas, baixe backups JSON com frequência e mantenha-os em local privado e protegido.</li>
+                  </ul>
+                  <p><strong>Backup no Google Drive:</strong> opcional e protegido por criptografia. Você precisa configurar o ID OAuth do aplicativo e criar uma senha exclusiva para o backup. O app continua funcionando offline; não compartilhe sua senha de criptografia.</p>
+                </div>
+              </article>
+            </div>
+
+            <article class="card">
+              <header class="card-head"><div><h3>Categorias</h3><p>Personalize nomes, cores e ícones.</p></div><button class="btn secondary small" id="btn-new-category" type="button"><svg class="icon"><use href="#i-plus"></use></svg><span>Nova categoria</span></button></header>
+              <div id="categories-list" class="category-grid"></div>
+            </article>
+
+            <div class="grid cols-2">
+              <article class="card drive-sync-card">
+                <header class="card-head"><div><h3>Backup automático no Google Drive</h3><p>Guarde uma cópia criptografada na sua própria conta Google.</p></div></header>
+                <div class="security-explainer">
+                  <strong>Privacidade primeiro</strong>
+                  <ul>
+                    <li>O backup é criptografado neste aparelho antes de ser enviado.</li>
+                    <li>Inclui lançamentos, categorias, metas, configurações e documentos da biblioteca.</li>
+                    <li>O Google não recebe sua senha de criptografia. Use a mesma senha em todos os aparelhos.</li>
+                    <li>O backup automático acontece enquanto o app está aberto e conectado. O modo offline continua funcionando.</li>
+                  </ul>
+                </div>
+                <div class="stack-actions">
+                  <label class="field"><span>ID do cliente OAuth do Google</span><input id="drive-client-id" type="text" inputmode="url" autocomplete="off" placeholder="000000000000-abc.apps.googleusercontent.com"></label>
+                  <label class="field"><span>Senha de criptografia (mínimo 12 caracteres)</span><input id="drive-passphrase" type="password" autocomplete="new-password" minlength="12" placeholder="Crie uma senha exclusiva para seus backups"></label>
+                  <div class="head-actions">
+                    <button class="btn primary" id="drive-connect" type="button">Conectar ao Google Drive</button>
+                    <button class="btn secondary" id="drive-backup" type="button">Enviar backup agora</button>
+                    <button class="btn ghost" id="drive-restore" type="button">Restaurar da nuvem</button>
+                  </div>
+                  <p class="hint" id="drive-sync-status" role="status" aria-live="polite">Desconectado. Seus dados continuam salvos neste aparelho.</p>
+                  <p class="hint">Não use a senha da sua conta Google. Se esquecer esta senha exclusiva, não será possível descriptografar o backup. O ID OAuth é uma configuração pública do aplicativo; nunca cole aqui senha, token ou chave secreta.</p>
+                </div>
+              </article>
+
+              <article class="card">
+                <header class="card-head"><div><h3>Seus dados</h3><p>Backup, exportação e importação.</p></div></header>
+                <div class="stack-actions">
+                  <button class="btn ghost" id="btn-export-json" type="button"><svg class="icon"><use href="#i-download"></use></svg><span>Baixar backup (JSON)</span></button>
+                  <button class="btn ghost" id="btn-import-json" type="button"><svg class="icon"><use href="#i-upload"></use></svg><span>Restaurar backup</span></button>
+                  <button class="btn ghost" id="btn-export-csv-all" type="button"><svg class="icon"><use href="#i-download"></use></svg><span>Exportar lançamentos (CSV)</span></button>
+                  <button class="btn ghost" id="btn-import-csv" type="button"><svg class="icon"><use href="#i-upload"></use></svg><span>Importar planilha (Excel/CSV)</span></button>
+                  <input id="import-json-input" type="file" accept="application/json,.json" hidden>
+                  <input id="import-csv-input" type="file" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,.csv,text/csv" hidden>
+                </div>
+                <p class="hint" id="storage-info">—</p>
+              </article>
+
+              <article class="card">
+                <header class="card-head"><div><h3>Instalar no celular</h3><p>Tenha o app na tela inicial.</p></div></header>
+                <p class="muted">O app precisa estar publicado em HTTPS. No Android, use o menu do Chrome e toque em <strong>Instalar app</strong>. No iPhone, use <strong>Compartilhar → Adicionar à Tela de Início</strong>.</p>
+                <button class="btn primary" id="btn-install" type="button" hidden>Instalar aplicativo</button>
+                <div class="danger-zone">
+                  <h4>Zona de risco</h4>
+                  <p>Apagar os dados remove lançamentos, metas e configurações deste aparelho. Não é possível desfazer.</p>
+                  <button class="btn danger" id="btn-reset" type="button"><svg class="icon"><use href="#i-trash"></use></svg><span>Apagar todos os dados</span></button>
+                </div>
+              </article>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <nav class="mobile-nav" aria-label="Navegação principal">
+      <button class="mobile-link active" data-view="dashboard" type="button"><svg class="icon"><use href="#i-dashboard"></use></svg><span>Início</span></button>
+      <button class="mobile-link" data-view="transactions" type="button"><svg class="icon"><use href="#i-list"></use></svg><span>Lançamentos</span></button>
+      <button class="mobile-add" id="mobile-add" type="button" aria-label="Novo lançamento"><svg class="icon"><use href="#i-plus"></use></svg></button>
+      <button class="mobile-link" data-view="reports" type="button"><svg class="icon"><use href="#i-chart"></use></svg><span>Relatórios</span></button>
+      <button class="mobile-link" id="mobile-menu" type="button"><svg class="icon"><use href="#i-menu"></use></svg><span>Menu</span></button>
+    </nav>
+
+    <div class="toasts" id="toasts" aria-live="polite"></div>
+
+    <dialog class="modal" id="modal">
+      <form class="modal-card" id="modal-form" method="dialog" novalidate>
+        <header class="modal-head">
+          <div><h2 id="modal-title">Título</h2><p id="modal-subtitle"></p></div>
+          <button class="icon-btn" id="modal-close" type="button" aria-label="Fechar"><svg class="icon"><use href="#i-close"></use></svg></button>
+        </header>
+        <div class="modal-body" id="modal-body"></div>
+        <footer class="modal-foot">
+          <button class="btn ghost" id="modal-cancel" type="button">Cancelar</button>
+          <button class="btn primary" id="modal-submit" type="submit">Salvar</button>
+        </footer>
+      </form>
+    </dialog>
+
+    <dialog class="modal confirm" id="confirm-dialog">
+      <div class="modal-card">
+        <header class="modal-head"><div><h2 id="confirm-title">Confirmar</h2><p id="confirm-text"></p></div></header>
+        <footer class="modal-foot">
+          <button class="btn ghost" id="confirm-cancel" type="button">Cancelar</button>
+          <button class="btn danger" id="confirm-ok" type="button">Confirmar</button>
+        </footer>
+      </div>
+    </dialog>
+
+    <dialog class="welcome" id="welcome-dialog" aria-labelledby="welcome-title" aria-describedby="welcome-sub">
+      <form class="welcome-card" id="welcome-form" method="dialog" novalidate>
+        <span class="welcome-orbit" aria-hidden="true"></span>
+        <span class="brand-mark welcome-mark" aria-hidden="true">$</span>
+        <p class="eyebrow">Primeiro acesso</p>
+        <h2 id="welcome-title">Como podemos te chamar?</h2>
+        <p class="welcome-sub" id="welcome-sub">Seu nome aparece na saudação do painel e fica salvo somente neste aparelho.</p>
+        <label class="field welcome-field">
+          <span>Seu nome</span>
+          <input id="welcome-name" name="name" type="text" maxlength="40" autocomplete="given-name" placeholder="Digite seu nome" required>
+        </label>
+        <p class="form-error" id="welcome-error" role="alert" hidden></p>
+        <div class="welcome-actions">
+          <button class="btn ghost" id="welcome-skip" type="button">Preencher depois</button>
+          <button class="btn primary" type="submit">Começar</button>
+        </div>
+        <p class="hint welcome-hint">Sem cadastro, sem senha e sem enviar dados para servidores.</p>
+      </form>
+    </dialog>
+
+    <div class="search-overlay" id="search-overlay" hidden>
+      <div class="search-panel" role="dialog" aria-modal="true" aria-label="Busca global">
+        <div class="search-box">
+          <svg class="icon"><use href="#i-search"></use></svg>
+          <input id="search-input" type="search" placeholder="Buscar lançamentos, metas ou telas…" autocomplete="off">
+          <button class="icon-btn" id="search-close" type="button" aria-label="Fechar busca"><svg class="icon"><use href="#i-close"></use></svg></button>
+        </div>
+        <div class="search-results" id="search-results"></div>
+      </div>
+    </div>
+
+    <section class="print-area" id="print-area" aria-hidden="true"></section>
+
+    <script src="./js/nucleo.js"></script>
+    <script src="./js/graficos.js"></script>
+    <script src="./js/assistente.js"></script>
+    <script src="./js/voz.js"></script>
+    <script src="./js/app.js"></script>
+    <script src="./js/documentos.js"></script>
+    <script src="./js/google-drive-sync.js"></script>
+  </body>
+</html>
