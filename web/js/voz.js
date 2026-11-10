@@ -201,7 +201,7 @@
       });
     }
 
-    return { openVoiceModal };
+    return { openVoiceModal, stopVoiceRecognition };
   }
 
   Fin.voice = { create: createVoiceController };
