@@ -191,6 +191,17 @@
     return "";
   }
 
+  // Coloca um botão "Adicionar lançamento" dentro de um gráfico vazio.
+  // O clique é tratado pelo mesmo data-action="new-transaction" usado no resto do app.
+  function addChartEmptyAction(container) {
+    const box = container.querySelector(".chart-empty");
+    if (!box || box.querySelector("[data-action]")) return;
+    box.insertAdjacentHTML(
+      "beforeend",
+      `<button class="btn secondary small" type="button" data-action="new-transaction">${icon("plus")}Adicionar lançamento</button>`,
+    );
+  }
+
   function emptyState(iconName, title, text, action = "") {
     return `<div class="empty"><span class="empty-icon">${icon(iconName)}</span><h4>${esc(title)}</h4><p>${esc(text)}</p>${action}</div>`;
   }
@@ -1815,6 +1826,7 @@
       });
     } else {
       charts.line(el.chartBalance, { points: [], emptyText: "Registre lançamentos para ver a evolução do saldo." });
+      addChartEmptyAction(el.chartBalance);
     }
     el.chartBalancePill.textContent = core.money(balance);
 
@@ -1829,6 +1841,7 @@
       });
     } else {
       charts.bars(el.chartMonthly, { labels: [], series: [], emptyText: "Sem movimentações nos últimos meses." });
+      addChartEmptyAction(el.chartMonthly);
     }
     el.monthlyLegend.innerHTML = `<li><i style="background:#0f9d74"></i>Receitas</li><li><i style="background:#e0565b"></i>Despesas</li>`;
 
