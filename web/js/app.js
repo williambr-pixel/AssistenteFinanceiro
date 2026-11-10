@@ -559,6 +559,7 @@
   // ------------------------------------------------------------------ modais
 
   let currentModal = null;
+  let voiceController = null;
 
   function openModal({ title, subtitle = "", body, submit = "Salvar", onSubmit, wide = false }) {
     if (!el.modal || !el.modalForm || !el.modalBody || !el.modalSubmit) {
@@ -591,7 +592,9 @@
   }
 
   function closeModal() {
-    // Fechar o formulário é independente do recurso de voz.
+    // Encerrar o reconhecimento antes de fechar evita que o microfone continue
+    // ativo em segundo plano e interfira nos próximos formulários.
+    if (voiceController) voiceController.stopVoiceRecognition();
     if (el.modal.open) el.modal.close();
     currentModal = null;
     // O bloqueio é lógico (por modal), nunca deve ficar preso no botão.
@@ -746,9 +749,13 @@
     });
     el.modalForm.addEventListener("submit", submitModal);
     el.modal.addEventListener("close", () => {
-      // O evento "close" pode chegar depois que o fluxo por voz já reabriu
-      // o mesmo dialog para a tela de revisão. Só limpe se ele continuar fechado.
-      if (!el.modal.open) currentModal = null;
+      // Uma janela fechada nunca deve deixar reconhecimento de áudio ativo.
+      // O evento pode chegar depois de uma reabertura imediata; nesse caso,
+      // não interrompa a nova etapa do fluxo.
+      if (!el.modal.open) {
+        if (voiceController) voiceController.stopVoiceRecognition();
+        currentModal = null;
+      }
     });
     // Mesmo quando um formulário apresenta erro, o usuário sempre pode sair.
     el.modal.addEventListener("cancel", (event) => {
@@ -1517,7 +1524,7 @@
 
   const voice = Fin.voice.create({
     $,
-    $$,
+    $,
     el,
     esc,
     icon,
@@ -1526,6 +1533,7 @@
     parseVoiceTransaction,
     openTransactionModal,
   });
+  voiceController = voice;
 
   function openVoiceModal() {
     voice.openVoiceModal();
