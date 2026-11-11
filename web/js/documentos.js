@@ -145,6 +145,13 @@
       if (saved) window.FinDriveSync?.schedule("documents");
       if (saved) notify(saved + (saved === 1 ? " arquivo adicionado à biblioteca." : " arquivos adicionados à biblioteca."), "success");
       if (failures.length) notify("Não foi possível importar: " + failures.join(", "), "warning");
+
+      // Planilhas também alimentam os lançamentos; outros documentos continuam
+      // apenas na biblioteca. O leitor pede confirmação antes de gravar valores.
+      const spreadsheets = files.filter((file) => /\\.(xlsx|csv)$/i.test(file.name) || file.type === "text/csv");
+      if (spreadsheets.length && typeof window.FinImportSpreadsheet === "function") {
+        for (const file of spreadsheets) await window.FinImportSpreadsheet(file);
+      }
     } catch (error) {
       notify(error.message || "Falha ao importar os arquivos.", "danger");
       await refresh().catch(() => {});
