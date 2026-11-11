@@ -2722,3 +2722,22 @@ body { background: var(--bg); }
   background: #e4f5f9;
   color: #238da5;
 }
+
+
+/* Marca minimalista em formato de carteira */
+.brand-mark .icon {
+  width: 22px;
+  height: 22px;
+  stroke: #073044;
+  stroke-width: 1.8;
+}
+.brand-mark.large .icon {
+  width: 29px;
+  height: 29px;
+}
+.boot-mark .icon {
+  width: 25px;
+  height: 25px;
+  stroke: #073044;
+  stroke-width: 1.8;
+}
