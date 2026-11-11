@@ -2838,3 +2838,47 @@ body { background: var(--bg); }
       linear-gradient(165deg, #101d2d 0%, #0b1726 54%, #08121f 100%);
   }
 }
+
+
+/* Paleta personalizável: cores de destaque independentes das cores de receitas e despesas. */
+[data-accent="blue"] { --accent: #2563eb; --accent-strong: #1d4ed8; --accent-soft: #e3ecff; }
+[data-accent="purple"] { --accent: #8b5cf6; --accent-strong: #7c3aed; --accent-soft: #f1eaff; }
+[data-accent="rose"] { --accent: #db2777; --accent-strong: #be185d; --accent-soft: #fce7f3; }
+[data-accent="amber"] { --accent: #d97706; --accent-strong: #b45309; --accent-soft: #fff1d6; }
+[data-accent="cyan"] { --accent: #0891b2; --accent-strong: #0e7490; --accent-soft: #e0f7fb; }
+[data-accent="indigo"] { --accent: #6366f1; --accent-strong: #4f46e5; --accent-soft: #e9eaff; }
+
+[data-theme="dark"][data-accent="blue"] { --accent: #70aaff; --accent-strong: #478cf2; --accent-soft: rgb(71 140 242 / 16%); }
+[data-theme="dark"][data-accent="purple"] { --accent: #b49aff; --accent-strong: #9675f5; --accent-soft: rgb(180 154 255 / 16%); }
+[data-theme="dark"][data-accent="rose"] { --accent: #fb83b8; --accent-strong: #e85b9a; --accent-soft: rgb(251 131 184 / 15%); }
+[data-theme="dark"][data-accent="amber"] { --accent: #f4bd62; --accent-strong: #d9952c; --accent-soft: rgb(244 189 98 / 14%); }
+[data-theme="dark"][data-accent="cyan"] { --accent: #58c5d9; --accent-strong: #35a9c0; --accent-soft: rgb(88 197 217 / 14%); }
+[data-theme="dark"][data-accent="indigo"] { --accent: #a5a7ff; --accent-strong: #8184f5; --accent-soft: rgb(165 167 255 / 15%); }
+
+/* Faz os destaques principais acompanharem a cor escolhida. */
+:root:not([data-theme="dark"]) body {
+  background:
+    radial-gradient(900px 440px at 90% -8%, color-mix(in srgb, var(--accent) 9%, transparent), transparent 68%),
+    linear-gradient(180deg, #f4f7fb 0%, #edf2f8 100%);
+}
+.sidebar {
+  background:
+    radial-gradient(420px 300px at 12% -8%, color-mix(in srgb, var(--accent) 13%, transparent), transparent 68%),
+    linear-gradient(165deg, #101d2d 0%, #0b1b2d 58%, #081525 100%);
+}
+.nav-link.active {
+  background: linear-gradient(105deg, color-mix(in srgb, var(--accent) 19%, transparent), color-mix(in srgb, var(--accent) 6%, transparent));
+  box-shadow: inset 3px 0 0 var(--accent), inset 0 0 0 1px color-mix(in srgb, var(--accent) 11%, transparent);
+}
+.kpi-grid > .kpi:first-child {
+  border-color: color-mix(in srgb, var(--accent) 25%, var(--line));
+  background:
+    radial-gradient(230px 150px at 100% 0%, color-mix(in srgb, var(--accent) 13%, transparent), transparent 74%),
+    linear-gradient(145deg, var(--surface), var(--surface-2));
+}
+[data-theme="dark"] .kpi-grid > .kpi:first-child {
+  border-color: color-mix(in srgb, var(--accent) 24%, var(--line));
+  background:
+    radial-gradient(240px 170px at 100% 0%, color-mix(in srgb, var(--accent) 15%, transparent), transparent 74%),
+    linear-gradient(145deg, #142a3b, #111d2d 72%);
+}
