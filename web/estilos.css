@@ -2611,3 +2611,71 @@ body { background: var(--bg); }
   .view { animation: none; }
   .card, .plan-item, .document-item, .btn, .icon-btn { transition: none !important; }
 }
+
+
+/* Ajustes de contraste e identidade no tema claro (preferência automática). */
+:root:not([data-theme="dark"]) {
+  --bg: #edf2f8;
+  --bg-soft: #e7eef6;
+  --surface: #ffffff;
+  --surface-2: #f7f9fc;
+  --surface-3: #edf3f8;
+  --ink: #102238;
+  --ink-2: #354b63;
+  --muted: #61758d;
+  --muted-2: #8798aa;
+  --line: #dce5ef;
+  --line-strong: #c5d3e1;
+  --shadow-sm: 0 3px 10px rgb(16 34 56 / 5%);
+  --shadow: 0 16px 42px -28px rgb(16 34 56 / 25%), 0 3px 10px rgb(16 34 56 / 5%);
+  --shadow-lg: 0 28px 65px -34px rgb(16 34 56 / 28%);
+}
+:root:not([data-theme="dark"]) body {
+  background:
+    radial-gradient(900px 440px at 90% -8%, rgb(15 157 116 / 9%), transparent 68%),
+    linear-gradient(180deg, #f4f7fb 0%, #edf2f8 100%);
+}
+:root:not([data-theme="dark"]) .sidebar {
+  background:
+    radial-gradient(420px 300px at 12% -8%, rgb(36 201 154 / 16%), transparent 68%),
+    linear-gradient(165deg, #10243a 0%, #0b1b2d 58%, #081525 100%);
+}
+:root:not([data-theme="dark"]) .topbar {
+  background: rgb(244 247 251 / 88%);
+  border-bottom-color: #dce5ef;
+}
+:root:not([data-theme="dark"]) .card {
+  border-color: #dce5ef;
+  box-shadow: 0 14px 38px -30px rgb(16 34 56 / 28%), 0 2px 8px rgb(16 34 56 / 5%);
+}
+:root:not([data-theme="dark"]) .kpi {
+  border-color: #d6e2ec;
+  background: linear-gradient(155deg, #ffffff 0%, #f7fafc 100%);
+}
+:root:not([data-theme="dark"]) .kpi-grid > .kpi:first-child {
+  border-color: rgb(15 157 116 / 28%);
+  background:
+    radial-gradient(230px 150px at 100% 0%, rgb(15 157 116 / 16%), transparent 74%),
+    linear-gradient(145deg, #ffffff, #f0faf6);
+}
+:root:not([data-theme="dark"]) .kpi-icon.balance,
+:root:not([data-theme="dark"]) .kpi-icon.result {
+  background: #e2f7ef;
+  color: #087b59;
+}
+:root:not([data-theme="dark"]) .toolbar,
+:root:not([data-theme="dark"]) .summary-strip {
+  background: #f9fbfd;
+  border-color: #dce5ef;
+}
+:root:not([data-theme="dark"]) .plan-item,
+:root:not([data-theme="dark"]) .insight,
+:root:not([data-theme="dark"]) .document-item {
+  background: #f8fafc;
+  border-color: #dce5ef;
+}
+@media (max-width: 720px) {
+  :root:not([data-theme="dark"]) .topbar {
+    background: rgb(244 247 251 / 96%);
+  }
+}
