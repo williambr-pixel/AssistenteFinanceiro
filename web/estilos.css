@@ -583,7 +583,8 @@ strong { font-weight: 650; }
 .summary-item > span { display: block; color: var(--muted); font-size: 10.5px; font-weight: 620; text-transform: uppercase; letter-spacing: 0.05em; }
 .summary-item > strong { display: block; margin-top: 3px; font-size: 15px; font-weight: 720; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
 .summary-item.wide { grid-column: span 2; }
-.report-summary-strip { grid-template-columns: 1.4fr repeat(4, minmax(0, 1fr)); }
+.report-summary-container { min-width: 0; margin-top: 0; }
+.report-summary-strip { grid-template-columns: repeat(6, minmax(0, 1fr)); }
 
 /* ------------------------------------------------------------- formulários */
 
