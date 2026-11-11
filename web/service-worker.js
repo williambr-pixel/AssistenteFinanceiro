@@ -14,7 +14,7 @@ const APP_FILES = [
   "./js/documentos.js",
   "./js/google-drive-sync.js",
   "./icons/icone.svg",
-  "./icons/icone-512.png",
+  
 ];
 
 self.addEventListener("install", (event) => {
