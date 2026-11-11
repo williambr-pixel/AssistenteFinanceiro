@@ -2884,3 +2884,94 @@ body { background: var(--bg); }
     radial-gradient(240px 170px at 100% 0%, color-mix(in srgb, var(--accent) 15%, transparent), transparent 74%),
     linear-gradient(145deg, #142a3b, #111d2d 72%);
 }
+
+
+/* ============================================================
+   MODO EMPREENDEDOR — área independente de gestão de clientes
+   ============================================================ */
+.emp-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 0 0 18px;
+  padding: 12px 15px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface-2);
+  color: var(--muted);
+  font-size: .88rem;
+}
+.emp-notice .icon { flex: 0 0 18px; color: var(--accent); }
+.emp-message {
+  margin: 0 0 18px;
+  padding: 12px 15px;
+  border-radius: 12px;
+  font-size: .9rem;
+}
+.emp-message.sucesso { color: var(--success, #15803d); background: color-mix(in srgb, #16a34a 10%, var(--surface)); }
+.emp-message.erro { color: var(--danger, #dc2626); background: color-mix(in srgb, #dc2626 10%, var(--surface)); }
+.emp-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 18px;
+}
+.emp-stat { display: flex; flex-direction: column; gap: 9px; padding: 20px; }
+.emp-stat span { color: var(--muted); font-size: .86rem; }
+.emp-stat strong { color: var(--text); font-size: clamp(1.25rem, 2.2vw, 1.8rem); overflow-wrap: anywhere; }
+.emp-forms-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 18px;
+}
+.emp-panel { min-width: 0; margin-bottom: 18px; padding: 20px; }
+.emp-forms-grid .emp-panel { margin-bottom: 0; }
+.emp-form { display: grid; gap: 14px; }
+.emp-form .btn { justify-self: start; }
+.emp-client-list, .emp-history-list { display: grid; gap: 0; }
+.emp-client-row, .emp-history-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  padding: 15px 2px;
+  border-bottom: 1px solid var(--line);
+}
+.emp-client-row:last-child, .emp-history-row:last-child { border-bottom: 0; }
+.emp-client-info, .emp-client-balance, .emp-history-row > div, .emp-history-values {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 5px;
+}
+.emp-client-info strong, .emp-history-row strong { overflow-wrap: anywhere; }
+.emp-client-info span, .emp-client-balance span, .emp-history-row span { color: var(--muted); font-size: .8rem; }
+.emp-client-balance { align-items: flex-end; text-align: right; }
+.emp-client-balance strong { font-variant-numeric: tabular-nums; }
+.emp-client-balance .emp-paid { color: var(--success, #16a34a); font-weight: 700; }
+.emp-client-balance .emp-open { color: var(--warning, #b7791f); font-weight: 700; }
+.emp-empty { padding: 22px 12px; color: var(--muted); text-align: center; }
+.emp-history-panel .card-head { align-items: flex-end; gap: 14px; }
+.emp-history-filter { display: grid; gap: 6px; min-width: min(230px, 100%); color: var(--muted); font-size: .8rem; }
+.emp-history-row { grid-template-columns: minmax(0, 1fr) auto auto; }
+.emp-history-type { padding: 5px 9px; border-radius: 999px; background: var(--surface-2); font-weight: 700; white-space: nowrap; }
+.emp-history-type.debt { color: var(--danger, #dc2626); }
+.emp-history-type.payment { color: var(--success, #16a34a); }
+.emp-history-values { align-items: flex-end; text-align: right; white-space: nowrap; }
+@media (max-width: 760px) {
+  .emp-summary { grid-template-columns: 1fr 1fr; }
+  .emp-summary .emp-stat:first-child { grid-column: 1 / -1; }
+  .emp-forms-grid { grid-template-columns: 1fr; }
+  .emp-panel { padding: 16px; }
+}
+@media (max-width: 520px) {
+  .emp-summary { gap: 9px; }
+  .emp-stat { padding: 14px; }
+  .emp-stat strong { font-size: 1.2rem; }
+  .emp-history-panel .card-head { align-items: stretch; flex-direction: column; }
+  .emp-history-filter { min-width: 0; width: 100%; }
+  .emp-history-row { grid-template-columns: minmax(0, 1fr) auto; gap: 9px; }
+  .emp-history-values { grid-column: 1 / -1; align-items: flex-start; text-align: left; }
+  .emp-history-values strong { font-size: .95rem; }
+}
