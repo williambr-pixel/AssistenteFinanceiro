@@ -15,4 +15,9 @@
   <path d="M316 273h94v93h-94a46.5 46.5 0 0 1-46.5-46.5A46.5 46.5 0 0 1 316 273z" fill="#17364a"/>
   <circle cx="323" cy="319.5" r="13" fill="#65d0df"/>
   <path d="M120 178l32-28a32 32 0 0 1 22-9h157" fill="none" stroke="#65d0df" stroke-width="16" stroke-linecap="round"/>
+
+  <!-- Gorro de Natal -->
+  <path d="M111 160c17-42 53-68 100-76l-22 57c-29 1-49 11-64 34z" fill="#d94750" stroke="#fff" stroke-width="7" stroke-linejoin="round"/>
+  <path d="M108 158c28-17 57-26 89-25l-9 20c-28 0-48 9-66 24z" fill="#fff"/>
+  <circle cx="211" cy="82" r="13" fill="#fff"/>
 </svg>
