@@ -9,7 +9,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Meu Financeiro">
     <link rel="icon" href="./icons/icone.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="./icons/icone-512.png">
+    <link rel="apple-touch-icon" href="./icons/icone.svg">
     <link rel="manifest" href="./manifest.webmanifest">
     <link rel="stylesheet" href="./estilos.css?v=20261111-3">
     <title>Meu Financeiro — painel financeiro pessoal</title>
@@ -40,7 +40,8 @@
       <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 5v14M19 12l-7 7-7-7"/></symbol>
       <symbol id="i-left" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></symbol>
       <symbol id="i-right" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></symbol>
-      <symbol id="i-wallet" viewBox="0 0 24 24"><path d="M3 7a2 2 0 012-2h12a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M3 9h18"/><path d="M16 14h2"/></symbol>
+      <symbol id="i-wallet" viewBox="0 0 24 24"><path d="M4.5 6.5h13a2.5 2.5 0 012.5 2.5v8a2.5 2.5 0 01-2.5 2.5h-11A3.5 3.5 0 013 16V7a3 3 0 013-3h11"/><path d="M3.5 9.5H20"/><path d="M15.5 14h4.5"/><circle cx="15.5" cy="14" r=".7" fill="currentColor" stroke="none"/></symbol>
+      <symbol id="i-brand-wallet" viewBox="0 0 24 24"><path d="M5 6.5h13a2.5 2.5 0 012.5 2.5v8a2.5 2.5 0 01-2.5 2.5H6A3.5 3.5 0 012.5 16V8A3.5 3.5 0 016 4.5h11"/><path d="M3 9.5h17.5"/><path d="M15.5 14h5"/></symbol>
       <symbol id="i-receipt" viewBox="0 0 24 24"><path d="M6 2h12l1 3v17l-3-2-3 2-3-2-3 2V5z"/><path d="M9 8h6M9 12h6M9 16h4"/></symbol>
       <symbol id="i-repeat" viewBox="0 0 24 24"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a4 4 0 014-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a4 4 0 01-4 4H3"/></symbol>
       <symbol id="i-flag" viewBox="0 0 24 24"><path d="M4 22V4c4-2 8 2 12 0v10c-4 2-8-2-12 0"/></symbol>
@@ -68,14 +69,14 @@
     </svg>
 
     <div class="boot" id="boot" aria-hidden="true">
-      <span class="boot-mark">$</span>
+      <span class="boot-mark" aria-hidden="true"><svg class="icon"><use href="#i-brand-wallet"></use></svg></span>
       <span class="boot-name">Meu Financeiro</span>
       <span class="boot-bar"><span></span></span>
     </div>
 
     <div class="lock-screen" id="lock-screen" hidden>
       <form class="lock-card" id="lock-form" autocomplete="off">
-        <span class="brand-mark large" aria-hidden="true">$</span>
+        <span class="brand-mark large" aria-hidden="true"><svg class="icon"><use href="#i-brand-wallet"></use></svg></span>
         <h1>Meu Financeiro</h1>
         <p>Digite seu PIN para desbloquear o aplicativo.</p>
         <label class="visually-hidden" for="lock-pin">PIN</label>
@@ -90,7 +91,7 @@
       <aside class="sidebar" id="sidebar" aria-label="Menu principal">
         <div class="sidebar-top">
           <a class="brand" href="#/dashboard" aria-label="Meu Financeiro, início">
-            <span class="brand-mark" aria-hidden="true">$</span>
+            <span class="brand-mark" aria-hidden="true"><svg class="icon"><use href="#i-brand-wallet"></use></svg></span>
             <span class="brand-text">Meu<strong>Financeiro</strong></span>
           </a>
           <button class="icon-btn sidebar-close" id="sidebar-close" type="button" aria-label="Fechar menu">
