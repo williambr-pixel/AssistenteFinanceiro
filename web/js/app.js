@@ -23,6 +23,7 @@
     tools: { title: "Ferramentas", sub: "Simuladores e calculadoras" },
     settings: { title: "Configurações", sub: "Preferências, segurança e dados" },
     documents: { title: "Documentos", sub: "Arquivos pessoais organizados no aparelho" },
+    entrepreneur: { title: "Modo Empreendedor", sub: "Clientes, dívidas, pagamentos e histórico" },
   };
   const VIEWS = Object.keys(VIEW_META);
   const CATEGORY_ICONS = [
@@ -534,6 +535,7 @@
       case "calendar": renderCalendar(); break;
       case "tools": break;
       case "documents": if (window.FinDocuments) window.FinDocuments.render(); break;
+      case "entrepreneur": if (window.FinEntrepreneur) window.FinEntrepreneur.render(); break;
       case "settings": renderSettings(); break;
       default: renderDashboard();
     }
