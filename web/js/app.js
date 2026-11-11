@@ -468,7 +468,9 @@
       ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")
       : setting;
     document.documentElement.dataset.theme = resolved;
-    document.documentElement.dataset.accent = store.state.settings.accent || "emerald";
+    const availableAccents = ["blue", "purple", "rose", "amber", "cyan", "indigo"];
+    const savedAccent = store.state.settings.accent;
+    document.documentElement.dataset.accent = availableAccents.includes(savedAccent) ? savedAccent : "blue";
     const meta = document.querySelector('meta[name="theme-color"]');
     if (meta) meta.content = resolved === "dark" ? "#07111d" : "#0b1f33";
     const use = el.themeToggle ? $("use", el.themeToggle) : null;
