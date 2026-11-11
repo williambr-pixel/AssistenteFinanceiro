@@ -11,7 +11,7 @@
     <link rel="icon" href="./icons/icone.svg?v=20261111-clean1" type="image/svg+xml">
     <link rel="apple-touch-icon" href="./icons/icone.svg?v=20261111-clean1">
     <link rel="manifest" href="./manifest.webmanifest">
-    <link rel="stylesheet" href="./estilos.css?v=20261111-wine1">
+    <link rel="stylesheet" href="./estilos.css?v=20261111-empreendedor1">
     <title>Meu Financeiro — painel financeiro pessoal</title>
   </head>
   <body>
@@ -110,6 +110,8 @@
           <button class="nav-link" data-view="assistant" type="button"><svg class="icon"><use href="#i-sparkles"></use></svg><span>Assistente</span></button>
           <button class="nav-link" data-view="calendar" type="button"><svg class="icon"><use href="#i-calendar"></use></svg><span>Calendário</span></button>
           <button class="nav-link" data-view="tools" type="button"><svg class="icon"><use href="#i-tools"></use></svg><span>Ferramentas</span></button>
+          <p class="nav-group">Negócios</p>
+          <button class="nav-link" data-view="entrepreneur" type="button"><svg class="icon"><use href="#i-briefcase"></use></svg><span>Modo Empreendedor</span></button>
           <p class="nav-group">Sistema</p>
           <button class="nav-link" data-view="settings" type="button"><svg class="icon"><use href="#i-settings"></use></svg><span>Configurações</span></button>
         </nav>
@@ -601,7 +603,71 @@
                 </div>
               </article>
             </div>
+          </section>          
+          <!-- ============================================================ MODO EMPREENDEDOR -->
+          <section class="view" id="view-entrepreneur" data-view="entrepreneur" hidden>
+            <div class="page-head">
+              <div>
+                <p class="eyebrow">GESTÃO DE CLIENTES</p>
+                <h2 class="page-greeting">Modo Empreendedor</h2>
+                <p class="page-sub">Controle valores a receber, registre pagamentos e acompanhe cada movimentação.</p>
+              </div>
+            </div>
+
+            <div class="emp-notice" role="note">
+              <svg class="icon" aria-hidden="true"><use href="#i-lock"></use></svg>
+              <span>Esta área é independente dos seus lançamentos pessoais. Os dados ficam salvos neste aparelho.</span>
+            </div>
+            <p class="emp-message" id="emp-message" role="status" aria-live="polite" hidden></p>
+
+            <div class="emp-summary">
+              <article class="card emp-stat">
+                <span>Total a receber</span>
+                <strong id="emp-total-receber">R$ 0,00</strong>
+              </article>
+              <article class="card emp-stat">
+                <span>Clientes cadastrados</span>
+                <strong id="emp-total-clientes">0</strong>
+              </article>
+              <article class="card emp-stat">
+                <span>Clientes com dívida</span>
+                <strong id="emp-total-pendentes">0</strong>
+              </article>
+            </div>
+
+            <div class="emp-forms-grid">
+              <article class="card emp-panel">
+                <header class="card-head"><div><h3>Cadastrar cliente</h3><p>Registre o valor inicial que o cliente deve.</p></div></header>
+                <form id="emp-client-form" class="emp-form" novalidate>
+                  <label class="field"><span>Nome do cliente</span><input id="emp-client-name" name="nome" type="text" maxlength="100" autocomplete="off" placeholder="Ex.: João da Silva" required></label>
+                  <label class="field"><span>Valor da dívida (R$)</span><input id="emp-client-debt" name="divida" type="text" inputmode="decimal" placeholder="Ex.: 150,00" required></label>
+                  <button class="btn primary" type="submit"><svg class="icon"><use href="#i-plus"></use></svg><span>Cadastrar cliente</span></button>
+                </form>
+              </article>
+
+              <article class="card emp-panel">
+                <header class="card-head"><div><h3>Registrar pagamento</h3><p>O valor pago será descontado da dívida automaticamente.</p></div></header>
+                <form id="emp-payment-form" class="emp-form" novalidate>
+                  <label class="field"><span>Cliente</span><select id="emp-payment-client" name="cliente" required><option value="">Selecione um cliente</option></select></label>
+                  <label class="field"><span>Valor pago (R$)</span><input id="emp-payment-value" name="pagamento" type="text" inputmode="decimal" placeholder="Ex.: 50,00" required></label>
+                  <button class="btn primary" type="submit"><svg class="icon"><use href="#i-check"></use></svg><span>Registrar pagamento</span></button>
+                </form>
+              </article>
+            </div>
+
+            <article class="card emp-panel">
+              <header class="card-head"><div><h3>Lista de clientes</h3><p>Veja o saldo pendente de cada cliente.</p></div></header>
+              <div class="emp-client-list" id="emp-client-list"><div class="emp-empty">Nenhum cliente cadastrado ainda.</div></div>
+            </article>
+
+            <article class="card emp-panel emp-history-panel">
+              <header class="card-head"><div><h3>Histórico de transações</h3><p>Consulte todas as dívidas e pagamentos registrados.</p></div>
+                <label class="emp-history-filter"><span>Exibir</span><select id="emp-history-client"><option value="">Todos os clientes</option></select></label>
+              </header>
+              <div class="emp-history-list" id="emp-history-list"><div class="emp-empty">Nenhuma movimentação encontrada.</div></div>
+            </article>
           </section>
+
         </main>
       </div>
     </div>
@@ -677,7 +743,8 @@
     <script src="./js/graficos.js"></script>
     <script src="./js/assistente.js"></script>
     <script src="./js/voz.js"></script>
-    <script src="./js/app.js?v=20261111-wine1"></script>
+    <script src="./js/app.js?v=20261111-empreendedor1"></script>
+    <script src="./js/empreendedor.js?v=20261111-empreendedor1"></script>
     <script src="./js/documentos.js"></script>
     <script src="./js/google-drive-sync.js"></script>
   </body>
