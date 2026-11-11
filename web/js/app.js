@@ -468,7 +468,7 @@
       ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")
       : setting;
     document.documentElement.dataset.theme = resolved;
-    const availableAccents = ["blue", "purple", "rose", "amber", "cyan", "indigo"];
+    const availableAccents = ["blue", "purple", "rose", "wine", "amber", "cyan", "indigo"];
     const savedAccent = store.state.settings.accent;
     document.documentElement.dataset.accent = availableAccents.includes(savedAccent) ? savedAccent : "blue";
     const meta = document.querySelector('meta[name="theme-color"]');
