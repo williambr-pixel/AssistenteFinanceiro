@@ -4,7 +4,7 @@ const CACHE_NAME = "meu-financeiro-__APP_VERSION__";
 const APP_FILES = [
   "./",
   "./index.html",
-  "./estilos.css?v=20261111-2",
+  "./estilos.css?v=20261111-3",
   "./manifest.webmanifest",
   "./js/nucleo.js",
   "./js/graficos.js",
