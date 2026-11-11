@@ -455,11 +455,20 @@
           <section class="view" id="view-documents" data-view="documents" hidden>
             <div class="page-head">
               <div><p class="eyebrow">ARQUIVOS PESSOAIS</p><h2 class="page-greeting">Meus documentos</h2><p class="page-sub">Guarde planilhas, comprovantes e outros arquivos organizados por categoria.</p></div>
-              <div class="head-actions"><button class="btn primary" id="documents-add" type="button"><svg class="icon"><use href="#i-upload"></use></svg><span>Adicionar arquivos</span></button></div>
+              
             </div>
             <article class="card documents-intro">
               <div class="documents-intro-icon"><svg class="icon"><use href="#i-book"></use></svg></div>
               <div><strong>Seus arquivos ficam neste aparelho</strong><p>Importe PDFs, planilhas, documentos e imagens. Você poderá pesquisar, abrir, baixar, reclassificar ou excluir cada arquivo. Nada é enviado para a internet.</p></div>
+            </article>
+            <article class="documents-upload-card">
+              <div class="documents-upload-symbol"><svg class="icon"><use href="#i-upload"></use></svg></div>
+              <div class="documents-upload-copy">
+                <strong>Adicione seus arquivos</strong>
+                <p>Escolha PDFs, planilhas Excel, CSV, Word, imagens e outros documentos para guardar e organizar aqui.</p>
+                <span class="documents-upload-formats">PDF · XLS · XLSX · CSV · DOC · DOCX · JPG · PNG</span>
+              </div>
+              <button class="btn primary documents-upload-button" id="documents-add" type="button"><svg class="icon"><use href="#i-upload"></use></svg><span>Selecionar arquivos</span></button>
             </article>
             <div class="card documents-upload-options"><label class="field"><span>Categoria padrão dos arquivos novos</span><select id="documents-new-category"><option>Comprovantes</option><option>Receitas</option><option>Despesas</option><option>Relatórios</option><option selected>Outros</option></select></label><label class="field"><span>Descrição (opcional)</span><input id="documents-description" type="text" maxlength="180" placeholder="Ex.: Conta de energia de novembro"></label></div>
             <input id="documents-file-input" type="file" accept=".pdf,.csv,.xls,.xlsx,.doc,.docx,.odt,.ods,.jpg,.jpeg,.png,.webp,.txt" multiple hidden>
