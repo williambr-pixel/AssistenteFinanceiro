@@ -2230,3 +2230,146 @@ table { max-width: 100%; }
   .chat-form .btn span { display: none; }
   .chip { min-height: 38px; }
 }
+
+
+/* ------------------------------------------------ premium visual refresh
+   Camada visual complementar: mantém os componentes e fluxos existentes. */
+:root {
+  --radius: 22px;
+  --radius-sm: 15px;
+  --radius-xs: 11px;
+  --shadow-sm: 0 2px 8px rgb(15 31 51 / 5%);
+  --shadow: 0 14px 38px -28px rgb(15 31 51 / 24%), 0 2px 8px rgb(15 31 51 / 4%);
+  --shadow-lg: 0 28px 70px -38px rgb(15 31 51 / 30%);
+}
+
+[data-theme="dark"] {
+  --bg: #080e19;
+  --bg-soft: #0b1422;
+  --surface: #101b2b;
+  --surface-2: #142237;
+  --surface-3: #1a2b42;
+  --ink: #f1f5fb;
+  --ink-2: #d3deec;
+  --muted: #9aaac0;
+  --muted-2: #74869f;
+  --line: rgb(151 171 197 / 14%);
+  --line-strong: rgb(151 171 197 / 26%);
+  --accent: #20c997;
+  --accent-strong: #12a77b;
+  --accent-soft: rgb(32 201 151 / 14%);
+  --income: #35d6a1;
+  --income-soft: rgb(53 214 161 / 13%);
+  --expense: #ff727b;
+  --expense-soft: rgb(255 114 123 / 13%);
+  --shadow-sm: 0 2px 10px rgb(0 0 0 / 18%);
+  --shadow: 0 18px 48px -30px rgb(0 0 0 / 72%), 0 2px 8px rgb(0 0 0 / 20%);
+  --shadow-lg: 0 32px 80px -38px rgb(0 0 0 / 82%);
+  --chart-track: #1a2b42;
+}
+
+[data-theme="dark"][data-accent="blue"] {
+  --accent: #65a5ff;
+  --accent-strong: #3b82f6;
+  --accent-soft: rgb(59 130 246 / 16%);
+}
+[data-theme="dark"][data-accent="amber"] {
+  --accent: #f5b94c;
+  --accent-strong: #d99424;
+  --accent-soft: rgb(245 185 76 / 15%);
+}
+
+body {
+  letter-spacing: -0.008em;
+  background-color: var(--bg);
+}
+.sidebar {
+  background:
+    radial-gradient(420px 300px at 12% -8%, rgb(32 201 151 / 13%), transparent 68%),
+    linear-gradient(165deg, #101d2d 0%, #0b1726 54%, #08121f 100%);
+  box-shadow: inset -1px 0 0 rgb(255 255 255 / 5%), 12px 0 36px -32px rgb(0 0 0 / 65%);
+}
+.brand-mark {
+  border-radius: 13px;
+  box-shadow: 0 10px 26px -12px color-mix(in srgb, var(--accent) 85%, black);
+}
+.nav-link {
+  min-height: 45px;
+  border-radius: 13px;
+}
+.nav-link.active {
+  background: linear-gradient(105deg, rgb(32 201 151 / 20%), rgb(32 201 151 / 7%));
+  box-shadow: inset 3px 0 0 #20c997, inset 0 0 0 1px rgb(32 201 151 / 12%);
+}
+.topbar {
+  min-height: 76px;
+  border-bottom-color: var(--line);
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+}
+.topbar-title h1 { font-size: 17px; letter-spacing: -0.035em; }
+.content { gap: 22px; }
+.view { gap: 22px; }
+.page-head h2 { letter-spacing: -0.05em; }
+.page-sub { max-width: 680px; line-height: 1.65; }
+.card {
+  border-color: var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+.card-head { margin-bottom: 18px; }
+.card-head h3 { font-size: 15px; letter-spacing: -0.025em; }
+.kpi {
+  padding: 21px;
+  border-color: color-mix(in srgb, var(--line) 82%, var(--accent));
+}
+.kpi::after {
+  width: 150px;
+  height: 150px;
+  right: -48px;
+  top: -62px;
+  background: color-mix(in srgb, var(--accent) 9%, transparent);
+}
+.kpi-label { font-size: 12px; }
+.kpi-value { font-size: clamp(23px, 2.15vw, 29px); letter-spacing: -0.045em; }
+.kpi-icon { width: 38px; height: 38px; border-radius: 13px; }
+.kpi-grid > .kpi:first-child {
+  background:
+    radial-gradient(180px 130px at 100% 0%, rgb(32 201 151 / 17%), transparent 78%),
+    var(--surface);
+}
+[data-theme="dark"] .kpi-grid > .kpi:first-child {
+  border-color: rgb(32 201 151 / 25%);
+  background:
+    radial-gradient(220px 150px at 100% 0%, rgb(32 201 151 / 18%), transparent 76%),
+    linear-gradient(145deg, #12283a, #101b2b 72%);
+}
+.btn, .icon-btn { border-radius: 13px; }
+.btn.primary {
+  box-shadow: 0 10px 24px -15px color-mix(in srgb, var(--accent) 90%, black);
+}
+.field input, .field select, .field textarea,
+.form-field input, .form-field select, .form-field textarea {
+  border-radius: 12px;
+}
+.mobile-nav {
+  border-top-color: var(--line);
+  box-shadow: 0 -12px 34px -30px rgb(0 0 0 / 55%);
+}
+@media (hover: hover) and (pointer: fine) {
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+    border-color: color-mix(in srgb, var(--accent) 25%, var(--line));
+  }
+}
+@media (max-width: 720px) {
+  .content { gap: 17px; }
+  .view { gap: 17px; }
+  .card { border-radius: 18px; }
+  .kpi { padding: 15px; }
+  .kpi-value { letter-spacing: -0.04em; }
+  .topbar { min-height: 64px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .card, .btn, .icon-btn, .nav-link { transition: none !important; }
+}
