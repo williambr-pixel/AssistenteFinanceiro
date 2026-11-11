@@ -3742,10 +3742,8 @@
     return rows.map((row) => row.map(quote).join(";")).join("\n");
   }
 
-  async function importCsvFile(event) {
-    const file = event.target.files && event.target.files[0];
-    event.target.value = "";
-    if (!file) return;
+  async function importSpreadsheetFile(file) {
+    if (!file) return 0;
     try {
       const isExcel = /\.xlsx$/i.test(file.name);
       const isCsv = /\.csv$/i.test(file.name) || file.type === "text/csv";
@@ -3767,12 +3765,23 @@
       const added = store.addTransactions(parsed.rows);
       state.txFilters = { query: "", type: "", categoryId: "", month: "", payment: "" };
       navigate("transactions");
-      toast(`${plural(added, "lançamento importado", "lançamentos importados")}.`, "success");
+      toast(`${plural(added, "lançamento importado", "lançamentos importados")} e organizado em Lançamentos.`, "success");
+      return added;
     } catch (error) {
       console.error("Importação CSV:", error);
       toast(error && error.message ? error.message : "Não foi possível importar o extrato.", "danger", 7000);
+      return 0;
     }
   }
+
+  async function importCsvFile(event) {
+    const file = event.target.files && event.target.files[0];
+    event.target.value = "";
+    await importSpreadsheetFile(file);
+  }
+
+  // Compartilha o mesmo leitor e a mesma confirmação com a Biblioteca de Documentos.
+  window.FinImportSpreadsheet = importSpreadsheetFile;
 
   async function installApp() {
     if (!state.deferredPrompt) {
