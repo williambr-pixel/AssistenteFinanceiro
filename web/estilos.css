@@ -2747,23 +2747,23 @@ body { background: var(--bg); }
 
 /* Contraste secundário em roxo: detalhes sutis sem competir com o ciano */
 :root {
-  --accent-purple: #8b78d6;
-  --accent-purple-strong: #7059bf;
-  --accent-purple-soft: #f0edfb;
+  --accent-purple: #7c3aed;
+  --accent-purple-strong: #6d28d9;
+  --accent-purple-soft: #f3eeff;
 }
 [data-theme="dark"] {
-  --accent-purple: #aa98f0;
-  --accent-purple-strong: #927ce0;
-  --accent-purple-soft: rgb(170 152 240 / 14%);
+  --accent-purple: #a78bfa;
+  --accent-purple-strong: #8b5cf6;
+  --accent-purple-soft: rgb(167 139 250 / 12%);
 }
 .sidebar {
   background:
-    radial-gradient(360px 260px at 88% 12%, rgb(139 120 214 / 10%), transparent 72%),
+    radial-gradient(360px 260px at 88% 12%, rgb(124 58 237 / 6%), transparent 72%),
     radial-gradient(420px 300px at 12% -8%, rgb(66 185 208 / 12%), transparent 68%),
     linear-gradient(165deg, #101d2d 0%, #0b1726 54%, #08121f 100%);
 }
 .welcome-orbit {
-  background: radial-gradient(closest-side, rgb(139 120 214 / 23%), transparent);
+  background: radial-gradient(closest-side, rgb(124 58 237 / 13%), transparent);
 }
 .msg-avatar,
 .insight-icon,
@@ -2773,12 +2773,12 @@ body { background: var(--bg); }
   color: var(--accent-purple-strong);
 }
 .assistant-chat-head .pill {
-  border-color: color-mix(in srgb, var(--accent-purple) 28%, var(--line));
+  border-color: color-mix(in srgb, var(--accent-purple) 20%, var(--line));
   background: var(--accent-purple-soft);
   color: var(--accent-purple-strong);
 }
 .assistant-chat-head .pill .icon { color: var(--accent-purple-strong); }
-.insight { border-color: color-mix(in srgb, var(--accent-purple) 16%, var(--line)); }
+.insight { border-color: color-mix(in srgb, var(--accent-purple) 10%, var(--line)); }
 .insight-icon { box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent-purple) 12%, transparent); }
 .nav-link.active::after {
   content: "";
@@ -2797,7 +2797,7 @@ body { background: var(--bg); }
 @media (max-width: 720px) {
   .sidebar {
     background:
-      radial-gradient(320px 220px at 88% 10%, rgb(139 120 214 / 9%), transparent 72%),
+      radial-gradient(320px 220px at 88% 10%, rgb(124 58 237 / 5%), transparent 72%),
       linear-gradient(165deg, #101d2d 0%, #0b1726 54%, #08121f 100%);
   }
 }
