@@ -2679,3 +2679,46 @@ body { background: var(--bg); }
     background: rgb(244 247 251 / 96%);
   }
 }
+
+
+/* --------------------------------------------------- paleta ciano suave */
+:root {
+  --accent: #42b9d0;
+  --accent-strong: #249bb5;
+  --accent-soft: #e6f7fb;
+  --income: #35aec5;
+  --income-soft: #e8f7fa;
+}
+[data-theme="dark"] {
+  --accent: #58c5d9;
+  --accent-strong: #35a9c0;
+  --accent-soft: rgb(88 197 217 / 14%);
+  --income: #58c5d9;
+  --income-soft: rgb(88 197 217 / 13%);
+}
+.nav-link.active {
+  background: linear-gradient(105deg, rgb(66 185 208 / 19%), rgb(66 185 208 / 6%));
+  box-shadow: inset 3px 0 0 #42b9d0, inset 0 0 0 1px rgb(66 185 208 / 11%);
+}
+.sidebar {
+  background:
+    radial-gradient(420px 300px at 12% -8%, rgb(66 185 208 / 12%), transparent 68%),
+    linear-gradient(165deg, #101d2d 0%, #0b1726 54%, #08121f 100%);
+}
+.kpi-grid > .kpi:first-child {
+  border-color: rgb(66 185 208 / 25%);
+  background:
+    radial-gradient(230px 150px at 100% 0%, rgb(66 185 208 / 13%), transparent 74%),
+    linear-gradient(145deg, #ffffff, #f1fafc);
+}
+[data-theme="dark"] .kpi-grid > .kpi:first-child {
+  border-color: rgb(88 197 217 / 24%);
+  background:
+    radial-gradient(240px 170px at 100% 0%, rgb(88 197 217 / 15%), transparent 74%),
+    linear-gradient(145deg, #142a3b, #111d2d 72%);
+}
+:root:not([data-theme="dark"]) .kpi-icon.balance,
+:root:not([data-theme="dark"]) .kpi-icon.result {
+  background: #e4f5f9;
+  color: #238da5;
+}
