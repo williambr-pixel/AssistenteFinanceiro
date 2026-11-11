@@ -2905,3 +2905,58 @@ body { background: var(--bg); }
     50% { opacity: 1; }
   }
 }
+
+
+/* Gorro natalino discreto na marca do aplicativo */
+.brand-mark,
+.boot-mark {
+  position: relative;
+  overflow: visible;
+}
+.brand-mark::after,
+.boot-mark::after {
+  content: "";
+  position: absolute;
+  z-index: 3;
+  top: -7px;
+  right: -5px;
+  width: 23px;
+  height: 19px;
+  border: 1px solid rgb(255 255 255 / 72%);
+  border-radius: 10px 10px 5px 5px;
+  background: linear-gradient(to bottom, #fff 0 22%, #d94750 23% 100%);
+  clip-path: polygon(0 100%, 15% 47%, 70% 0, 100% 23%, 88% 100%);
+  transform: rotate(13deg);
+  pointer-events: none;
+}
+.brand-mark::before,
+.boot-mark::before {
+  content: "";
+  position: absolute;
+  z-index: 4;
+  top: -8px;
+  right: -6px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 22%);
+  pointer-events: none;
+}
+.brand-mark.large::after {
+  width: 27px;
+  height: 22px;
+  top: -8px;
+  right: -5px;
+}
+.brand-mark.large::before {
+  top: -9px;
+  right: -6px;
+}
+@media (max-width: 420px) {
+  .brand-mark::after,
+  .boot-mark::after {
+    width: 20px;
+    height: 17px;
+  }
+}
