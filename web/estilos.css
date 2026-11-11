@@ -2838,3 +2838,70 @@ body { background: var(--bg); }
       linear-gradient(165deg, #101d2d 0%, #0b1726 54%, #08121f 100%);
   }
 }
+
+
+/* --------------------------------------------------- detalhes natalinos discretos */
+.topbar {
+  position: relative;
+  isolation: isolate;
+}
+.topbar::before {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  inset: 0 0 auto;
+  height: 4px;
+  pointer-events: none;
+  opacity: .82;
+  background:
+    radial-gradient(circle at 12px 2px, #c94b55 0 2px, transparent 2.8px),
+    radial-gradient(circle at 36px 2px, #4b9b75 0 2px, transparent 2.8px),
+    radial-gradient(circle at 60px 2px, #d4ad61 0 2px, transparent 2.8px);
+  background-size: 72px 4px;
+}
+.topbar-title {
+  position: relative;
+}
+.topbar-title h1::after {
+  content: "  ✦";
+  display: inline-block;
+  margin-left: 5px;
+  color: #c9a45d;
+  font-size: .72em;
+  vertical-align: .12em;
+  opacity: .9;
+}
+.sidebar {
+  position: relative;
+}
+.sidebar::after {
+  content: "✦  ❄  ✦";
+  position: absolute;
+  left: 22px;
+  bottom: 66px;
+  color: #c9a45d;
+  font-size: 12px;
+  letter-spacing: 7px;
+  opacity: .48;
+  pointer-events: none;
+}
+[data-theme="dark"] .topbar::before {
+  opacity: .95;
+}
+@media (max-width: 720px) {
+  .sidebar::after {
+    display: none;
+  }
+  .topbar-title h1::after {
+    margin-left: 2px;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .topbar-title h1::after {
+    animation: holiday-glow 3.8s ease-in-out infinite;
+  }
+  @keyframes holiday-glow {
+    0%, 100% { opacity: .65; }
+    50% { opacity: 1; }
+  }
+}
