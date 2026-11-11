@@ -148,7 +148,7 @@
 
       // Planilhas também alimentam os lançamentos; outros documentos continuam
       // apenas na biblioteca. O leitor pede confirmação antes de gravar valores.
-      const spreadsheets = files.filter((file) => /\\.(xlsx|csv)$/i.test(file.name) || file.type === "text/csv");
+      const spreadsheets = files.filter((file) => /\.(xlsx|csv)$/i.test(file.name) || file.type === "text/csv");
       if (spreadsheets.length && typeof window.FinImportSpreadsheet === "function") {
         for (const file of spreadsheets) await window.FinImportSpreadsheet(file);
       }
