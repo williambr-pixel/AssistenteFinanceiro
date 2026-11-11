@@ -236,7 +236,7 @@ window.Fin = window.Fin || {};
         name: "",
         onboardingDone: false,
         theme: "system",
-        accent: "emerald",
+        accent: "blue",
         pinHash: null,
         notifications: false,
         createdAt: new Date().toISOString(),
