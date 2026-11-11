@@ -2743,3 +2743,61 @@ body { background: var(--bg); }
 }
 
 .brand-mark.welcome-mark .icon { width: 24px; height: 24px; stroke: #073044; }
+
+
+/* Contraste secundário em roxo: detalhes sutis sem competir com o ciano */
+:root {
+  --accent-purple: #8b78d6;
+  --accent-purple-strong: #7059bf;
+  --accent-purple-soft: #f0edfb;
+}
+[data-theme="dark"] {
+  --accent-purple: #aa98f0;
+  --accent-purple-strong: #927ce0;
+  --accent-purple-soft: rgb(170 152 240 / 14%);
+}
+.sidebar {
+  background:
+    radial-gradient(360px 260px at 88% 12%, rgb(139 120 214 / 10%), transparent 72%),
+    radial-gradient(420px 300px at 12% -8%, rgb(66 185 208 / 12%), transparent 68%),
+    linear-gradient(165deg, #101d2d 0%, #0b1726 54%, #08121f 100%);
+}
+.welcome-orbit {
+  background: radial-gradient(closest-side, rgb(139 120 214 / 23%), transparent);
+}
+.msg-avatar,
+.insight-icon,
+.document-type-icon,
+.documents-intro-icon {
+  background: var(--accent-purple-soft);
+  color: var(--accent-purple-strong);
+}
+.assistant-chat-head .pill {
+  border-color: color-mix(in srgb, var(--accent-purple) 28%, var(--line));
+  background: var(--accent-purple-soft);
+  color: var(--accent-purple-strong);
+}
+.assistant-chat-head .pill .icon { color: var(--accent-purple-strong); }
+.insight { border-color: color-mix(in srgb, var(--accent-purple) 16%, var(--line)); }
+.insight-icon { box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent-purple) 12%, transparent); }
+.nav-link.active::after {
+  content: "";
+  width: 5px;
+  height: 5px;
+  margin-left: auto;
+  border-radius: 50%;
+  background: var(--accent-purple);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--accent-purple) 65%, transparent);
+}
+.kpi:nth-child(3) .kpi-icon,
+.kpi:nth-child(4) .kpi-icon {
+  background: var(--accent-purple-soft);
+  color: var(--accent-purple-strong);
+}
+@media (max-width: 720px) {
+  .sidebar {
+    background:
+      radial-gradient(320px 220px at 88% 10%, rgb(139 120 214 / 9%), transparent 72%),
+      linear-gradient(165deg, #101d2d 0%, #0b1726 54%, #08121f 100%);
+  }
+}
