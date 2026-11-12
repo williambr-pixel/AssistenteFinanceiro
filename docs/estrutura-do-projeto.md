@@ -17,7 +17,8 @@ instalado no repositório.
 | `web/js/voz.js` | Interface e controle do reconhecimento de voz |
 | `web/js/documentos.js` | Biblioteca local de documentos, armazenada no IndexedDB |
 | `web/js/google-drive-sync.js` | Backup criptografado opcional no Google Drive |
-| `web/js/app.js` | Inicialização, eventos, relatórios e ferramentas |\n| `web/js/empreendedor.js` | Cadastro de clientes, dívidas, pagamentos e histórico |
+| `web/js/app.js` | Inicialização, eventos, relatórios e ferramentas |
+| `web/js/empreendedor.js` | Cadastro de clientes, dívidas, pagamentos e histórico |
 | `web/service-worker.js` | Cache dos arquivos e funcionamento offline |
 | `web/manifest.webmanifest` | Nome, ícones e configurações de instalação |
 | `web/icons/` | Ícones usados pelo aplicativo |
@@ -25,7 +26,7 @@ instalado no repositório.
 | `.github/workflows/pages.yml` | Publicação do aplicativo no GitHub Pages |
 | `.github/workflows/validar.yml` | Verificações automáticas de sintaxe e arquivos essenciais |
 
-Os sete módulos JavaScript são carregados pelo `index.html` e incluídos no
+Os oito módulos JavaScript são carregados pelo `index.html` e incluídos no
 cache do service worker. Não remova um módulo sem verificar suas chamadas,
 integrações e dependências no restante do aplicativo.
 
