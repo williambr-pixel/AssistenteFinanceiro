@@ -1,0 +1,23 @@
+/* Refinamento visual inspirado em padrões open source de microinterações.
+   Camada exclusivamente visual: não altera eventos, dados ou regras do aplicativo. */
+:root { --ui-ring: color-mix(in srgb, var(--accent) 24%, transparent); --ui-card-highlight: color-mix(in srgb, var(--accent) 5%, var(--surface)); }
+.card,.kpi,.toolbar,.summary-strip,.modal-card { -webkit-backdrop-filter:saturate(1.08); backdrop-filter:saturate(1.08); }
+.card { background-image:linear-gradient(145deg,color-mix(in srgb,var(--surface) 98%,white),var(--surface)); transition:border-color .2s ease,box-shadow .2s ease,transform .2s ease; }
+[data-theme="dark"] .card { background-image:linear-gradient(145deg,color-mix(in srgb,var(--surface) 96%,white),var(--surface)); }
+.btn,.icon-btn,.nav-link,.segmented button { -webkit-tap-highlight-color:transparent; }
+.btn:focus-visible,.icon-btn:focus-visible,.nav-link:focus-visible,.segmented button:focus-visible { outline:3px solid var(--ui-ring); outline-offset:2px; }
+.btn.primary { background-image:linear-gradient(135deg,var(--accent),var(--accent-strong)); }
+.btn.primary:active { box-shadow:0 4px 12px -8px color-mix(in srgb,var(--accent) 90%,black); }
+.field input:focus,.field select:focus,.field textarea:focus,.form-field input:focus,.form-field select:focus,.form-field textarea:focus { border-color:color-mix(in srgb,var(--accent) 62%,var(--line-strong)); box-shadow:0 0 0 4px var(--ui-ring); }
+.pill,.badge { letter-spacing:.015em; }
+.tx-item,.emp-client-row,.emp-history-row { transition:background-color .18s ease; }
+@media (hover:hover) and (pointer:fine) {
+ .tx-item:hover,.emp-client-row:hover,.emp-history-row:hover { background:var(--ui-card-highlight); }
+ .btn.secondary:hover,.icon-btn:hover { box-shadow:0 7px 18px -13px color-mix(in srgb,var(--accent) 65%,transparent); }
+}
+@media (max-width:720px) {
+ input,select,textarea { max-width:100%; }
+ .card,.modal-card { background-image:none; }
+ .mobile-nav { border-top:1px solid var(--line); -webkit-backdrop-filter:blur(18px) saturate(1.25); backdrop-filter:blur(18px) saturate(1.25); }
+}
+@media (prefers-reduced-motion:reduce) { .card,.tx-item,.emp-client-row,.emp-history-row { transition:none!important; } }
