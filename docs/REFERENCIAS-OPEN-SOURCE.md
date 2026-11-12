@@ -13,6 +13,13 @@ funcionamento offline, baixo peso, privacidade e compatibilidade com celulares.
 | focus-trap | https://github.com/focus-trap/focus-trap | MIT | Manter o foco dentro de diálogos acessíveis | Não adicionar agora: o app já usa o elemento nativo `<dialog>` com `showModal()`, que oferece contenção de foco nativa nos navegadores compatíveis |
 | Lucide | https://github.com/lucide-icons/lucide | ISC (com ícones derivados de Feather sob MIT) | Ícones SVG consistentes | Não adicionar agora: o app já possui sprite SVG próprio; outra coleção aumentaria o peso e duplicaria recursos |
 
+## Referências visuais adicionais
+
+| Projeto | Repositório | Licença | Uso considerado | Decisão nesta etapa |
+|---|---|---|---|---|
+| Animate.css | https://github.com/animate-css/animate.css | MIT | Referência para transições e microanimações discretas | Padrões visuais adaptados em CSS próprio; nenhuma dependência externa foi adicionada |
+| SpinKit | https://github.com/tobiasahlin/SpinKit | MIT | Referência para indicadores de carregamento leves | Mantido como referência para futuras melhorias; sem alterar o fluxo de carregamento atual |
+
 ## Regras para futuras integrações
 
 1. Não incorporar repositórios inteiros ao projeto. Usar somente o pacote, arquivo ou componente estritamente necessário.

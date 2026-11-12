@@ -5,6 +5,7 @@ const APP_FILES = [
   "./",
   "./index.html",
   "./estilos.css?v=20261111-empreendedor1",
+  "./interface-polish.css?v=20261112-ui1",
   "./manifest.webmanifest",
   "./js/nucleo.js",
   "./js/graficos.js",
