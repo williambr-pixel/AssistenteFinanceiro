@@ -1,194 +1,116 @@
 # Meu Financeiro
 
-Aplicativo financeiro pessoal instalável (PWA) feito com HTML, CSS e JavaScript
-puro. Funciona offline depois da primeira visita. Os lançamentos ficam no
-armazenamento local do navegador e os documentos no IndexedDB do aparelho.
-Não há conta própria nem servidor central de dados. O aplicativo oferece,
-opcionalmente, backup criptografado no Google Drive, configurado pelo usuário.
+Aplicativo de controle financeiro pessoal e de pequenos negócios, instalável como PWA. Desenvolvido com HTML, CSS e JavaScript puro, sem etapa de build.
 
-## Recursos
+**Acesse:** https://williambr-pixel.github.io/AssistenteFinanceiro/
 
-### Painel
-- Saldo, receitas, despesas e resultado do período.
-- Comparativo com o mês anterior e indicador de economia.
-- Contas a vencer, metas em andamento e últimas movimentações.
-- Gráficos interativos de evolução, categorias e comparação mensal.
-- Filtros de dia, semana, mês e ano.
+O Meu Financeiro ajuda a registrar receitas e despesas, acompanhar orçamento, planejar metas, organizar documentos e controlar valores que clientes devem. Os dados ficam no aparelho do usuário e o aplicativo funciona offline depois da primeira visita.
 
-### Lançamentos
-- Cadastro, edição, exclusão e busca de receitas e despesas.
-- Categorias personalizadas com nome, cor e ícone.
-- Forma de pagamento, movimentações fixas, recorrências e observações.
-- Filtros por tipo, categoria, mês, pagamento e texto.
-- Registro por voz com revisão obrigatória antes de salvar.
+## Funcionalidades
 
-### Registro por voz
-- Botão de microfone na barra superior e na página de lançamentos.
-- Reconhecimento em português (`pt-BR`) pela Web Speech API do navegador.
-- Identifica tipo (gasto ou receita), valor, data, categoria e forma de pagamento
-  a partir da fala.
-- Entende valores em dígitos e por extenso, centavos, datas relativas, dias da
-  semana e formas de pagamento comuns.
-- Mostra a transcrição e abre o formulário preenchido para revisão. Nada é salvo
-  sem a sua confirmação e nenhum valor é inventado: se o valor não for citado, o
-  campo fica vazio.
-- Quando o microfone não está disponível ou o navegador exige HTTPS, o mesmo
-  lançamento pode ser digitado no formulário de voz.
-- O áudio pode ser processado pelo serviço de voz do navegador. Os lançamentos
-  continuam armazenados somente neste aparelho.
+### Visão geral e lançamentos
+- Painel com saldo, receitas, despesas e resultado do período.
+- Comparação com o mês anterior, evolução financeira e gráficos por categoria.
+- Cadastro, edição, exclusão, busca e filtros de receitas e despesas.
+- Categorias personalizadas, formas de pagamento, observações e recorrências.
+- Registro por voz em português (pt-BR), com transcrição e revisão antes de salvar.
 
-### Planejamento
-- Orçamento mensal com limites por categoria.
-- Metas e cofrinhos com contribuições.
-- Contas a pagar, dívidas e parcelas.
-- Assinaturas e recorrências.
-- Previsão de saldo e comparação entre meses.
+### Planejamento financeiro
+- Orçamento mensal e limites por categoria.
+- Metas e cofrinhos com acompanhamento de contribuições.
+- Contas a pagar, dívidas, parcelas e assinaturas.
+- Previsão de saldo, simulador de economia e calculadora de juros.
+- Comparação entre períodos e calendário financeiro.
 
-### Relatórios
-- Relatórios por período com gráficos e resumos.
-- Exportação em CSV (compatível com planilhas).
-- Impressão ou salvamento em PDF pelo diálogo do navegador.
-- Assistente que responde apenas com base nos dados reais do app.
+### Relatórios e assistente
+- Relatórios por período, com gráficos e resumos.
+- Exportação de lançamentos em CSV.
+- Impressão ou salvamento de relatórios em PDF pelo navegador.
+- Assistente financeiro local: responde perguntas e apresenta insights usando os dados disponíveis no próprio aplicativo, sem chamar uma API de IA.
 
-### Organização e segurança
-- Mini registro no primeiro acesso para informar como você quer ser chamado. O
-  nome personaliza a saudação e pode ser alterado ou preenchido depois em
-  **Configurações**.
-- Calendário financeiro com os lançamentos de cada dia.
-- Simulador de economia, calculadora de juros e comparador de meses.
-- Notificações de contas, orçamento, metas e resumo.
-- Tema claro, escuro ou automático, com cor de destaque configurável.
+### Documentos e planilhas
+- Biblioteca de arquivos no aparelho, organizada por categoria e busca.
+- Importação e armazenamento de PDF, Excel, CSV, documentos e imagens nos formatos aceitos pela tela de documentos.
+- Leitura de planilhas XLSX e CSV para identificar receitas e despesas.
+- Prévia dos totais e confirmação do usuário antes de adicionar os lançamentos.
+- Abrir imagens compatíveis, baixar arquivos e excluir documentos da biblioteca.
+
+### Modo Empreendedor
+- Cadastro de clientes com nome e valor inicial devido.
+- Registro de pagamentos vinculados a cada cliente.
+- Desconto automático do pagamento no saldo pendente.
+- Lista de clientes e consulta ao saldo em aberto.
+- Histórico de dívidas e pagamentos, com filtro por cliente.
+
+### Personalização e proteção
+- Tema claro, escuro ou automático e cor de destaque configurável.
 - PIN local opcional para bloquear a interface.
-- Backup e restauração em JSON, além de importação de extratos em CSV.
-- Estados vazios, confirmação de exclusão e tratamento de erros.
+- Backup e restauração de dados em JSON.
+- Backup opcional criptografado no Google Drive, configurado pelo usuário.
+- Notificações, busca global, confirmação de ações e tratamento de erros.
 
-> O PIN protege o acesso pela interface, mas não criptografa o armazenamento do
-> navegador. Para proteção real, use o bloqueio do próprio aparelho.
+## Privacidade e funcionamento offline
 
-## Estrutura
+- Lançamentos, categorias, orçamentos, metas e configurações ficam no armazenamento local do navegador.
+- Documentos ficam no IndexedDB do próprio aparelho.
+- Não existe conta própria do Meu Financeiro nem servidor central de dados.
+- O backup no Google Drive é opcional e criptografado antes do envio.
+- O aplicativo funciona offline após a primeira visita; recursos que dependem do navegador, como reconhecimento de voz, podem ter requisitos próprios.
 
-```text
-.
-├── .github/workflows/
-│   ├── pages.yml                 Publica o app no GitHub Pages
-│   └── validar.yml               Verifica sintaxe e arquivos essenciais
-├── docs/
-│   ├── estrutura-do-projeto.md   Organização e cuidados ao contribuir
-│   ├── seguranca-e-sincronizacao.md
-│   └── google-drive-backup.md   Configuração OAuth e backup criptografado
-├── LICENSE
-├── README.md
-└── web/                          Aplicativo
-    ├── index.html
-    ├── estilos.css
-    ├── manifest.webmanifest
-    ├── service-worker.js
-    ├── icons/                     Ícones SVG e PNG do aplicativo
-    └── js/
-        ├── nucleo.js             Dados, persistência e regras financeiras
-        ├── graficos.js           Gráficos em SVG
-        ├── assistente.js         Respostas e insights do assistente
-        ├── voz.js                Interface e controle do reconhecimento de voz
-        ├── app.js                Interface, relatórios e ferramentas
-        ├── documentos.js         Biblioteca local de documentos
-        └── google-drive-sync.js  Backup criptografado no Google Drive
-```
+**Atenção:** o PIN é uma barreira de acesso pela interface, não criptografia do armazenamento local. Limpar os dados do navegador, perder o aparelho ou desinstalar o aplicativo pode causar perda dos dados. Faça backups regularmente. O backup JSON não inclui os arquivos da biblioteca de documentos; use o recurso de backup criptografado no Google Drive para incluir a biblioteca.
 
-Não há etapa de build nem bibliotecas de terceiros empacotadas. O Google Identity
-Services é carregado sob demanda somente quando o usuário conecta o Drive.
+Consulte [Privacidade e segurança](docs/seguranca-e-sincronizacao.md) antes de usar o backup remoto.
 
-## Rodar no computador
+## Estrutura do repositório
 
-O app é estático, mas o service worker (modo offline) e o microfone só funcionam
-em `localhost` ou HTTPS. Sirva a pasta `web/` com qualquer servidor local:
+- .github/workflows/: validação automática e publicação no Pages.
+- docs/: guias, arquitetura e documentação.
+- web/index.html: telas e estrutura do aplicativo.
+- web/estilos.css: interface e responsividade.
+- web/manifest.webmanifest: configuração do PWA instalável.
+- web/service-worker.js: cache e funcionamento offline.
+- web/js/nucleo.js: dados, persistência e regras financeiras.
+- web/js/graficos.js: gráficos.
+- web/js/assistente.js: insights e respostas financeiras locais.
+- web/js/voz.js: reconhecimento de voz.
+- web/js/app.js: interface, relatórios e ferramentas.
+- web/js/empreendedor.js: clientes, dívidas e pagamentos.
+- web/js/documentos.js: biblioteca local de documentos.
+- web/js/google-drive-sync.js: backup criptografado opcional.
 
-```bash
-python -m http.server 8000 --directory web
-```
+Veja a descrição detalhada em [Funcionalidades](docs/funcionalidades.md) e a organização técnica em [Estrutura do projeto](docs/estrutura-do-projeto.md).
 
-Depois abra <http://localhost:8000>. Se preferir, use a extensão **Live Server**
-do VS Code apontando para `web/index.html`.
+## Executar localmente
 
-Abrir o arquivo direto por `file://` também permite usar o app, mas sem service
-worker e, na maioria dos navegadores, sem microfone.
+É necessário servir a pasta web/ por HTTP para testar o service worker e os recursos que exigem contexto seguro.
+
+Com Python instalado, execute: python -m http.server 8000 --directory web
+
+Abra http://localhost:8000. Também é possível usar a extensão Live Server do VS Code apontando para web/index.html.
 
 ## Instalar no celular
 
-O aplicativo precisa estar publicado em um site com HTTPS para ser instalado.
-Depois de abrir o endereço no celular, use a aba **Instalar** do app para ver as
-instruções do seu aparelho. Quando o navegador permitir, também aparecerá o
-botão **Instalar app**.
+O site precisa estar publicado em HTTPS.
 
-- **Android:** no Chrome, abra o menu e toque em **Instalar app** ou **Adicionar à
-  tela inicial**.
-- **iPhone:** no Safari, toque em **Compartilhar** e depois **Adicionar à Tela de
-  Início**.
+- **Android:** abra no Chrome e escolha **Instalar app** ou **Adicionar à tela inicial**.
+- **iPhone:** abra no Safari, toque em **Compartilhar** e escolha **Adicionar à Tela de Início**.
 
-## Publicar no GitHub Pages
+## Publicação
 
-O fluxo em `.github/workflows/pages.yml` publica o conteúdo de `web/` sempre que a
-branch `main` recebe mudanças. A cada publicação, o GitHub Actions substitui
-automaticamente o marcador de versão do service worker pelo SHA do commit. Assim,
-cada versão recebe um cache próprio, sem atualizar números manualmente. O registro
-do service worker também ignora o cache HTTP ao verificar atualizações.
+O GitHub Actions publica automaticamente o conteúdo de web/ no GitHub Pages quando há alterações na branch main. A configuração fica em .github/workflows/pages.yml. O fluxo de validação está em .github/workflows/validar.yml.
 
-No repositório, abra **Settings → Pages**, defina **Build and deployment** como
-**GitHub Actions** e aguarde a execução do fluxo. O endereço aparecerá nessa tela
-e no próprio fluxo. O site funciona offline depois da primeira abertura.
-
-## Dados, privacidade e segurança
-
-- Lançamentos, categorias, orçamentos, metas e configurações ficam no
-  `localStorage` do navegador, na chave `meu-financeiro-dados-v2`.
-- Documentos importados ficam no IndexedDB local do navegador.
-- Não há conta de usuário, servidor de dados ou sincronização entre aparelhos.
-- O PIN atual é uma barreira de interface, não criptografia do banco local.
-- Limpar os dados do navegador, perder o aparelho ou desinstalar o app pode
-  causar perda dos dados locais.
-- Use **Configurações → Seus dados → Baixar backup (JSON)** regularmente.
-  O backup JSON contém informações financeiras e deve ser guardado em local
-  privado e protegido.
-- O backup JSON atual não inclui os arquivos da biblioteca de documentos.
-- O recurso de voz depende do navegador e pode enviar áudio ao serviço de
-  reconhecimento; a transcrição e os lançamentos permanecem locais.
-
-### Backup criptografado no Google Drive
-
-O app oferece backup opcional na pasta privada `appDataFolder` da conta Google
-de cada usuário. Não há banco de dados central nem conta própria do Meu
-Financeiro. O app continua offline-first: os dados são gravados localmente e
-uma cópia criptografada é enviada ao Drive quando o app está aberto, conectado
-e autorizado.
-
-- A criptografia acontece antes do envio: AES-256-GCM com chave derivada por
-  PBKDF2-SHA-256 (310.000 iterações).
-- O pacote inclui dados financeiros e documentos da biblioteca local.
-- A senha de criptografia não é enviada nem armazenada pelo app. O usuário deve
-  usar a mesma senha em todos os aparelhos; se perdê-la, o backup não poderá
-  ser recuperado.
-- O PIN de bloqueio é específico do aparelho e não é transferido no backup.
-- O token OAuth fica somente na memória e pode expirar; será necessário
-  reconectar ao Google.
-- O backup automático funciona enquanto o aplicativo está aberto. Não é uma
-  sincronização em segundo plano garantida pelo sistema operacional.
-- Se o backup remoto mudar em outro aparelho, o envio automático pausa para
-  evitar sobrescrita silenciosa. O usuário escolhe restaurar ou substituir.
-- A configuração do Google Cloud e o ID OAuth são necessários antes de ativar
-  o recurso. Consulte [docs/google-drive-backup.md](docs/google-drive-backup.md).
-
-O antigo protótipo de esquema Supabase não faz parte desta arquitetura e não é
-necessário para usar o backup no Google Drive.
+No GitHub, configure **Settings → Pages → Build and deployment → GitHub Actions**.
 
 ## Limitações conhecidas
 
-- A exportação para planilhas é feita em **CSV**, não em `.xlsx`.
-- O PDF é gerado pela impressão do navegador (**Imprimir → Salvar como PDF**).
-- O reconhecimento de voz depende da Web Speech API. Chrome, Edge e Android
-  costumam oferecer suporte; Firefox não oferece. Sem suporte, use o campo de
-  digitação no modal de voz.
-- Os dados são por navegador e por aparelho; não há sincronização entre
-  dispositivos.
+- A exportação de planilhas é CSV; não é gerado arquivo XLSX.
+- A leitura de planilhas de entrada aceita XLSX e CSV.
+- O PDF é obtido pela opção de impressão do navegador (Salvar como PDF).
+- O reconhecimento de voz depende do suporte do navegador e pode utilizar o serviço de reconhecimento oferecido por ele.
+- Os dados são locais por navegador/aparelho. O backup Google Drive é uma cópia criptografada opcional, não sincronização em tempo real.
+- O PIN não criptografa os dados locais.
+- O assistente atual é local e não utiliza a API da OpenAI.
 
 ## Licença
 
-Distribuído sob a licença MIT. Veja [LICENSE](LICENSE).
+Distribuído sob a licença MIT. Consulte [LICENSE](LICENSE).
